@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Add Member</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<script>
+			let helperInit = function(){
+				$('#idHelper').text("");
+				$('#pwHelper').text("");
+				$('#nameHelper').text("");
+				$('#addrHelper').text("");
+				$('#phoneHelper').text("");
+				$('#emailHelper').text("");
+			}
+			$(document).ready(function(){
+				$('#btn').click(function(){
+					if($('#memberId').val().length<4){
+						helperInit();
+						$('#idHelper').text('아이디를 4자리 이상 입력하세요.');
+						$('#memberId').focus();
+						return;
+					}
+					if($('#memberPw').val().length<4){
+						helperInit();
+						$('#pwHelper').text('비밀번호를 4자리 이상 입력하세요.');
+						$('#memberPw').focus();
+						return;
+					}
+					if($('#memberPw').val() != $('#memberPw2').val()){
+						helperInit();
+						$('#pwHelper').text('비밀번호가 일치하지 않습니다.');
+						$('#memberPw').focus();
+						return;
+					}
+					if($('#memberName').val().length<1){
+						helperInit();
+						$('#nameHelper').text('이름을 입력하세요');
+						$('#memberName').focus();
+						return;
+					}
+					if($('#memberAddr').val().length<1){
+						helperInit();
+						$('#addrHelper').text('주소를 입력하세요');
+						$('#memberAddr').focus();
+						return;
+					}
+					if($('#memberPhone').val().length<1){
+						helperInit();
+						$('#phoneHelper').text('휴대번호를 입력하세요');
+						$('#memberPhone').focus();
+						return;
+					}
+					if($('#memberEmail').val().length<1){
+						helperInit();
+						$('#emailHelper').text('이메일을 입력하세요');
+						$('#memberEmail').focus();
+						return;
+					}
+					$('#addMemberForm').submit();
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="text-center">
+				<h1>회원가입</h1>
+			</div>
+			<div class="text-center">
+				<form id="addMemberForm" method="post" action="/addMember">
+					<div>
+						<div>
+							<span>아이디</span>
+						</div>
+						<div>
+							<input id="memberId" type="text" name="memberId">
+							<span id="idHelper"></span>
+						</div>
+					</div>
+					<div>
+						<div>
+							<span>비밀번호</span>
+						</div>
+						<div>
+							<input id="memberPw" type="password" name="memberPw">
+							<span id="pwHelper"></span>
+						</div>
+					</div>
+					<div>
+						<div>
+							<span>비밀번호 확인</span>
+						</div>
+						<div>
+							<input id="memberPw2" type="password" name="member2">
+						</div>
+					</div>
+					<div>
+						<div>
+							<span>이름</span>
+						</div>
+						<div>
+							<input id="memberName" type="text" name="memberName">
+							<span id="nameHelper"></span>
+						</div>
+					</div>
+					<div>
+						<div>
+							<span>주소</span>
+						</div>
+						<div>
+							<input id="memberAddr" type="text" name="memberAddr">
+							<span id="addrHelper"></span>
+						</div>
+					</div>
+					<div>
+						<div>
+							<span>휴대번호</span>
+						</div>
+						<div>
+							<input id="memberPhone" type="text" name="memberPhone">
+							<span id="phoneHelper"></span>
+						</div>
+					</div>
+					<div>
+						<div>
+							<span>이메일</span>
+						</div>
+						<div>
+							<input id="memberEmail" type="text" name="memberEmail">
+							<span id="emailHelper"></span>
+						</div>
+					</div>
+					<div>
+						<button id="btn" type="button">가입하기</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
