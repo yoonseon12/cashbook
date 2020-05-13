@@ -14,7 +14,7 @@
 				border-color: rgb(224, 224, 224);
 				width: 450px;
 				height: 450px;
-				margin : 50px auto;
+				margin : 100px auto;
 				padding : 50px 75px;
 			}
 			input{
@@ -65,16 +65,19 @@
 			#loginMsg{
 				font-size: 15px;
 			}
+			.marginBottom30{
+				margin-bottom: 30px;
+			}
 		</style>
 		<script>
 		$(document).ready(function(){
 			$('#btn').click(function(){
 				if($('#memberId').val()<1){
-					$('#msg').text('아이디를 입력하세요');
+					$('#loginMsg').text('아이디를 입력하세요');
 					return
 				}
 				if($('#memberPw').val()<1){
-					$('#msg').text('비밀번호를 입력하세요');
+					$('#loginMsg').text('비밀번호를 입력하세요');
 					return
 				}
 				$('#loginForm').submit();
@@ -91,25 +94,29 @@
 			<!-- 로그인 폼 -->
 			<div>
 				<form id="loginForm" method="post" action="/login">
-					<div class="margin15">
-						<div>
-							<input type="text" id="memberId" name="memberId" placeholder="아이디">
+					<div class="marginBottom30">
+						<div class="margin15">
+							<div>
+								<input type="text" id="memberId" name="memberId" placeholder="아이디">
+							</div>
 						</div>
-					</div>
-					<div class="margin15">
-						<div>
-							<input type="text" id="memberPw" name="memberPw" placeholder="비밀번호">
+						<div class="margin15">
+							<div>
+								<input type="password" id="memberPw" name="memberPw" placeholder="비밀번호">
+							</div>
 						</div>
 					</div>
 					<div class="text-center margin15">
 						<span><strong id="loginMsg" th:text="${msg}"></strong></span>
 					</div>
-					<div class="margin15">
-						<button type="button" id="btn">로그인</button>
-					</div>
 					<div>
-						<a class="btn" href="/addMember">회원가입</a>
-					</div>
+						<div class="margin15">
+							<button type="button" id="btn">로그인</button>
+						</div>
+						<div>
+							<a class="btn" href="/addMember">회원가입</a>
+						</div>
+					</div>	
 				</form>
 			</div>
 		</div>	
