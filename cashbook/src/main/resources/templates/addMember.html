@@ -9,133 +9,209 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 		<script>
 			let helperInit = function(){
-				$('#idHelper').text("");
-				$('#pwHelper').text("");
-				$('#nameHelper').text("");
-				$('#addrHelper').text("");
-				$('#phoneHelper').text("");
-				$('#emailHelper').text("");
+				$('#msg').text("");
+				$('#memberIdCheckMsg').text("");
 			}
 			$(document).ready(function(){
 				$('#btn').click(function(){
 					if($('#memberId').val().length<4){
 						helperInit();
-						$('#idHelper').text('아이디를 4자리 이상 입력하세요.');
+						$('#msg').text('아이디를 중복체크 해주세요.');
 						$('#memberId').focus();
 						return;
 					}
 					if($('#memberPw').val().length<4){
 						helperInit();
-						$('#pwHelper').text('비밀번호를 4자리 이상 입력하세요.');
+						$('#msg').text('비밀번호를 4자리 이상 입력하세요.');
 						$('#memberPw').focus();
 						return;
 					}
 					if($('#memberPw').val() != $('#memberPw2').val()){
 						helperInit();
-						$('#pwHelper').text('비밀번호가 일치하지 않습니다.');
+						$('#msg').text('비밀번호가 일치하지 않습니다.');
 						$('#memberPw').focus();
 						return;
 					}
 					if($('#memberName').val().length<1){
 						helperInit();
-						$('#nameHelper').text('이름을 입력하세요');
+						$('#msg').text('이름을 입력하세요');
 						$('#memberName').focus();
 						return;
 					}
 					if($('#memberAddr').val().length<1){
 						helperInit();
-						$('#addrHelper').text('주소를 입력하세요');
+						$('#msg').text('주소를 입력하세요');
 						$('#memberAddr').focus();
 						return;
 					}
 					if($('#memberPhone').val().length<1){
 						helperInit();
-						$('#phoneHelper').text('휴대번호를 입력하세요');
+						$('#msg').text('휴대번호를 입력하세요');
 						$('#memberPhone').focus();
 						return;
 					}
 					if($('#memberEmail').val().length<1){
 						helperInit();
-						$('#emailHelper').text('이메일을 입력하세요');
+						$('#msg').text('이메일을 입력하세요');
 						$('#memberEmail').focus();
 						return;
 					}
 					$('#addMemberForm').submit();
 				});
+				$('#idBtn').click(function(){
+					if($('#memberIdCheck').val().length<4){
+						$('#memberIdCheckMsg').text('아이디를 4자리 이상 입력하세요.');
+						$('#memberIdCheck').focus();
+						return;
+					}
+					$('#idCheckForm').submit();
+				});
 			});
 		</script>
+		<style>
+			.main{
+				border-width: 1px;
+				border-style: solid;
+				border-color: rgb(224, 224, 224);
+				width: 680px;
+				height: 820px;
+				margin : 50px auto;
+				padding : 30px 190px;
+			}
+			input{
+				width: 300px;
+				height: 40px;
+				padding : 6px 12px;
+				border-width: 1px;
+				border-style: solid;
+				border-radius: 4px;
+				border-color: rgb(204, 204, 204);
+			}
+			#btn{
+				width: 300px;
+				height: 40px;
+				border-width: 1px;
+				border-style: solid;
+				border-radius: 4px;
+				background-color: rgb(52, 152, 219);
+				color: white;
+				font-size: 16px;
+				font-weight: bold;
+			}
+			#title{
+				font-size: 36px;
+				font-weight:700;
+			}
+			#memberIdCheck{
+				width: 215px;
+			}
+			#idBtn{
+				width: 80px;
+				height: 40px;
+				float: right;
+				border-width: 1px;
+				border-style: solid;
+				border-radius: 4px;
+				background-color: rgb(224, 224, 224);
+				font-size: 14px;
+			}
+			.margin10{
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+			.margin3{
+				margin-bottom: 3px;
+			}
+			#msg{
+				color:blue;
+				font-weight: bold;
+			}
+		</style>
 	</head>
 	<body>
-		<div class="container">
+		<div class="container-fluid main">
 			<div class="text-center">
-				<h1>회원가입</h1>
+				<span id="title">회원가입</span>
 			</div>
-			<div class="text-center">
-				<form id="addMemberForm" method="post" action="/addMember">
-					<div>
+			<div>
+				<!-- 아이디 중복 체크 폼 -->
+				<form id="idCheckForm" method="post" action="/checkMemberId">
+					<div class="margin10">
+						<div class="margin3">
+							<span>아이디 중복 확인</span>
+						</div>
 						<div>
+							<input type="text" id="memberIdCheck" name="memberIdCheck">
+							<button type="button" id="idBtn">중복확인</button>
+						</div>
+						<div>
+							<span><strong id="memberIdCheckMsg" th:text="${msg}"></strong></span>
+						</div>
+					</div>
+				</form>
+				<!-- 회원가입 폼 -->
+				<form id="addMemberForm" method="post" action="/addMember">
+					<div class="margin10">
+						<div class="margin3">
 							<span>아이디</span>
 						</div>
 						<div>
-							<input id="memberId" type="text" name="memberId">
-							<span id="idHelper"></span>
+							<input id="memberId" type="text" name="memberId" th:value="${availableMemberId}" readonly="readonly">
 						</div>
 					</div>
-					<div>
-						<div>
+					<div class="margin10">
+						<div class="margin3">
 							<span>비밀번호</span>
 						</div>
 						<div>
 							<input id="memberPw" type="password" name="memberPw">
-							<span id="pwHelper"></span>
 						</div>
 					</div>
-					<div>
-						<div>
+					<div class="margin10">
+						<div class="margin3">
 							<span>비밀번호 확인</span>
 						</div>
 						<div>
 							<input id="memberPw2" type="password" name="member2">
 						</div>
 					</div>
-					<div>
-						<div>
+					<div class="margin10">
+						<div class="margin3">
 							<span>이름</span>
 						</div>
 						<div>
 							<input id="memberName" type="text" name="memberName">
-							<span id="nameHelper"></span>
 						</div>
 					</div>
-					<div>
-						<div>
+					<div class="margin10">
+						<div class="margin3">
 							<span>주소</span>
 						</div>
 						<div>
 							<input id="memberAddr" type="text" name="memberAddr">
-							<span id="addrHelper"></span>
 						</div>
 					</div>
-					<div>
-						<div>
+					<div class="margin10">
+						<div class="margin3">
 							<span>휴대번호</span>
 						</div>
 						<div>
 							<input id="memberPhone" type="text" name="memberPhone">
-							<span id="phoneHelper"></span>
 						</div>
 					</div>
-					<div>
-						<div>
+					<div class="margin10">
+						<div class="margin3">
 							<span>이메일</span>
 						</div>
 						<div>
 							<input id="memberEmail" type="text" name="memberEmail">
-							<span id="emailHelper"></span>
 						</div>
 					</div>
-					<div>
-						<button id="btn" type="button">가입하기</button>
+					<div class="text-center">
+						<span id="msg"></span>
+					</div>
+					<div class="margin10">
+						<button id="btn" type="button">회원가입</button>
 					</div>
 				</form>
 			</div>

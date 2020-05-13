@@ -3,6 +3,14 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.MemberMapper">
+	<!-- 아이디 중복체크 -->
+	<select id="selectMemberId" parameterType="String" resultType="String">
+		SELECT
+			member_id
+		FROM member
+		WHERE member_id = #{memberIdCheck}
+	</select>
+	<!-- 회원 가입 -->
 	<insert id="insertMember" parameterType="com.gdu.cashbook.vo.Member">
 		INSERT INTO member(
 			member_id, 
@@ -19,6 +27,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{memberAddr}, 
 				#{memberPhone}, 
 				#{memberEmail}
-			);
+			)
 	</insert>
+	<!-- 로그인 -->
+	<select id="selectLoginMember" parameterType="com.gdu.cashbook.vo.LoginMember" resultType="com.gdu.cashbook.vo.LoginMember">
+		SELECT
+			member_id AS memberId,
+			member_pw AS memberPw
+		FROM member
+		WHERE member_id = #{memberId}
+		AND member_pw = #{memberPw}
+	</select>
 </mapper>

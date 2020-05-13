@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>login</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<style>
+
+		</style>
+		<script>
+		$(document).ready(function(){
+			$('#btn').click(function(){
+				if($('#memberId').val()<1){
+					$('#msg').text('아이디를 입력하세요');
+					return
+				}
+				if($('#memberPw').val()<1){
+					$('#msg').text('비밀번호를 입력하세요');
+					return
+				}
+				$('#loginForm').submit();
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div>
+				<h1>로그인</h1>
+			</div>
+			<div>
+				<form id="loginForm" method="post" action="/login">
+					<div>
+						<span>아이디</span>
+					</div>
+					<div>
+						<input type="text" id="memberId" name="memberId">
+					</div>
+					<div>
+						<span>비밀번호</span>
+					</div>
+					<div>
+						<input type="text" id="memberPw" name="memberPw">
+					</div>
+					<div>
+						<button type="button" id="btn">로그인</button>
+					</div>
+				</form>
+				<div>
+					<span th:text="${msg}"></span>
+				</div>
+			</div>
+		</div>	
+	</body>
+</html>
