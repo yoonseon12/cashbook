@@ -118,6 +118,7 @@
 					$('#addMemberForm').submit();
 				});
 				$('#idBtn').click(function(){
+					helperInit();
 					if($('#memberIdCheck').val().length<4){
 						$('#memberIdCheckMsg').text('아이디를 4자리 이상 입력하세요.');
 						$('#memberIdCheck').focus();

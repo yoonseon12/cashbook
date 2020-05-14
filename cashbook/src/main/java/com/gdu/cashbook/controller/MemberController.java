@@ -69,6 +69,7 @@ public class MemberController {
 			return "redirect:/index";
 		}
 		LoginMember returnLoginMember = memberService.login(loginMember);
+		System.out.println(returnLoginMember+" <- returnLoginMember");
 		if(returnLoginMember == null) {
 			System.out.println("로그인 실패");
 			String msg="아이디 또는 비밀번호가 일치하지 않습니다.";
@@ -124,7 +125,7 @@ public class MemberController {
 			model.addAttribute("memberOne", memberOne);
 			return "memberInfo";
 		}
-		//memberService.removeMember(loginMember);
+		memberService.removeMember(loginMember);
 		return "redirect:/logout";
 	}
 	// 회원 수정
@@ -139,7 +140,13 @@ public class MemberController {
 		return"modifyMember";
 	}
 	@PostMapping("/modifyMember")
-	public String modifyMember(HttpSession session) {
+	public String modifyMember(HttpSession session, Member member) {
+		System.out.println(member+" <- modifyMember Member member");
+		if(session.getAttribute("loginMember")==null) { // 로그인상태 X
+			return "redirect:/index";
+		}
+		memberService.modifyMember(member);
+		System.out.println("수정완료");
 		return "redirect:/memberInfo";
 	}
 }

@@ -5,20 +5,20 @@
 	</head>
 	<body>
 		<div th:fragment="sidemenu"> <!-- 외부에서 부를땐  /include/menu::sidemenu -->
-			<div class="menuTitle">
-				<span th:text="${session.loginMember.memberId}"></span><span>님</span>
+			<div class="menuTitleArea">
+				<span class="menuTitle" th:text="${session.loginMember.memberId}"></span><span class="menuTitle">님</span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" th:href="@{/home}">홈</a></span>
+				<span><a class="menuLink" id="home"th:href="@{/home}">홈</a></span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" th:href="@{/memberInfo}">회원정보</a></span>
+				<span><a class="menuLink" id="memberInfo" th:href="@{/memberInfo}">회원정보</a></span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" th:href="@{/cashbookList}">가계부관리</a></span>
+				<span><a class="menuLink" id="cashbookList" th:href="@{/cashbookList}">가계부관리</a></span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" th:href="@{/broadList}">게시판</a></span>
+				<span><a class="menuLink" id="broadList" th:href="@{/broadList}">게시판</a></span>
 			</div>
 			<div class="menuArea">
 				<span><a class="menuLink" th:href="@{/logout}">로그아웃</a></span>

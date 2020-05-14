@@ -13,10 +13,12 @@ public interface MemberMapper {
 	public void insertMember(Member member);
 	// 로그인
 	public LoginMember selectLoginMember(LoginMember loginMember);
-	// 회원정보
+	// 회원 정보
 	public Member selectMemberOne(LoginMember loginMember);
-	// 회원탈퇴
+	// 회원 탈퇴
 	public void deleteMember(LoginMember loginMember);
-	// 회원탈퇴시 정보 확인
-	public int removeMemberPwChack(Member member);
+	// 회원 탈퇴시 정보 확인
+	public int deleteMemberPwChack(Member member);
+	// 회원 수정
+	public void updateMember(Member member);
 }

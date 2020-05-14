@@ -8,21 +8,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT
 			mi
 		FROM ( SELECT member_id AS mi 
-				FROM member 
-				UNION
-				SELECT memberid as mi 
-				FROM memberid ) t
+			   FROM member 
+			   UNION
+			   SELECT memberid as mi 
+			   FROM memberid ) t
 		WHERE mi = #{memberIdCheck}
 	</select>
 	<!-- 회원 가입 -->
 	<insert id="insertMember" parameterType="com.gdu.cashbook.vo.Member">
 		INSERT INTO member(
-			member_id, 
-			member_pw, 
-			member_name, 
-			member_addr, 
-			member_phone, 
-			member_email
+				member_id, 
+				member_pw, 
+				member_name, 
+				member_addr, 
+				member_phone, 
+				member_email
 			) 
 			VALUES(
 				#{memberId}, 
@@ -44,10 +44,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 회원 정보 -->
 	<select id="selectMemberOne" parameterType="com.gdu.cashbook.vo.LoginMember" resultType="com.gdu.cashbook.vo.Member">
 		SELECT
-			member_id AS memberId,
-			member_pw AS memberPw,
-			member_name AS memberName,
-			member_addr AS memberAddr,
+			member_id    AS memberId,
+			member_pw    AS memberPw,
+			member_name  AS memberName,
+			member_addr  AS memberAddr,
 			member_phone AS memberPhone,
 			member_email AS memberEmail
 		FROM member
@@ -60,11 +60,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE member_id = #{memberId}
 	</delete>
 	<!-- 회원탈퇴 시 정보 확인 -->
-	<select id="removeMemberPwChack" parameterType="com.gdu.cashbook.vo.Member" resultType="int">
+	<select id="deleteMemberPwChack" parameterType="com.gdu.cashbook.vo.Member" resultType="int">
 		SELECT COUNT(*)
 			FROM member
-		WHERE member_id= #{memberId} 
-		AND member_pw = PASSWORD(#{memberPw})
+		WHERE member_id = #{memberId} 
+		AND   member_pw = PASSWORD(#{memberPw})
 	</select>
-	 
+	<!-- 회원정보 수정 -->
+	<update id="updateMember" parameterType="com.gdu.cashbook.vo.Member">
+		UPDATE member
+		SET member_name  = #{memberName},
+			member_addr  = #{memberAddr},
+			member_phone = #{memberPhone},
+			member_email = #{memberEmail}
+		WHERE member_id  = #{memberId}
+	</update>
 </mapper>
