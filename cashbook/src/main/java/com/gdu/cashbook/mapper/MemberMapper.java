@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.gdu.cashbook.vo.LoginMember;
 import com.gdu.cashbook.vo.Member;
 
-@Mapper
+@Mapper // @Component+ @Mapper
 public interface MemberMapper {
 	// 아이디 중복확인
 	public String selectMemberId(String memberIdCheck);
@@ -13,4 +13,10 @@ public interface MemberMapper {
 	public void insertMember(Member member);
 	// 로그인
 	public LoginMember selectLoginMember(LoginMember loginMember);
+	// 회원정보
+	public Member selectMemberOne(LoginMember loginMember);
+	// 회원탈퇴
+	public void deleteMember(LoginMember loginMember);
+	// 회원탈퇴시 정보 확인
+	public int removeMemberPwChack(Member member);
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<div th:fragment="sidemenu"> <!-- 외부에서 부를땐  /include/menu::sidemenu -->
+			<div class="menuTitle">
+				<span th:text="${session.loginMember.memberId}"></span><span>님</span>
+			</div>
+			<div class="menuArea">
+				<span><a class="menuLink" th:href="@{/home}">홈</a></span>
+			</div>
+			<div class="menuArea">
+				<span><a class="menuLink" th:href="@{/memberInfo}">회원정보</a></span>
+			</div>
+			<div class="menuArea">
+				<span><a class="menuLink" th:href="@{/cashbookList}">가계부관리</a></span>
+			</div>
+			<div class="menuArea">
+				<span><a class="menuLink" th:href="@{/broadList}">게시판</a></span>
+			</div>
+			<div class="menuArea">
+				<span><a class="menuLink" th:href="@{/logout}">로그아웃</a></span>
+			</div>
+		</div>
+	</body>
+</html>
+
+	<!--
+	<div>
+		<span th:text="${session.loginMember.memberId"></span><span>님 반갑습니다.</span>
+	</div>
+	<div style="font-size: 18px; text-align: center;">
+		<span><a th:href="@{/home}">홈</a></span>
+	</div>
+	<div style="font-size: 18px; text-align: center;">
+		<span><a th:href="@{/memberIn}">회원정보</a></span>
+	</div>
+	<div style="font-size: 18px; text-align: center;">
+		<span><a th:href="@{/cashbookList}">가계부관리</a></span>
+	</div>
+	<div style="font-size: 18px; text-align: center;">
+		<span><a th:href="@{/broadList}">게시판</a></span>
+	</div>
+	<div style="font-size: 18px; text-align: center;">
+		<span><a th:href="@{/logout}">로그아웃</a></span>
+	</div>
+			 -->

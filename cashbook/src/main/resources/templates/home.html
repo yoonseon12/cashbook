@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>home</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<style>
+			/* 메뉴바 style */
+			#sidemenu {
+				width: 200px;
+				height: 3000px;
+				position: fixed;
+				background: rgb(52, 152, 219);
+				overflow: hidden;
+			}
+			.menuLink{
+				text-align: center;
+				font-size: 20px;
+				color:white;
+				text-decoration: none;
+			}
+			.menuLink:hover{
+				text-decoration: none;
+			}
+			.menuTitle{
+				text-align: center;
+				font-size: 20px;
+				color:white;
+			}
+			.menuArea{
+				text-align: center;
+				margin-bottom: 30px;
+			}
+			/* 출력화면 style */
+			#section {
+				margin-left: 530px;
+				margin-right:500px;
+				width:1000px;
+				background: white;
+				padding-top:50px;
+				padding-bottom:50px;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<div>
+			<div id="sidemenu">
+				<div th:include="/include/menu::sidemenu"></div>
+			</div>
+			<div id="section">
+				<span>home</span>
+			</div>
+		</div>
+	</body>
+</html>

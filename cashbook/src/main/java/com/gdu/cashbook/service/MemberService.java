@@ -25,4 +25,17 @@ public class MemberService {
 	public LoginMember login(LoginMember loginMember) {
 		return memberMapper.selectLoginMember(loginMember);
 	}
+	// 회원 정보
+	public Member getMemberOne(LoginMember loginMember) {
+		return memberMapper.selectMemberOne(loginMember);
+	}
+	// 회원 탈퇴
+	public void removeMember(LoginMember loginMember) {
+		memberMapper.deleteMember(loginMember);
+	}
+	// 회원 탈퇴시 정보 확인
+	public int removeMemberPwChack(Member member) {
+		System.out.println(member+" < member");
+		return memberMapper.removeMemberPwChack(member);
+	}
 }

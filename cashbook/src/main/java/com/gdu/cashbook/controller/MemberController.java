@@ -64,7 +64,7 @@ public class MemberController {
 		return "login";
 	}
 	@PostMapping("/login")
-	public String login(LoginMember loginMember, Model model, HttpSession session) { // 모델2에서의 HttpSession session = request.getSession();
+	public String login(HttpSession session, Model model, LoginMember loginMember) { // 모델2에서의 HttpSession session = request.getSession();
 		if(session.getAttribute("loginMember")!=null){ // 로그인 상태 O
 			return "redirect:/index";
 		}
@@ -80,7 +80,7 @@ public class MemberController {
 			session.setAttribute("loginMember", loginMember);
 			System.out.println(loginMember+" <- loginMember");
 		}
-		return "redirect:/index";
+		return "redirect:/home";
 	}
 	
 	// 로그아웃
@@ -91,5 +91,55 @@ public class MemberController {
 		}
 		session.invalidate(); // session 초기화
 		return "redirect:/index";
+	}
+	
+	// 회원정보
+	@GetMapping("/memberInfo")
+	public String memberInfo(HttpSession session, Model model) {
+		if(session.getAttribute("loginMember")==null){ // 로그인 상태 X
+			return "redirect:/index";
+		}
+		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
+		Member memberOne = memberService.getMemberOne(loginMember); 
+		model.addAttribute("memberOne", memberOne);
+		return "memberInfo";
+	}
+	// 회원 탈퇴
+	@PostMapping("/removeMember")
+	public String removeMember(@RequestParam("inputMemberPw") String inputMemberPw, HttpSession session, Model model, Member member) {
+		if(session.getAttribute("loginMember")==null) { // 로그인상태 X
+			return "redirect:/index";
+		}
+		LoginMember loginMember = (LoginMember)session.getAttribute("loginMember");
+		System.out.println(loginMember.getMemberId()+" session Id?");
+		member.setMemberId(loginMember.getMemberId()); // 세션에 저장되있던 아이디값 주입
+		member.setMemberPw(inputMemberPw); // 입력한 비밀번호 값 주입
+		int debugingCount = memberService.removeMemberPwChack(member);
+		System.out.println(debugingCount);
+		if(debugingCount==0) {
+			System.out.println("비밀번호틀림");
+			String removeMsg = "비밀번호가 일치하지 않습니다.";
+			model.addAttribute("removeMsg", removeMsg);
+			Member memberOne = memberService.getMemberOne(loginMember); 
+			model.addAttribute("memberOne", memberOne);
+			return "memberInfo";
+		}
+		//memberService.removeMember(loginMember);
+		return "redirect:/logout";
+	}
+	// 회원 수정
+	@GetMapping("/modifyMember")
+	public String modifyMember(HttpSession session, Model model) {
+		if(session.getAttribute("loginMember")==null) { // 로그인상태 X
+			return "redirect:/index";
+		}
+		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
+		Member memberOne = memberService.getMemberOne(loginMember); 
+		model.addAttribute("memberOne", memberOne);
+		return"modifyMember";
+	}
+	@PostMapping("/modifyMember")
+	public String modifyMember(HttpSession session) {
+		return "redirect:/memberInfo";
 	}
 }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Modify Member</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('#btn').click(function(){
+					if($('#memberPw').val()!=$('#memberPw2').val()){
+						
+					}
+					$('modifyMemberForm').submit();
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div>
+			<!-- 제목 -->
+			<div>
+				<h1>Modify Member</h1>
+			</div>
+			<!-- 내용 -->
+			<div>
+				<div>
+					<form id="modifyMemberForm" method="post" action="/modifyMember">
+						<table>
+							<tr>
+								<td>아이디</td>
+								<td>
+									<input type="text" th:value="${memberOne.memberId}" readonly="readonly">
+								</td>
+							</tr>
+							<tr>
+								<td>이름</td>
+								<td>
+									<input type="text" th:value="${memberOne.memberName}">
+								</td>
+							</tr>
+							<tr>
+								<td>주소</td>
+								<td>
+									<input type="text" th:value="${memberOne.memberAddr}">
+								</td>
+							</tr>
+							<tr>
+								<td>전화번호</td>
+								<td>
+									<input type="text" th:value="${memberOne.memberPhone}">
+								</td>
+							</tr>
+							<tr>
+								<td>이메일</td>
+								<td>
+									<input type="text" th:value="${memberOne.memberEmail}">
+								</td>
+							</tr>
+							<tr>
+								<td>비밀번호</td>
+								<td>
+									<input type="text" id="memberPw" name="memberPw">
+								</td>
+							</tr>
+							<tr>
+								<td>비밀번호 확인</td>
+								<td>
+									<input type="text" id="memberPw2">
+								</td>
+							</tr>
+						</table>
+						<div>
+							<button id="btn" type="button">정보수정</button>
+						</div>
+					</form>
+				</div>	
+			</div>
+		</div>
+	</body>
+</html>

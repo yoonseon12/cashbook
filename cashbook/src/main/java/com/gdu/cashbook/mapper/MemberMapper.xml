@@ -6,9 +6,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 아이디 중복체크 -->
 	<select id="selectMemberId" parameterType="String" resultType="String">
 		SELECT
-			member_id
-		FROM member
-		WHERE member_id = #{memberIdCheck}
+			mi
+		FROM ( SELECT member_id AS mi 
+				FROM member 
+				UNION
+				SELECT memberid as mi 
+				FROM memberid ) t
+		WHERE mi = #{memberIdCheck}
 	</select>
 	<!-- 회원 가입 -->
 	<insert id="insertMember" parameterType="com.gdu.cashbook.vo.Member">
@@ -22,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			) 
 			VALUES(
 				#{memberId}, 
-				#{memberPw}, 
+				PASSWORD(#{memberPw}), <!-- 암호화 -->
 				#{memberName}, 
 				#{memberAddr}, 
 				#{memberPhone}, 
@@ -32,10 +36,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 로그인 -->
 	<select id="selectLoginMember" parameterType="com.gdu.cashbook.vo.LoginMember" resultType="com.gdu.cashbook.vo.LoginMember">
 		SELECT
-			member_id AS memberId,
-			member_pw AS memberPw
+			member_id AS memberId
 		FROM member
 		WHERE member_id = #{memberId}
-		AND member_pw = #{memberPw}
+		AND member_pw = PASSWORD(#{memberPw})
 	</select>
+	<!-- 회원 정보 -->
+	<select id="selectMemberOne" parameterType="com.gdu.cashbook.vo.LoginMember" resultType="com.gdu.cashbook.vo.Member">
+		SELECT
+			member_id AS memberId,
+			member_pw AS memberPw,
+			member_name AS memberName,
+			member_addr AS memberAddr,
+			member_phone AS memberPhone,
+			member_email AS memberEmail
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteMember" parameterType="com.gdu.cashbook.vo.LoginMember">
+		DELETE
+		FROM member
+		WHERE member_id = #{memberId}
+	</delete>
+	<!-- 회원탈퇴 시 정보 확인 -->
+	<select id="removeMemberPwChack" parameterType="com.gdu.cashbook.vo.Member" resultType="int">
+		SELECT COUNT(*)
+			FROM member
+		WHERE member_id= #{memberId} 
+		AND member_pw = PASSWORD(#{memberPw})
+	</select>
+	 
 </mapper>

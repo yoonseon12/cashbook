@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Member Information</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	</head>
+	<script>
+		$(document).ready(function(){
+			$('#btn').click(function(){
+				$('#removeMemberForm').submit();
+			});
+		});
+	</script>
+	<body>
+		<div>
+			<div>
+				<h1>Member Information</h1>
+			</div>
+			<div>
+				<div>
+					<table>
+						<tr>
+							<td>아이디</td>
+							<td th:text="${memberOne.memberId}"></td>
+						</tr>
+						<tr>
+							<td>이름</td>
+							<td th:text="${memberOne.memberName}"></td>
+						</tr>
+						<tr>
+							<td>주소</td>
+							<td th:text="${memberOne.memberAddr}"></td>
+						</tr>
+						<tr>
+							<td>전화번호</td>
+							<td th:text="${memberOne.memberPhone}"></td>
+						</tr>
+						<tr>
+							<td>이메일</td>
+							<td th:text="${memberOne.memberEmail}"></td>
+						</tr> 
+					</table>
+				</div>	
+				<div>
+					<a data-toggle="collapse" href="#remove">회원탈퇴</a>
+					<div id="remove" class="collapse">
+						<form id="removeMemberForm" method="post" action="/removeMember">
+							<div>
+								<input type="text" name="inputMemberPw" placeholder="비밀번호를 입력하세요.">
+								<button id="btn" type="button">탈퇴</button>
+							</div>
+						</form>
+					</div>
+					<div>
+						<span th:text="${removeMsg}"></span>
+					</div>
+					<div>
+						<a th:href="@{/modifyMember}">회원수정</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
