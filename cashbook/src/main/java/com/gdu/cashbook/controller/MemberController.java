@@ -1,5 +1,7 @@
 package com.gdu.cashbook.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;	
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,5 +194,35 @@ public class MemberController {
 			return"findMemberPw";
 		}
 		return "memberPwView";
+	}
+	// 비밀번호 변경
+	@PostMapping("/modifyMemberPw")
+	public String modifyMemberPw(@RequestParam("originMemberPw") String originMemberPw, 
+								 @RequestParam("modifyMemberPw") String modifyMemberPw, 
+								 HttpSession session, Model model, Member member) {
+		if(session.getAttribute("loginMember")==null) { // 로그인상태 X
+			return "redirect:/index";
+		}
+		System.out.println(originMemberPw+" <- 입력한 비밀번호");
+		System.out.println(modifyMemberPw+" <- 수정할 비밀번호");
+		LoginMember loginMember = (LoginMember)session.getAttribute("loginMember");
+		System.out.println(loginMember.getMemberId()+" session Id?");
+		member.setMemberId(loginMember.getMemberId()); // 세션에 저장되있던 아이디값 주입
+		member.setMemberPw(originMemberPw); // 입력한 기존비밀번호 값 주입
+		System.out.println(member+"<- 주입확인");
+		int debugingCount = memberService.removeMemberPwChack(member);
+		System.out.println(debugingCount+" <- 비밀번호 일치 유무");
+		if(debugingCount==0) {
+			System.out.println("비밀번호틀림");
+			String modifyMsg = "비밀번호가 일치하지 않습니다.";
+			model.addAttribute("modifyMsg", modifyMsg);
+			Member memberOne = memberService.getMemberOne(loginMember); 
+			model.addAttribute("memberOne", memberOne);
+			return "memberInfo";
+		}
+		member.setMemberPw(modifyMemberPw); // 입력한 변경비밀번호 주입(덮어쓰기)
+		System.out.println(member+" <- 덮어쓰기확인");
+		memberService.modifyMemberInfoMemberPw(member);
+		return "redirect:/logout";
 	}
 }

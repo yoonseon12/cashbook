@@ -25,4 +25,6 @@ public interface MemberMapper {
 	public String selectMemberIdByMember(Member member);
 	// 비밀번호 찾기
 	public int updateMemberPw(Member member);
+	// 비밀번호 변경
+	public void updateMemberInfoMemberPw(Member member);
 }

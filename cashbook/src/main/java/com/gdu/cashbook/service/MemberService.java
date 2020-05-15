@@ -40,11 +40,11 @@ public class MemberService {
 	// 회원 탈퇴
 	public void removeMember(LoginMember loginMember) {
 		//1.
+		memberMapper.deleteMember(loginMember);
+		//2.
 		MemberId memberId= new MemberId();
 		memberId.setMemberId(loginMember.getMemberId());
 		memberIdMapper.insertMemberId(memberId);
-		//2.
-		memberMapper.deleteMember(loginMember);
 	}
 	// 회원 탈퇴시 정보 확인
 	public int removeMemberPwChack(Member member) {
@@ -86,4 +86,8 @@ public class MemberService {
 		}
 		return row;
 	}
+	// 비밀번호 변경
+	public void modifyMemberInfoMemberPw(Member member) {
+		memberMapper.updateMemberInfoMemberPw(member);
+	}  
 }
