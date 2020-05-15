@@ -182,7 +182,6 @@ public class MemberController {
 	}
 	@PostMapping("/findMemberPw")
 	public String findMemberPw(HttpSession session, Model model, Member member) {
-		/*
 		if(session.getAttribute("loginMember")!=null) { // 로그인상태 O
 			return "redirect:/index";
 		}
@@ -192,7 +191,6 @@ public class MemberController {
 			model.addAttribute("msg", msg);
 			return"findMemberPw";
 		}
-		*/
 		return "memberPwView";
 	}
 }
