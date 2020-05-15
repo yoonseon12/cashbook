@@ -21,4 +21,6 @@ public interface MemberMapper {
 	public int deleteMemberPwChack(Member member);
 	// 회원 수정
 	public void updateMember(Member member);
+	// 아이디 찾기
+	public String selectMemberIdByMember(Member member);
 }

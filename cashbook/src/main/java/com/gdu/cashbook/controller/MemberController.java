@@ -78,7 +78,7 @@ public class MemberController {
 		}
 		if(returnLoginMember != null) {
 			System.out.println("로그인 성공");
-			session.setAttribute("loginMember", loginMember);
+			session.setAttribute("loginMember", returnLoginMember);
 			System.out.println(loginMember+" <- loginMember");
 		}
 		return "redirect:/home";
@@ -148,5 +148,23 @@ public class MemberController {
 		memberService.modifyMember(member);
 		System.out.println("수정완료");
 		return "redirect:/memberInfo";
+	}
+	// 아이디 찾기
+	@GetMapping("/findMemberId")
+	public String findMemberId(HttpSession session) {
+		if(session.getAttribute("loginMember")!=null) { // 로그인상태 O
+			return "redirect:/index";
+		}
+		return "findMemberId";
+	}
+	@PostMapping("/findMemberId")
+	public String findMemberId(HttpSession session, Model model, Member member) {
+		if(session.getAttribute("loginMember")!=null) { // 로그인상태 O
+			return "redirect:/index";
+		}
+		String memberIdPart = memberService.getMemberIdByMember(member);
+		System.out.println(memberIdPart);
+		model.addAttribute("memberIdPart", memberIdPart);
+		return "memberIdView";
 	}
 }

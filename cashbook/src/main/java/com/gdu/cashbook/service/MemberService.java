@@ -51,4 +51,8 @@ public class MemberService {
 		System.out.println(member+" < member");
 		memberMapper.updateMember(member);
 	}
+	// 아이디 찾기
+	public String getMemberIdByMember(Member member) {
+		return memberMapper.selectMemberIdByMember(member);
+	}
 }
