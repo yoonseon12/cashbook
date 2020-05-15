@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div>
+			<div>
+				<h1>비밀번호 찾기</h1>
+			</div>
+			<div>
+				<form method="post" th:action="@{/findMemberPw}">
+					<div>
+						<div>
+							<span>아이디</span>
+						</div>
+						<div>
+							<input type="text" name="memberId">
+						</div>
+					</div>
+					<div>
+						<div>
+							<span>이메일</span>
+						</div>
+						<div>
+							<input type="text" name="memberEmail">
+						</div>
+					</div>
+					<div>
+						<button type="submit">찾기</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

@@ -164,7 +164,30 @@ public class MemberController {
 		}
 		String memberIdPart = memberService.getMemberIdByMember(member);
 		System.out.println(memberIdPart);
+		if(memberIdPart==null) {
+			String msg = "입력한 정보로 아이디를 찾을 수 없습니다.";
+			model.addAttribute("msg", msg);
+			return "findMemberId";
+		}
 		model.addAttribute("memberIdPart", memberIdPart);
 		return "memberIdView";
+	}
+	// 비밀번호 찾기
+	@GetMapping("/findMemberPw")
+	public String findMemberPw(HttpSession session) {
+		if(session.getAttribute("loginMember")!=null) { // 로그인상태 O
+			return "redirect:/index";
+		}
+		return "findMemberPw";
+	}
+	@PostMapping("/findMemberPw")
+	public String findMemberPw(HttpSession session, Model model, Member member) {
+		if(session.getAttribute("loginMember")!=null) { // 로그인상태 O
+			return "redirect:/index";
+		}
+		int row = memberService.getMemberPw(member);
+		String msg = "입력한 정보로 비밀번호를 찾을 수 없습니다.";
+		model.addAttribute("msg", msg);
+		return "memberPwView";
 	}
 }

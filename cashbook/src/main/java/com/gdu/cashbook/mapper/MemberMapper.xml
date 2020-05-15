@@ -49,7 +49,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			member_name  AS memberName,
 			member_addr  AS memberAddr,
 			member_phone AS memberPhone,
-			member_email AS memberEmail
+			member_email AS memberEmail,
+			member_pic AS memberPic
 		FROM member
 		WHERE member_id = #{memberId}
 	</select>
@@ -84,4 +85,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 AND   member_phone = #{memberPhone}
 		 AND   member_email = #{memberEmail}
 	</select>
+	<!-- 비밀번호찾기 (아이디, 이메일로 찾기) -->
+	<!-- 
+	1.입력한 정보확인  select
+	2. 이 사용자의 이 아이디의 암호화된 비밀번호를 랜덤문자열로 변경 update
+	3. 2번에서 입력한 pw 메일로 전송
+	-->
+	<update id="updateMemberPw" parameterType="com.gdu.cashbook.vo.Member">
+		UPDATE member
+		SET member_pw    = PASSWORD(#{memberPw})
+		WHERE member_id  = #{memberId}
+		AND member_email = #{memberEmail}
+	</update>
 </mapper>

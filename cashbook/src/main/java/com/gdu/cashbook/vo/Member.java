@@ -7,6 +7,7 @@ public class Member {
 	private String memberAddr;
 	private String memberPhone;
 	private String memberEmail;
+	private String memberPic;
 	public String getMemberId() {
 		return memberId;
 	}
@@ -43,62 +44,17 @@ public class Member {
 	public void setMemberEmail(String memberEmail) {
 		this.memberEmail = memberEmail;
 	}
+	public String getMemberPic() {
+		return memberPic;
+	}
+	public void setMemberPic(String memberPic) {
+		this.memberPic = memberPic;
+	}
 	@Override
 	public String toString() {
 		return "Member [memberId=" + memberId + ", memberPw=" + memberPw + ", memberName=" + memberName
-				+ ", memberAddr=" + memberAddr + ", memberPhone=" + memberPhone + ", memberEmail=" + memberEmail + "]";
+				+ ", memberAddr=" + memberAddr + ", memberPhone=" + memberPhone + ", memberEmail=" + memberEmail
+				+ ", memberPic=" + memberPic + "]";
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((memberAddr == null) ? 0 : memberAddr.hashCode());
-		result = prime * result + ((memberEmail == null) ? 0 : memberEmail.hashCode());
-		result = prime * result + ((memberId == null) ? 0 : memberId.hashCode());
-		result = prime * result + ((memberName == null) ? 0 : memberName.hashCode());
-		result = prime * result + ((memberPhone == null) ? 0 : memberPhone.hashCode());
-		result = prime * result + ((memberPw == null) ? 0 : memberPw.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Member other = (Member) obj;
-		if (memberAddr == null) {
-			if (other.memberAddr != null)
-				return false;
-		} else if (!memberAddr.equals(other.memberAddr))
-			return false;
-		if (memberEmail == null) {
-			if (other.memberEmail != null)
-				return false;
-		} else if (!memberEmail.equals(other.memberEmail))
-			return false;
-		if (memberId == null) {
-			if (other.memberId != null)
-				return false;
-		} else if (!memberId.equals(other.memberId))
-			return false;
-		if (memberName == null) {
-			if (other.memberName != null)
-				return false;
-		} else if (!memberName.equals(other.memberName))
-			return false;
-		if (memberPhone == null) {
-			if (other.memberPhone != null)
-				return false;
-		} else if (!memberPhone.equals(other.memberPhone))
-			return false;
-		if (memberPw == null) {
-			if (other.memberPw != null)
-				return false;
-		} else if (!memberPw.equals(other.memberPw))
-			return false;
-		return true;
-	}
+	
 }

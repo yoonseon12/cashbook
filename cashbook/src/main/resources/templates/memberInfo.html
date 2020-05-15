@@ -72,6 +72,12 @@
 				<div>
 					<table class="table">
 						<tr>
+							<td>사진</td>
+							<td>
+								<img th:src="@{${'/upload/'+memberOne.memberPic}}">
+							</td>
+						</tr>
+						<tr>
 							<td>아이디</td>
 							<td th:text="${memberOne.memberId}"></td>
 						</tr>
