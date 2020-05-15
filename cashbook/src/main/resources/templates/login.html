@@ -65,13 +65,13 @@
 			#loginMsg{
 				font-size: 15px;
 			}
-			.marginBottom30{
-				margin-bottom: 30px;
+			.marginBottom20{
+				margin-bottom: 20px;
 			}
 		</style>
 		<script>
 		$(document).ready(function(){
-			$('#btn').click(function(){
+			$('#loginBtn').click(function(){
 				if($('#memberId').val()<1){
 					$('#loginMsg').text('아이디를 입력하세요');
 					return
@@ -94,7 +94,7 @@
 			<!-- 로그인 폼 -->
 			<div>
 				<form id="loginForm" method="post" action="/login">
-					<div class="marginBottom30">
+					<div class="marginBottom20">
 						<div class="margin15">
 							<div>
 								<input type="text" id="memberId" name="memberId" placeholder="아이디">
@@ -106,7 +106,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="text-center margin15">
+					<div class="text-center marginBottom20">
 						<span><strong id="loginMsg" th:text="${msg}"></strong></span>
 					</div>
 					<div class="text-center">

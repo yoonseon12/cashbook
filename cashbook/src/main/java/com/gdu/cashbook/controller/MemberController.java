@@ -182,12 +182,17 @@ public class MemberController {
 	}
 	@PostMapping("/findMemberPw")
 	public String findMemberPw(HttpSession session, Model model, Member member) {
+		/*
 		if(session.getAttribute("loginMember")!=null) { // 로그인상태 O
 			return "redirect:/index";
 		}
 		int row = memberService.getMemberPw(member);
-		String msg = "입력한 정보로 비밀번호를 찾을 수 없습니다.";
-		model.addAttribute("msg", msg);
+		if(row==0) { 
+			String msg = "가입되지 않은 정보입니다.";
+			model.addAttribute("msg", msg);
+			return"findMemberPw";
+		}
+		*/
 		return "memberPwView";
 	}
 }

@@ -67,7 +67,7 @@
 			$(document).ready(function(){
 				$('#btn').click(function(){
 					if($('#memberName').val()<1 || $('#memberPhone').val()<1 || $('#memberEmail').val()<1){
-						let msg="필수 기입란에 모두 기입해주세요.";
+						let msg="가입정보를 모두 입력해주세요.";
 						$('#msg').text(msg);
 						return;
 					}
@@ -111,8 +111,8 @@
 							</div>
 						</div>
 						<div class="text-center">
+							&nbsp;
 							<span id="msg" th:text="${msg}"></span>
-							<span>모든 내용을 입력해주세요.</span>
 						</div>
 					</div>
 					<div>

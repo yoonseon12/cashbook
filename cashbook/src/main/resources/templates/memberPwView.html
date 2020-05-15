@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>아이디 확인</title>
+		<title>Insert title here</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -13,14 +13,14 @@
 				border-style: solid;
 				border-color: rgb(224, 224, 224);
 				width: 450px;
-				height: 500px;
+				height: 450px;
 				margin : 100px auto;
-				padding : 40px 75px;
+				padding : 50px 75px;
 			}
-			input{
+			fieldset{
 				width: 300px;
-				height: 180px;
-				padding : 6px 12px;
+				height: 170px;
+				padding : 40px 12px;
 				border-width: 1px;
 				border-style: solid;
 				border-radius: 4px;
@@ -30,17 +30,20 @@
 				text-align: center;
 			}
 			#title{
-				font-size: 25px;
+				font-size: 36px;
 				font-weight:700;
 			}
-			.margin30{
-				margin: 30px 0px;
+			.contents{
+				font-size: 17px;
 			}
-			.margin20{
-				margin: 20px 0px;
+			.marginBottom30{
+				margin-bottom: 30px;
 			}
-			.margin3{
-				margin: 3px 0px;
+			.marginBottom20{
+				margin-bottom: 20px;
+			}
+			.marginBottom5{
+				margin-bottom: 5px;
 			}
 			.btn{
 				width: 300px;
@@ -55,21 +58,24 @@
 	</head>
 	<body>
 		<div class="container main">
-			<div class="text-center margin20">
-				<span id="title">아이디를 확인하세요</span>
+			<!-- 제목 -->
+			<div class="text-center marginBottom20">
+				<span id="title">메일 전송 완료</span>
 			</div>
-			<div>
-				<div>
-					<input type="text" th:value="${memberIdPart}" disabled="disabled">
-				</div>
+			<!-- 내용 -->
+			<div class="marginBottom30">
+				<fieldset>
+					<div class="marginBottom5">
+						<span class="contents">입력하신 메일로 <strong>변경된 비밀번호</strong>가 전송되었습니다.</span>
+					</div>
+					<div>
+						<span class="contents">로그인 후 비밀번호를 변경해주세요.</span>
+					</div>
+				</fieldset>
 			</div>
-			<div class="margin30">
-				<div class="text-center margin20">
-					<a href="/findMemberPw" class="btn btn-primary">비밀번호 찾기</a>
-				</div>
-				<div class="text-center">
-					<a href="/login" class="btn btn-primary">로그인</a>
-				</div>
+			<!-- 로그인버튼 -->
+			<div class="text-center">
+				<a href="/login" class="btn btn-primary">로그인 하러가기</a>
 			</div>
 		</div>
 	</body>

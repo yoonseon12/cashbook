@@ -3,6 +3,8 @@ package com.gdu.cashbook.service;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import com.gdu.cashbook.vo.MemberId;
 public class MemberService {
 	@Autowired private MemberMapper memberMapper;
 	@Autowired private MemberIdMapper memberIdMapper;
+	@Autowired private JavaMailSender javaMailSender;
 	// 아이디 중복확인
 	public String checkMemberId(String memberIdCheck) {
 		return memberMapper.selectMemberId(memberIdCheck); // 아이디없으면 null, 있으면 
@@ -59,6 +62,12 @@ public class MemberService {
 	}
 	// 비밀번호 찾기
 	public int getMemberPw(Member member) { // member 매개변수안에는 id&email
+		System.out.println();
+		System.out.println();
+		System.out.println(member.getMemberEmail());
+		System.out.println();
+		System.out.println();
+		System.out.println();
 		UUID uuid = UUID.randomUUID(); // 자바 랜덤 문자열 생성 ? 
 		String memberPw = uuid.toString().substring(0, 8);
 		member.setMemberPw(memberPw); // pw를 추가해줘야 리턴가능
@@ -67,6 +76,13 @@ public class MemberService {
 		if(row==1) {
 			System.out.println("업데이트 성공"); // JavaMailSender 메일객체
 			System.out.println(memberPw+" <- 변경된 비밀번호");
+			//메일보내기
+			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+			simpleMailMessage.setTo(member.getMemberEmail()); // 받는사람주소
+			simpleMailMessage.setFrom("a0105457331@gmail.com"); // 보내는사람주소
+			simpleMailMessage.setSubject("[cashbook]비밀번호찾기"); // 제목
+			simpleMailMessage.setText("변경된 비밀번호는[ "+memberPw+" ]입니다."); // 내용
+			javaMailSender.send(simpleMailMessage);
 		}
 		return row;
 	}

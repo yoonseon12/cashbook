@@ -7,32 +7,115 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<style>
+			.main{
+				border-width: 1px;
+				border-style: solid;
+				border-color: rgb(224, 224, 224);
+				width: 450px;
+				height: 450px;
+				margin : 100px auto;
+				padding : 50px 75px;
+			}
+			input{
+				width: 300px;
+				height: 40px;
+				padding : 6px 12px;
+				border-width: 1px;
+				border-style: solid;
+				border-radius: 4px;
+				border-color: rgb(204, 204, 204);
+			}
+			#btn{
+				width: 300px;
+				height: 40px;
+				border-width: 1px;
+				border-style: solid;
+				border-radius: 4px;
+				background-color: rgb(52, 152, 219);
+				color: white;
+				font-size: 16px;
+				font-weight: bold;
+			}
+			.btn:hover {
+				color:white;
+			}
+			#title{
+				font-size: 36px;
+				font-weight:700;
+			}
+			.margin15{
+				margin-top: 15px;
+				margin-bottom: 15px;
+			}
+			.margin3{
+				margin-bottom: 3px;
+			}
+			.marginBottom20{
+				margin-bottom: 20px;
+			}
+			.point{
+				color:rgb(52, 152, 219);
+			}
+			#msg{
+				font-size: 15px;
+				color:blue;
+				font-weight: bold;
+			}
+		</style>
+		<script>
+			$(document).ready(function(){
+				$('#btn').click(function(){
+					if($('#memberId').val()<1 || $('#memberEmail').val()<1){
+						let msg="가입정보를 모두 입력해주세요.";
+						$('#msg').text(msg);
+						return;
+					}
+					else if($('#memberId').val().length<4) {
+						let msg="아이디는 4자리 이상이어야 합니다.";
+						$('#msg').text(msg);
+						return;
+					} 
+					$('#findMemberPwForm').submit();
+				});
+			});
+		</script>
 	</head>
 	<body>
-		<div>
-			<div>
-				<h1>비밀번호 찾기</h1>
+		<div class="container main">
+			<!-- 제목 -->
+			<div class="text-center">
+				<span id="title">비밀번호 찾기</span>
 			</div>
+			<!-- 비밀번호 찾기 폼 -->
 			<div>
-				<form method="post" th:action="@{/findMemberPw}">
-					<div>
-						<div>
-							<span>아이디</span>
-						</div>
-						<div>
-							<input type="text" name="memberId">
-						</div>
-					</div>
-					<div>
-						<div>
-							<span>이메일</span>
-						</div>
-						<div>
-							<input type="text" name="memberEmail">
+				<form id="findMemberPwForm" method="post" th:action="@{/findMemberPw}">
+					<div class="marginBottom20">
+						<div class="margin15">
+							<div class="margin3">
+								<span>아이디</span>&nbsp;<span class="point">*</span>
+							</div>
+							<div>
+								<input type="text" id="memberId" name="memberId">
+							</div>
 						</div>
 					</div>
 					<div>
-						<button type="submit">찾기</button>
+						<div class="margin15">
+							<div class="margin3">
+								<span>이메일</span>&nbsp;<span class="point">*</span>
+							</div>
+							<div>
+								<input type="text" id="memberEmail" name="memberEmail">
+							</div>
+						</div>
+					</div>
+					<div class="text-center margin15">
+						&nbsp;
+						<span id="msg" th:text="${msg}"></span>
+					</div>
+					<div>
+						<button id="btn" type="button">찾기</button>
 					</div>
 				</form>
 			</div>
