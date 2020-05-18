@@ -1,7 +1,5 @@
 package com.gdu.cashbook.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;	
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gdu.cashbook.service.MemberService;
 import com.gdu.cashbook.vo.LoginMember;
 import com.gdu.cashbook.vo.Member;
+import com.gdu.cashbook.vo.MemberForm;
 
 @Controller
 public class MemberController {
@@ -31,10 +30,10 @@ public class MemberController {
 		if(confirmMemberId == null) { // 아이디 사용 가능
 			model.addAttribute("availableMemberId", memberIdCheck);
 			String msg = "사용할 수 있는 아이디 입니다.";
-			model.addAttribute("msg", msg);
+			model.addAttribute("memberIdCheckMsg", msg);
 		}else { // 아이디 사용 불가
 			String msg = "사용할 수 없는 아이디 입니다.";
-			model.addAttribute("msg", msg);
+			model.addAttribute("memberIdCheckMsg", msg);
 		}
 		return"addmember";
 	}
@@ -47,12 +46,28 @@ public class MemberController {
 		return "addMember";
 	}
 	@PostMapping("/addMember")
-	public String addMember(HttpSession session, Member member) { // 폼에서 받을 이름이랑 VO 데이터 이름이랑 같으니 매개변수 member 사용
+	public String addMember(HttpSession session, Model model, MemberForm memberForm) { // 폼에서 받을 이름이랑 VO 데이터 이름이랑 같으니 매개변수 member 사용
 		if(session.getAttribute("loginMember")!=null){ // 로그인 O
 			return "redirect:/index";
 		}
-		System.out.println(member.toString()); // member.toString() getter,setter와 같이 이클립스에서 사용자 편의를 위해 제공해주는 서비스
-		memberService.addMember(member); // 
+		System.out.println(memberForm.getMemberPic()+" <<<<<<<<<<<<<<<");
+		System.out.println(memberForm.toString()+" <- toString"); // member.toString() getter,setter와 같이 이클립스에서 사용자 편의를 위해 제공해주는 서비스
+		System.out.println(memberForm+" <- MemberController.addMember.Post: memberForm");
+		int row = memberService.addMember(memberForm); 
+		System.out.println(row+" <- MemberController.addMember.Post: row");
+		if(row==0) { // 회원가입 실패
+			System.out.println("회원가입 실패");
+			String addMemberMsg = "회원가입에 실패했습니다.";
+			model.addAttribute("addMemberMsg", addMemberMsg);
+			return "addMember";
+		}
+		if(row==2) { // 사진이 아닌파일 첨부
+			System.out.println("첨부한파일이 사진파일이 아님");
+			String memberPicMsg = "png, jpg, gif 파일만 첨부할 수 있습니다.";
+			model.addAttribute("memberPicMsg", memberPicMsg);
+			return "addMember";
+		}
+		System.out.println("회원가입 성공");
 		return "redirect:/index";
 	}
 	
@@ -114,7 +129,6 @@ public class MemberController {
 			return "redirect:/index";
 		}
 		LoginMember loginMember = (LoginMember)session.getAttribute("loginMember");
-		System.out.println(loginMember.getMemberId()+" session Id?");
 		member.setMemberId(loginMember.getMemberId()); // 세션에 저장되있던 아이디값 주입
 		member.setMemberPw(inputMemberPw); // 입력한 비밀번호 값 주입
 		int debugingCount = memberService.removeMemberPwChack(member);

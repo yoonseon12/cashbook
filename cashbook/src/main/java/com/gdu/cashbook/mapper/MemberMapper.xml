@@ -22,7 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				member_name, 
 				member_addr, 
 				member_phone, 
-				member_email
+				member_email,
+				member_pic
 			) 
 			VALUES(
 				#{memberId}, 
@@ -30,7 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{memberName}, 
 				#{memberAddr}, 
 				#{memberPhone}, 
-				#{memberEmail}
+				#{memberEmail},
+				#{memberPic}
 			)
 	</insert>
 	<!-- 로그인 -->
@@ -60,7 +62,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM member
 		WHERE member_id = #{memberId}
 	</delete>
-	<!-- 회원탈퇴 시 정보 확인 -->
+	<!-- 회원 탈퇴시 폴더에 저장된 프로필사진 조회  -->
+	<select id="selectMemberPic" parameterType="String" resultType="String">
+		SELECT member_pic
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
+	<!-- 회원탈퇴 시 비밀번호 확인 -->
 	<select id="deleteMemberPwChack" parameterType="com.gdu.cashbook.vo.Member" resultType="int">
 		SELECT COUNT(*)
 			FROM member

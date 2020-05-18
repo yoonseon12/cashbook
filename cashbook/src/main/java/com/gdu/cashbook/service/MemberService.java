@@ -1,17 +1,24 @@
 package com.gdu.cashbook.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.cashbook.mapper.MemberIdMapper;
 import com.gdu.cashbook.mapper.MemberMapper;
 import com.gdu.cashbook.vo.LoginMember;
 import com.gdu.cashbook.vo.Member;
+import com.gdu.cashbook.vo.MemberForm;
 import com.gdu.cashbook.vo.MemberId;
 
 @Service // 트랜잭션 처리 가능
@@ -20,17 +27,59 @@ public class MemberService {
 	@Autowired private MemberMapper memberMapper;
 	@Autowired private MemberIdMapper memberIdMapper;
 	@Autowired private JavaMailSender javaMailSender;
+	@Value("C:\\GIT_CASHBOOK\\cashbook\\src\\main\\resources\\static\\upload\\")
+	private String path; // 회원가입시 프로필사진 저장 경로
 	// 아이디 중복확인
 	public String checkMemberId(String memberIdCheck) {
 		return memberMapper.selectMemberId(memberIdCheck); // 아이디없으면 null, 있으면 
 	}
 	// 회원가입
-	public void addMember(Member member) {
-		memberMapper.insertMember(member);
+	public int addMember(MemberForm memberForm) {
+		MultipartFile multipartFile = memberForm.getMemberPic();
+		String originName = multipartFile.getOriginalFilename();
+		System.out.println(originName+" <-첨부한 파일명.확장자");
+		int row=0;
+		if(!originName.equals("") 
+			&& !memberForm.getMemberPic().getContentType().equals("image/png")
+			&& !memberForm.getMemberPic().getContentType().equals("image/jpg")
+			&& !memberForm.getMemberPic().getContentType().equals("image/jpeg")
+			&& !memberForm.getMemberPic().getContentType().equals("image/gif")) {
+			System.out.println("사진파일 아님.");
+			row = 2; // 회원가입 성공하면 1, 실패하면 0, 확장자 틀리면 2 리턴
+			return row;
+		}
+		String memberPic = null;
+		if(originName.equals("")) {
+			System.out.println("파일첨부안함");
+			memberPic="default.jpg";
+		}else {
+			int lastIndex = originName.lastIndexOf(".");
+			String extension = originName.substring(lastIndex); // 확장자 확인을 위해 .부터 문자열 자름
+			System.out.println(extension+" <- MemberService.addMember: extension");
+			memberPic = memberForm.getMemberId()+extension; // 이름 생성
+		}
+		// 1. DB에 저장
+		System.out.println(memberPic+" <- memberPic");
+		Member member = new Member();
+		memberForm.memberSetBymemberForm(member, memberForm, memberPic);
+		System.out.println(member+" <- MemberService.addMember: member");
+		row = memberMapper.insertMember(member);
+		// 2. 파일저장
+		File file = new File(path+memberPic); 
+		try {
+			multipartFile.transferTo(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+			// Exception
+			// 1. 예외처리를 해야만 문법적으로 이상없는 예외
+			// 2. 예외처리를 코드에서 구현하지 않아도 아무문제 없는 예외 : RuntimeException
+		}
+		return row;
 	}
 	// 로그인
 	public LoginMember login(LoginMember loginMember) {
-		System.out.println(loginMember);
+		System.out.println(loginMember+" <- MemberService.login: loginMember");
 		return memberMapper.selectLoginMember(loginMember);
 	}
 	// 회원 정보
@@ -39,21 +88,35 @@ public class MemberService {
 	}
 	// 회원 탈퇴
 	public void removeMember(LoginMember loginMember) {
-		//1.
+		System.out.println("서비스접근");
+		// 1. 회원 프로필 사진 삭제
+		// 1-1. 파일이름
+		System.out.println(loginMember.getMemberId()+"<<<<<");
+		String memberPic = memberMapper.selectMemberPic(loginMember.getMemberId());
+		System.out.println(memberPic+" <- MemberService.removeMember: memberPic");
+		// 1-2. 파일삭제
+		File file = new File(path+memberPic);
+		if(file.exists()) {
+			file.delete();
+		}
+		System.out.println("사진삭제 완료");
+		// 2. 회원탈퇴 시키고
 		memberMapper.deleteMember(loginMember);
-		//2.
+		System.out.println("회원 탈퇴 완료");
+		// 3. 회원탈퇴한 아이디  추가
 		MemberId memberId= new MemberId();
 		memberId.setMemberId(loginMember.getMemberId());
 		memberIdMapper.insertMemberId(memberId);
+		System.out.println("백업 아이디 추가완료");
 	}
 	// 회원 탈퇴시 정보 확인
 	public int removeMemberPwChack(Member member) {
-		System.out.println(member+" < member");
+		System.out.println(member+" <- MemberService.removeMemberPwChack: member");
 		return memberMapper.deleteMemberPwChack(member);
 	}
 	// 회원 정보 수정
 	public void modifyMember(Member member) {
-		System.out.println(member+" < member");
+		System.out.println(member+" <- MemberService.modifyMember: member");
 		memberMapper.updateMember(member);
 	}
 	// 아이디 찾기
@@ -62,12 +125,7 @@ public class MemberService {
 	}
 	// 비밀번호 찾기
 	public int getMemberPw(Member member) { // member 매개변수안에는 id&email
-		System.out.println();
-		System.out.println();
-		System.out.println(member.getMemberEmail());
-		System.out.println();
-		System.out.println();
-		System.out.println();
+		System.out.println(member.getMemberEmail()+" <- MemberService.getMemberPw: getMemberEmail");
 		UUID uuid = UUID.randomUUID(); // 자바 랜덤 문자열 생성 ? 
 		String memberPw = uuid.toString().substring(0, 8);
 		member.setMemberPw(memberPw); // pw를 추가해줘야 리턴가능
