@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.cashbook.vo.LoginMember;
 import com.gdu.cashbook.vo.Member;
+import com.gdu.cashbook.vo.MemberForm;
 
 @Mapper // @Component+ @Mapper
 public interface MemberMapper {
@@ -22,7 +23,7 @@ public interface MemberMapper {
 	// 회원 탈퇴시 비밀번호 확인
 	public int deleteMemberPwChack(Member member);
 	// 회원 수정
-	public void updateMember(Member member);
+	public int updateMember(Member member);
 	// 아이디 찾기
 	public String selectMemberIdByMember(Member member);
 	// 비밀번호 찾기

@@ -87,11 +87,11 @@
 			<!-- 내용 -->
 			<div class="container section">
 				<div class="text-center">
-					<h1>Modify Member</h1>
+					<h1>회원정보 수정</h1>
 				</div>
 				<div>
 					<div>
-						<form id="modifyMemberForm" method="post" action="/modifyMember">
+						<form id="modifyMemberForm" method="post" action="/modifyMember" enctype="multipart/form-data">
 							<table class="table">
 								<tr>
 									<td>아이디</td>
@@ -103,6 +103,13 @@
 									<td>이름</td>
 									<td>
 										<input type="text" id="memberName" name="memberName" th:value="${memberOne.memberName}">
+									</td>
+								</tr>
+								<tr>
+									<td>프로필 사진</td>
+									<td>
+										<input type="file" name="memberPic">
+										<span><strong th:text="${modifyMsg}"></strong></span>
 									</td>
 								</tr>
 								<tr>
@@ -125,7 +132,7 @@
 								</tr>
 							</table>
 							<div>
-								<span id="modifyMsg" th:text="${modifyMsg}"></span>
+								<span id="modifyMsg"></span>
 							</div>
 							<div class="text-center">
 								<button id="btn" type="button">정보수정</button>

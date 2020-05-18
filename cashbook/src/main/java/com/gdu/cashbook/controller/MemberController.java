@@ -156,13 +156,25 @@ public class MemberController {
 		return"modifyMember";
 	}
 	@PostMapping("/modifyMember")
-	public String modifyMember(HttpSession session, Member member) {
-		System.out.println(member+" <- modifyMember Member member");
+	public String modifyMember(HttpSession session, Model model, MemberForm memberForm) {
+		System.out.println(memberForm+" <- modifyMember Member member");
 		if(session.getAttribute("loginMember")==null) { // 로그인상태 X
 			return "redirect:/index";
 		}
-		memberService.modifyMember(member);
-		System.out.println("수정완료");
+		int row = memberService.modifyMember(memberForm);
+		System.out.println(row+" <- MemberController.modifyMember: row");
+		if(row==2) {
+			System.out.println("첨부한파일이 사진파일이 아님");
+			LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
+			Member memberOne = memberService.getMemberOne(loginMember); 
+			model.addAttribute("memberOne", memberOne);
+			String modifyMsg = "png, jpg, gif 파일만 첨부할 수 있습니다.";
+			model.addAttribute("modifyMsg", modifyMsg);
+			return "modifyMember";
+		}
+		if(row==1) {
+			System.out.println("수정완료");
+		}
 		return "redirect:/memberInfo";
 	}
 	// 아이디 찾기

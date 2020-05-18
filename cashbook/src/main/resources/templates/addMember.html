@@ -17,7 +17,7 @@
 				margin : 10px auto 10px auto;
 				padding : 12px 190px;
 			}
-			input{
+			.inputText{
 				width: 300px;
 				height: 40px;
 				padding : 6px 12px;
@@ -141,7 +141,7 @@
 		<div class="container-fluid main">
 			<!-- 제목 -->
 			<div class="text-center">
-				<span id="title" >회원가입</span>
+				<span id="title">회원가입</span>
 			</div>
 			<div>
 				<!-- 아이디 중복 체크 폼 -->
@@ -151,7 +151,7 @@
 							<span>아이디 중복 확인</span>
 						</div>
 						<div>
-							<input type="text" id="memberIdCheck" name="memberIdCheck">
+							<input type="text" class="inputText" id="memberIdCheck" name="memberIdCheck">
 							<button type="button" id="idBtn">중복확인</button>
 						</div>
 						<div>
@@ -166,7 +166,7 @@
 							<span>아이디</span>
 						</div>
 						<div>
-							<input id="memberId" type="text" name="memberId" th:value="${availableMemberId}" readonly="readonly">
+							<input id="memberId" type="text" class="inputText" name="memberId" th:value="${availableMemberId}" readonly="readonly">
 						</div>
 					</div>
 					<div class="margin10">
@@ -174,7 +174,7 @@
 							<span>비밀번호</span>
 						</div>
 						<div>
-							<input id="memberPw" type="password" name="memberPw">
+							<input id="memberPw" class="inputText" type="password" name="memberPw">
 						</div>
 					</div>
 					<div class="margin10">
@@ -182,7 +182,7 @@
 							<span>비밀번호 확인</span>
 						</div>
 						<div>
-							<input id="memberPw2" type="password" name="member2">
+							<input id="memberPw2" class="inputText" type="password" name="member2">
 						</div>
 					</div>
 					<div class="margin10">
@@ -190,7 +190,7 @@
 							<span>이름</span>
 						</div>
 						<div>
-							<input id="memberName" type="text" name="memberName">
+							<input id="memberName" class="inputText" type="text" name="memberName">
 						</div>
 					</div>
 					<div class="margin10">
@@ -207,7 +207,7 @@
 							<span>주소</span>
 						</div>
 						<div>
-							<input id="memberAddr" type="text" name="memberAddr">
+							<input id="memberAddr" class="inputText" type="text" name="memberAddr">
 						</div>
 					</div>
 					<div class="margin10">
@@ -215,7 +215,7 @@
 							<span>휴대번호</span>
 						</div>
 						<div>
-							<input id="memberPhone" type="text" name="memberPhone">
+							<input id="memberPhone" class="inputText" type="text" name="memberPhone">
 						</div>
 					</div>
 					<div class="marginTop10">
@@ -223,7 +223,7 @@
 							<span>이메일</span>
 						</div>
 						<div>
-							<input id="memberEmail" type="text" name="memberEmail">
+							<input id="memberEmail" class="inputText" type="text" name="memberEmail">
 						</div>
 					</div>
 					<div class="text-center margin7">

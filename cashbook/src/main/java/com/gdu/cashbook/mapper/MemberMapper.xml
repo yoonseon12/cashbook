@@ -81,7 +81,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET member_name  = #{memberName},
 			member_addr  = #{memberAddr},
 			member_phone = #{memberPhone},
-			member_email = #{memberEmail}
+			member_email = #{memberEmail},
+			member_pic   = #{memberPic}
 		WHERE member_id  = #{memberId}
 	</update>
 	<!-- 아이디 찾기(이름, 이메일, 휴대번호로 찾기) -->

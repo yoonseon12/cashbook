@@ -115,9 +115,47 @@ public class MemberService {
 		return memberMapper.deleteMemberPwChack(member);
 	}
 	// 회원 정보 수정
-	public void modifyMember(Member member) {
-		System.out.println(member+" <- MemberService.modifyMember: member");
-		memberMapper.updateMember(member);
+	public int modifyMember(MemberForm memberForm) {
+		System.out.println(memberForm+" <- MemberService.modifyMember: member");
+		MultipartFile multipartFile = memberForm.getMemberPic();
+		String originName = multipartFile.getOriginalFilename();
+		System.out.println(originName+" <-첨부한 파일명.확장자");
+		int row=0;
+		if(!originName.equals("") 
+			&& !memberForm.getMemberPic().getContentType().equals("image/png")
+			&& !memberForm.getMemberPic().getContentType().equals("image/jpg")
+			&& !memberForm.getMemberPic().getContentType().equals("image/jpeg")
+			&& !memberForm.getMemberPic().getContentType().equals("image/gif")) {
+			System.out.println("사진파일 아님.");
+			row = 2; // 수정 성공하면 1, 실패하면 0, 확장자 틀리면 2 리턴
+			return row;
+		}
+		String memberPic = null;
+		if(originName.equals("")) {
+			System.out.println("파일첨부안함");
+			memberPic="default.jpg";
+		}else {
+			int lastIndex = originName.lastIndexOf(".");
+			String extension = originName.substring(lastIndex); // 확장자 확인을 위해 .부터 문자열 자름
+			System.out.println(extension+" <- MemberService.addMember: extension");
+			memberPic = memberForm.getMemberId()+extension; // 이름 생성
+		}
+		// 1. DB에 저장
+		System.out.println(memberPic+" <- memberPic");
+		Member member = new Member();
+		memberForm.memberSetBymemberForm(member, memberForm, memberPic);
+		System.out.println(member+" <- MemberService.addMember: member");
+		row = memberMapper.updateMember(member);
+		// 2. 파일저장
+		File file = new File(path+memberPic); 
+		try {
+			multipartFile.transferTo(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+		System.out.println(row+"<- <<<<<<<<<<<<<<<");
+		return row;
 	}
 	// 아이디 찾기
 	public String getMemberIdByMember(Member member) {
