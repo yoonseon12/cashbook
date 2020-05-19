@@ -115,21 +115,21 @@
 			<div id="section">
 				<!-- 제목 -->
 				<div id="title">
-					<span>가계부 관리</span>
+					<span th:text="${year}+'년 가계부'"></span>
 				</div>
 				<!-- 날짜 이동 링크 -->
 				<div class="row dateMove">
 					<div class="col-sm-4" style="text-align:lift;">
 						<span id="previous">
-							<a class="btn dateLink" th:href="@{/getCashListByDate(day=${day.plusDays(-1)})}">이전</a>
+							<a class="btn dateLink" th:href="@{/getCashListByDate(date=${date.plusDays(-1)})}">이전</a>
 						</span>
 					</div>
 					<div class="col-sm-4" style="text-align:center;">
-						<span id="date" th:text="${day}"></span>
+						<span id="date" th:text="${date}"></span>
 					</div>
 					<div class="col-sm-4" style="text-align:right;">
 						<span id="next">
-							<a class="btn dateLink" th:href="@{/getCashListByDate(day=${day.plusDays(1)})}">다음</a>
+							<a class="btn dateLink" th:href="@{/getCashListByDate(date=${date.plusDays(1)})}">다음</a>
 						</span>
 					</div>
 				</div>
@@ -149,15 +149,15 @@
 							<td th:text="${cash.categoryName}"></td>
 							
 							<!-- 타임리프 if~else문 -->
-							<td id="import" th:if="${cash.cashKind} == '수입'" th:text="${'+'+cash.cashPrice}"></td>
+							<td id="import" th:if="${cash.cashKind} == '수입'" th:text="'+'+${#numbers.formatInteger(cash.cashPrice,0,'COMMA')}+원"></td>
 							<td th:unless="${cash.cashKind} == '수입'"></td>
-							<td id="expense" th:if="${cash.cashKind} == '지출'" th:text="${'-'+cash.cashPrice}"></td>
+							<td id="expense" th:if="${cash.cashKind} == '지출'" th:text="'-'+${#numbers.formatInteger(cash.cashPrice,0,'COMMA')}+원"></td>
 							<td th:unless="${cash.cashKind} == '지출'"></td>
 						
 							<td th:text="${cash.cashPlace}"></td>
 							<td th:text="${cash.cashMemo}"></td>
 							<td>
-								<a th:href="@{/removeCash(cashNo=${cash.cashNo})}">삭제</a>
+								<a th:href="@{/removeCash(cashNo=${cash.cashNo}, date=${date})}">삭제</a>
 							</td>
 							<td><a href="">수정</a></td>
 						</tr>
@@ -170,9 +170,9 @@
 					</div>
 					<!-- 합계 -->
 					<div id="total" class="col-sm-6">
-						<span id="hap">합계</span>&nbsp;
-						<span class="cashKindSum" th:if="${cashKindSum}>0" th:text="${'+'+cashKindSum}"></span>
-						<span class="cashKindSum" style="color:red;" th:if="${cashKindSum}<0" th:text="${cashKindSum}"></span>
+						<span id="hap">합계</span>&nbsp;&nbsp;
+						<span class="cashKindSum" th:if="${cashKindSum}>0" th:text="'+'+${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
+						<span class="cashKindSum" style="color:red;" th:if="${cashKindSum}<0" th:text="${#numbers.formatInteger(cashKindSum,3,'COMMA')}+원"></span>
 					</div>
 				</div>
 			</div>
