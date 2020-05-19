@@ -17,4 +17,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND   cash_date = #{cashDate}
 		ORDER BY cash_no ASC
 	</select>
+	<!-- 가계부 내용 삭제 -->
+	<delete id="removeCash" parameterType="int">
+		DELETE
+		FROM cash 
+		WHERE cash_no = #{cashNo}
+	</delete>
+	<!-- 금액 합계 -->
+	<select id="selectCashKindSum" parameterType="com.gdu.cashbook.vo.Cash" resultType="int">
+		SELECT
+			(SELECT IFNULL(SUM(cash_price) ,'0')
+			 FROM cash
+			 WHERE member_id = #{memberId} 
+			 AND   cash_kind = '수입'
+			 AND   cash_date = #{cashDate})
+			-
+			(SELECT IFNULL(SUM(cash_price) ,'0') 
+			 FROM cash
+			 WHERE member_id = #{memberId}
+			 AND   cash_kind = '지출'
+			 AND   cash_date = #{cashDate})
+		FROM dual
+	</select>
 </mapper>

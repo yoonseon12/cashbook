@@ -87,6 +87,22 @@
 				margin-bottom: 20px;
 				margin-top: 30px;			
 			}
+			#import{
+				color:blue;
+			}
+			#expense{
+				color:red;
+			}
+			table{
+				border:1px solid #ccc;
+			}
+			th{
+				background: #eaeaea;
+			}
+			.cashKindSum{
+				font-size: xx-large;
+				color: rgb(52, 152, 219);
+			}
 		</style>
 	</head>
 	<body>
@@ -105,15 +121,15 @@
 				<div class="row dateMove">
 					<div class="col-sm-4" style="text-align:lift;">
 						<span id="previous">
-							<a class="btn dateLink" href="">이전</a>
+							<a class="btn dateLink" th:href="@{/getCashListByDate(day=${day.plusDays(-1)})}">이전</a>
 						</span>
 					</div>
 					<div class="col-sm-4" style="text-align:center;">
-						<span id="date" th:text="${strToday}"></span>
+						<span id="date" th:text="${day}"></span>
 					</div>
 					<div class="col-sm-4" style="text-align:right;">
 						<span id="next">
-							<a class="btn dateLink" href="">다음</a>
+							<a class="btn dateLink" th:href="@{/getCashListByDate(day=${day.plusDays(1)})}">다음</a>
 						</span>
 					</div>
 				</div>
@@ -121,26 +137,28 @@
 				<div>
 					<table class="table text-center">
 						<tr>
-							<td>카테고리</td>
-							<td>수입</td>
-							<td>지출</td>
-							<td>장소</td>
-							<td>메모</td>
-							<td>수정</td>
-							<td>삭제</td>
+							<th>카테고리</th>
+							<th>수입</th>
+							<th>지출</th>
+							<th>장소</th>
+							<th>메모</th>
+							<th>수정</th>
+							<th>삭제</th>
 						</tr>
 						<tr th:each="cash : ${cashList}">
 							<td th:text="${cash.categoryName}"></td>
 							
 							<!-- 타임리프 if~else문 -->
-							<td th:if="${cash.cashKind} == '수입'" th:text="${'+'+cash.cashPrice}"></td>
+							<td id="import" th:if="${cash.cashKind} == '수입'" th:text="${'+'+cash.cashPrice}"></td>
 							<td th:unless="${cash.cashKind} == '수입'"></td>
-							<td th:if="${cash.cashKind} == '지출'" th:text="${'+'+cash.cashPrice}"></td>
+							<td id="expense" th:if="${cash.cashKind} == '지출'" th:text="${'-'+cash.cashPrice}"></td>
 							<td th:unless="${cash.cashKind} == '지출'"></td>
 						
 							<td th:text="${cash.cashPlace}"></td>
 							<td th:text="${cash.cashMemo}"></td>
-							<td><a href="">삭제</a></td>
+							<td>
+								<a th:href="@{/removeCash(cashNo=${cash.cashNo})}">삭제</a>
+							</td>
 							<td><a href="">수정</a></td>
 						</tr>
 					</table>
@@ -152,7 +170,9 @@
 					</div>
 					<!-- 합계 -->
 					<div id="total" class="col-sm-6">
-					<span id="hap">합계</span>&nbsp;
+						<span id="hap">합계</span>&nbsp;
+						<span class="cashKindSum" th:if="${cashKindSum}>0" th:text="${'+'+cashKindSum}"></span>
+						<span class="cashKindSum" style="color:red;" th:if="${cashKindSum}<0" th:text="${cashKindSum}"></span>
 					</div>
 				</div>
 			</div>
