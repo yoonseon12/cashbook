@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdu.cashbook.mapper.CashMapper">
+	<!-- 로그인 회원의 오늘 날짜 cash 목록 -->
+	<select id="selectCashListByToday" parameterType="com.gdu.cashbook.vo.Cash" resultType="com.gdu.cashbook.vo.Cash">
+		SELECT
+			cash_no       AS cashNo,
+			category_name AS categoryName,
+			cash_kind     AS cashKind,
+			cash_price    AS cashPrice,
+			cash_place    AS cashPlace,
+			cash_memo     AS cashMemo
+		FROM cash
+		WHERE member_id = #{memberId}
+		AND   cash_date = #{cashDate}
+		ORDER BY cash_no ASC
+	</select>
+</mapper>
