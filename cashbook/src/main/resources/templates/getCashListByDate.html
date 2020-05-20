@@ -37,7 +37,7 @@
 			.menuArea{
 				margin: 50px 0px;
 			}
-			#cashbook{
+			#cashbookDay{
 				color:white;
 			}
 			/* 출력화면 style */
@@ -83,7 +83,7 @@
 				border-radius: 25px;
 				font-weight: 600;
 			}
-			.dateMove{
+			.dateLinkAreaMargin{
 				margin-bottom: 20px;
 				margin-top: 30px;			
 			}
@@ -112,15 +112,15 @@
 				<div class="text-center" th:include="/include/menu::sidemenu"></div>
 			</div>
 			<!-- 내용 -->
-			<div id="section">
+			<div class="container" id="section">
 				<!-- 제목 -->
 				<div id="title">
-					<span th:text="${year}+'년 가계부'"></span>
+					<span th:text="${#temporals.format(date, 'yyyy년')}+' 가계부'"></span>
 				</div>
 				<!-- 날짜 이동 링크 -->
-				<div class="row dateMove">
+				<div class="row dateLinkAreaMargin">
 					<div class="col-sm-4" style="text-align:lift;">
-						<span id="previous">
+						<span>
 							<a class="btn dateLink" th:href="@{/getCashListByDate(date=${date.plusDays(-1)})}">이전</a>
 						</span>
 					</div>
@@ -128,7 +128,7 @@
 						<span id="date" th:text="${date}"></span>
 					</div>
 					<div class="col-sm-4" style="text-align:right;">
-						<span id="next">
+						<span>
 							<a class="btn dateLink" th:href="@{/getCashListByDate(date=${date.plusDays(1)})}">다음</a>
 						</span>
 					</div>

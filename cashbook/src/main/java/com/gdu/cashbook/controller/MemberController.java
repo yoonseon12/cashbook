@@ -204,14 +204,14 @@ public class MemberController {
 	@GetMapping("/findMemberPw")
 	public String findMemberPw(HttpSession session) {
 		if(session.getAttribute("loginMember")!=null) { // 로그인상태 O
-			return "redirect:/index";
+			return "redirect:/login";
 		}
 		return "findMemberPw";
 	}
 	@PostMapping("/findMemberPw")
 	public String findMemberPw(HttpSession session, Model model, Member member) {
 		if(session.getAttribute("loginMember")!=null) { // 로그인상태 O
-			return "redirect:/index";
+			return "redirect:/login";
 		}
 		int row = memberService.getMemberPw(member);
 		if(row==0) { 
@@ -227,7 +227,7 @@ public class MemberController {
 								 @RequestParam("modifyMemberPw") String modifyMemberPw, 
 								 HttpSession session, Model model, Member member) {
 		if(session.getAttribute("loginMember")==null) { // 로그인상태 X
-			return "redirect:/index";
+			return "redirect:/login";
 		}
 		System.out.println(originMemberPw+" <- 입력한 비밀번호");
 		System.out.println(modifyMemberPw+" <- 수정할 비밀번호");

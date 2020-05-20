@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.cashbook.mapper.CashMapper;
 import com.gdu.cashbook.vo.Cash;
+import com.gdu.cashbook.vo.DayAndPrice;
 @Service
 @Transactional
 public class CashService {
@@ -18,7 +19,7 @@ public class CashService {
 	public Map<String, Object> getCashListByDate(Cash cash){
 		List<Cash> cashList = cashMapper.selectCashListByToday(cash);
 		int cashKindSum = cashMapper.selectCashKindSum(cash);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("cashList", cashList);
 		map.put("cashKindSum", cashKindSum);
 		return map;
@@ -26,5 +27,13 @@ public class CashService {
 	// 가계부 삭제
 	public void removeCash(int cashNo) {
 		cashMapper.removeCash(cashNo);
+	}
+	//
+	public List<DayAndPrice> getCashPriceList(String memberId, int year, int month){
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("year", year);
+		map.put("month", month);
+		return cashMapper.selectDayAndPriceList(map);
 	}
 }

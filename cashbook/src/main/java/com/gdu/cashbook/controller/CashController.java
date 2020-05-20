@@ -3,6 +3,7 @@ package com.gdu.cashbook.controller;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.cashbook.service.CashService;
 import com.gdu.cashbook.vo.Cash;
+import com.gdu.cashbook.vo.DayAndPrice;
 import com.gdu.cashbook.vo.LoginMember;
 
 @Controller
@@ -25,7 +27,9 @@ public class CashController {
 	@Autowired private CashService cashService;
 	@GetMapping("/getCashListByDate")
 	//가계부 출력
-	public String getCashListByDate(HttpSession session, Model model,@RequestParam(value="date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+	public String getCashListByDate(HttpSession session, Model model, 
+			@RequestParam(value="date", required = false) 
+			@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		if(session.getAttribute("loginMember")==null) { // 로그인 상태 X
 			return "redirect:/index";
 		}
@@ -34,12 +38,6 @@ public class CashController {
 		}
 		System.out.println(date+" <- CashController.getCashListByDate: date");
 		model.addAttribute("date", date);
-		
-		// 연도만 확인할 수 있도록 문자열 자름
-		String stringDate = date.toString();
-		String year = stringDate.substring(stringDate.length()-10, stringDate.length()-6);
-		model.addAttribute("year", year);
-		System.out.println(year+" <- CashController.getCashListByDate: year");
 		
 		// 로그인 아이디
 		String loginMemberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
@@ -55,13 +53,60 @@ public class CashController {
 	}
 	// 가계부 삭제
 	@GetMapping("/removeCash")
-	public String removeCash(HttpSession session, @RequestParam(value="cashNo") int cashNo, @RequestParam(value="date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date) {
+	public String removeCash(HttpSession session, 
+			@RequestParam(value="cashNo") int cashNo, 
+			@RequestParam(value="date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date) {
 		if(session.getAttribute("loginMember")==null) { // 로그인상태 X
-			return "login";
+			return "redirect:/login";
 		}
 		System.out.println(cashNo+" <- CashController.removeCash: cashNo");
 		System.out.println(date+" <- CashController.removeCash: day");
 		cashService.removeCash(cashNo);
 		return "redirect:/getCashListByDate?day="+date;
+	}
+	// 다이어리
+	@GetMapping("/getCashListByMonth")
+	public String getCashListByMonth(HttpSession session, Model model, 
+			@RequestParam(value="date", required = false) 
+			@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		if(session.getAttribute("loginMember")==null) { // 로그인상태 X
+			return "redirect:/login";
+		}
+		System.out.println(date+" <- CashController.getCashListByMonth: date");
+		Calendar cDate = Calendar.getInstance(); // 오늘날짜
+		if(date == null) {
+			date = LocalDate.now();
+			// date -> cDate 형변환 
+		}else {
+			cDate.set(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth()); // 오늘날짜에서 day값과 동일한 값으로
+		}
+		
+		String memberId= ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		int year = cDate.get(Calendar.YEAR);
+		int month = cDate.get(Calendar.MONTH)+1;
+		System.out.println(memberId);
+		System.out.println(year);
+		System.out.println(month);
+		// 일별 수입 지출 총액
+		List<DayAndPrice> dayAndPriceList = cashService.getCashPriceList(memberId, year, month) ;
+		for(DayAndPrice dp : dayAndPriceList) {
+			System.out.println(dp+" <- ㅇㅁㄴ");
+		}
+		model.addAttribute("dayAndPriceList", dayAndPriceList);
+		/* 0. 오늘날짜 LocalDate타입
+		 * 1. 오늘날짜 Calendar타입
+		 * 2. 이번달의 마지막 일
+		 * 3. 이번달 1일의 요일
+		 */
+		model.addAttribute("date", date);
+		model.addAttribute("month", cDate.get(Calendar.MONTH)+1); // 월
+		model.addAttribute("lastDay", cDate.getActualMaximum(Calendar.DATE)); // 월별 마지막 일
+		
+		Calendar firstDay = cDate;
+		firstDay.set(Calendar.DATE, 1); // cDate에서 일 만 1일로 변경
+		System.out.println(firstDay.get(Calendar.YEAR)+","+(firstDay.get(Calendar.MONTH)+1)+","+firstDay.get(Calendar.DATE));
+		System.out.println("firstDay.get(Calendar.DAY_OF_WEEK):"+firstDay.get(Calendar.DAY_OF_WEEK));// 1 일요일, 2월요일, ....7 토요일
+		model.addAttribute("firstDayOfWeek", firstDay.get(Calendar.DAY_OF_WEEK));
+		return "getCashListByMonth";
 	}
 }

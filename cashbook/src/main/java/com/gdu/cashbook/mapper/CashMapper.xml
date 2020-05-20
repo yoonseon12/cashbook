@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM cash 
 		WHERE cash_no = #{cashNo}
 	</delete>
-	<!-- 금액 합계 -->
+	<!-- 금액 합계 (일별 가계부 관리) -->
 	<select id="selectCashKindSum" parameterType="com.gdu.cashbook.vo.Cash" resultType="int">
 		SELECT
 			(SELECT IFNULL(SUM(cash_price) ,'0')
@@ -38,5 +38,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 AND   cash_kind = '지출'
 			 AND   cash_date = #{cashDate})
 		FROM dual
+	</select>
+	<!-- 일별 합계(월별 가계부 관리) -->
+	<select id="selectDayAndPriceList" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.DayAndPrice">
+		SELECT DAY(cash_date) AS day,
+			   SUM(CASE WHEN cash_kind='수입' THEN cash_price
+						WHEN cash_kind='지출' THEN -cash_price END) AS price
+		FROM cash
+		WHERE member_id = #{memberId}
+		AND  YEAR(cash_date) = #{year}
+		AND MONTH(cash_date) = #{month}
+		GROUP BY DAY(cash_date)
 	</select>
 </mapper>
