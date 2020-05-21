@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.cashbook.vo.Cash;
+import com.gdu.cashbook.vo.Category;
 import com.gdu.cashbook.vo.DayAndPrice;
 
 @Mapper
@@ -18,4 +19,6 @@ public interface CashMapper {
 	public int selectCashKindSum(Cash cash);
 	// 일별 합계(월별 가계부 관리)
 	public List<DayAndPrice> selectDayAndPriceList(Map<String, Object> map);
+	// 가계부 추가
+	public void addCash(Cash cash);
 }

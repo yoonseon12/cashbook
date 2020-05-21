@@ -97,6 +97,7 @@
 			}
 			.calendar {
 				width: 1000px;
+				
 			}
 			.import{
 				color:#6B66FF;
@@ -112,6 +113,13 @@
 			}
 			.SUN{
 				color:red;
+			}
+			#hap{
+				position: fixed;
+				right:420px;
+				bottom: 120px;
+				font-weight: bold;
+				font-size: 36px;
 			}
 		</style>
 	</head>
@@ -162,9 +170,12 @@
 						<div th:class="${dp.price}>0 ? 'import' : 'expense'"  
 							 th:each="dp : ${dayAndPriceList}" 
 							 th:if="${dp.day}==${i-(firstDayOfWeek-1)}" 
-							 th:text="${dp.price}>0 ? '+'+${#numbers.formatInteger(dp.price,3,'COMMA')} : ${#numbers.formatInteger(dp.price,3,'COMMA')}">
+							 th:text="${dp.price}>0 ? '+'+${#numbers.formatInteger(dp.price,0,'COMMA')} : ${#numbers.formatInteger(dp.price,3,'COMMA')}">
 						</div> <!-- 금액 채우기 -->
 					</div>
+				</div>
+				<div id="hap">
+					<span>합계 : 0000</span>
 				</div>
 			</div>	
 		</div>	

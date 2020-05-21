@@ -15,16 +15,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.cashbook.service.CashService;
+import com.gdu.cashbook.service.CategoryService;
 import com.gdu.cashbook.vo.Cash;
+import com.gdu.cashbook.vo.Category;
 import com.gdu.cashbook.vo.DayAndPrice;
 import com.gdu.cashbook.vo.LoginMember;
 
 @Controller
 public class CashController {
 	@Autowired private CashService cashService;
+	@Autowired private CategoryService categoryService;
 	@GetMapping("/getCashListByDate")
 	//가계부 출력
 	public String getCashListByDate(HttpSession session, Model model, 
@@ -109,4 +113,37 @@ public class CashController {
 		model.addAttribute("firstDayOfWeek", firstDay.get(Calendar.DAY_OF_WEEK));
 		return "getCashListByMonth";
 	}
+	// 가계부 추가
+	@GetMapping("/addCash")
+	public String addCash(HttpSession session, 
+						Model model, 
+						@RequestParam(value="date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date) {
+		System.out.println(date+" <- CashController.addCash: date");
+		if(session.getAttribute("loginMember")==null) { // 로그인 X
+			return "redirect:/login";
+		}
+		model.addAttribute("date", date);
+		
+		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		System.out.println(memberId+" <- CashController.addCash: memberId");
+		List<String> categoryList = categoryService.getMyCategoryList(memberId);
+		for(String c: categoryList) {
+		System.out.println(c);
+		}
+		model.addAttribute("categoryList", categoryList);
+		return "addCash";
+	}
+	@PostMapping("/addCash")
+	public String addCash(HttpSession session, Cash cash) {
+		System.out.println(cash);
+		if(session.getAttribute("loginMember")==null) { // 로그인 X
+			return "redirect:/login";
+		}
+		System.out.println(session.getAttribute("loginMember")+">>>>");
+		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		cash.setMemberId(memberId);
+		System.out.println(cash+" <cash");
+		cashService.addCash(cash);
+		return "redirect:/getCashListByDate";
+	};
 }

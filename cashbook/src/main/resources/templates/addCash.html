@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>가계부 작성</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<style>
+		/* 메뉴바 style */
+		#sidemenu {
+			width: 200px;
+			height: 100%;
+			position: fixed;
+			background: rgb(52, 152, 219);
+			overflow: hidden;
+		}
+		.menuLink{
+			font-size: 20px;
+			color:black;
+			font-size: 23px;
+			font-weight:700;
+			text-decoration: none;
+		}
+		.menuLink:hover{
+			color:white;
+			text-decoration: none;
+		}
+		.menuTitle{
+			font-size: 20px;
+			color:white;
+		}
+		.menuTitleArea{
+			margin: 40px 0px;
+		}
+		.menuArea{
+			margin: 50px 0px;
+		}
+		#cashbookDay{
+			color:white;
+		}
+		/* 출력화면 style */
+		.section {
+			margin:0 auto;
+			width:1000px;
+			background: white;
+			padding-top:50px;
+			padding-bottom:50px;
+			padding-left: 100px;
+		}
+		.title{
+			font-weight: bold;
+		    font-size: 36px;
+		}
+		.subtitle{
+			font-weight: bold;
+		    font-size: 24px;
+		    text-align: center;
+		    margin-top: 30px;
+		}
+		/* 테이블 관련 */
+		table{
+			margin:30px auto;
+			border: 2px solid #ccc;
+			width: 600px;
+			height: 355px;
+		}
+		input, select{
+			width: 250px;
+			height: 40px;
+			padding : 6px 12px;
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 4px;
+			border-color: rgb(204, 204, 204);
+		}
+		th{
+			width: 200px;
+			height : 60px;
+			background: #eaeaea;
+			font-size: large;
+			text-align: center;
+			border: 1px solid #ccc;
+		}
+		td{
+			padding:10px;
+			border: 1px solid #ccc;
+		}
+		/**/
+		#btn{
+			width: 100px;
+			height: 40px;
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 4px;
+			background-color: rgb(52, 152, 219);
+			color: white;
+			font-size: 15px;
+			font-weight: bold;
+		}
+		</style>
+		<script>
+			$(document).ready(function(){
+				//직접입력 input박스 기존에는 숨어있다가
+				$('#categoryNameDirect').hide();
+				$('#categoryName').change(function() {
+			    	//직접입력을 누를 때 나타남
+					if($('#categoryName').val() == 'direct') {
+						$('#categoryNameDirect').show();
+						$('#categoryName').removeAttr('name'); // 직접입력 선택하면 select태그 name속성 사라짐
+						$('#categoryNameDirect').attr('name','categoryName'); // input 태그 name속성 생김
+					}  else {
+						$('#categoryNameDirect').removeAttr('name'); // 직접입력 아닐때 input태그 name속성 사라짐
+						$('#categoryName').attr('name','categoryName'); // input 태그 name속성 생김
+						$('#categoryNameDirect').hide();
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<!-- Side Menu -->
+		<div id="sidemenu">
+			<div class="text-center" th:include="/include/menu::sidemenu"></div>
+		</div>
+		<!-- 내용 -->
+		<div class="section">
+			<!-- 제목 -->
+			<div class="title">
+				<span th:text="${#temporals.format(date, 'yyyy년')}+' 가계부'"></span>
+			</div>
+			<div class="subtitle">
+				<span>가계부 작성</span>
+			</div>
+			<!-- 테이블 -->
+			<div>
+				<form id="addCashForm" method="post" action="/addCash">
+					<table>
+						<tr>
+							<th>작성일</th>
+							<td>
+								<input type="text" name="cashDate" th:value="${date}" readonly="readonly">
+							</td>
+						</tr>
+						<tr>
+							<th>카테고리</th>
+							<td>
+								<select id="categoryName">
+									<option>==선택해주세요==</option>
+									<option value="direct">직접입력</option>
+									<option th:each="item, index : ${categoryList}" th:value="${item}" th:text="${item}"></option>
+								</select>
+								<!-- <span id="categoryNameDirect"></span> -->
+								<input type="text" id="categoryNameDirect">
+							</td>
+						</tr>
+						<tr>
+							<th>수입 / 지출</th>
+							<td>
+								<select name="cashKind">
+									<option value="수입">수입</option>
+									<option value="지출">지출</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>금액</th>
+							<td>
+								<input type="text" id="cashPrice" name="cashPrice">
+							</td>
+						</tr>
+						<tr>
+							<th>장소</th>
+							<td>
+								<input type="text" id="cashPlace" name="cashPlace">
+							</td>
+						</tr>
+						<tr>
+							<th>메모</th>
+							<td>
+								<input type="text" id="cashMemo" name="cashMemo">
+							</td>
+						</tr>
+					</table>
+					<div>
+						<span id="modifyMsg"></span>
+					</div>
+					<div class="text-center">
+						<button id="btn" type="submit">작성하기</button>
+					</div>
+				</form>
+			</div>
+		</div>	
+	</body>
+</html>

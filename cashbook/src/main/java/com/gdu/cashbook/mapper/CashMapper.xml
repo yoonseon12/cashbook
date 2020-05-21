@@ -50,4 +50,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND MONTH(cash_date) = #{month}
 		GROUP BY DAY(cash_date)
 	</select>
+	<!-- 가계부 추가 -->
+	<insert id="addCash" parameterType="com.gdu.cashbook.vo.Cash">
+		INSERT INTO cash(
+			member_id,
+			cash_date,
+			cash_kind,
+			category_name,
+			cash_price,
+			cash_place,
+			cash_memo
+		) VALUES(
+			#{memberId},
+			#{cashDate},
+			#{cashKind},
+			#{categoryName},
+			#{cashPrice},
+			#{cashPlace},
+			#{cashMemo}
+		)
+	</insert>
 </mapper>
