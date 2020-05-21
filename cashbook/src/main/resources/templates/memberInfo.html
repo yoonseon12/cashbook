@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>Member Information</title>
+		<title>회원 정보</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -43,33 +43,68 @@
 		}
 		/* 출력화면 style */
 		.section {
-			margin-left: 530px;
-			margin-right:500px;
-			width:1000px;
+			margin:0 auto;
+			width:600px;
 			background: white;
 			padding-top:50px;
 			padding-bottom:50px;
 		}
-		.removeMember{
-			float: right;
-			text-align: right;
-			
+		.title{
+			font-weight: bold;
+		    font-size: 36px;
+		    text-align: center;
 		}
 		#modifyMember{
 			float: left;
 			position: relative;
 		}
-		#remove{
-			position: relative;
-			left: 63px;
-			bottom: -10px;
-		}
 		.marginBottom5{
 			margin-bottom: 5px;
 		}
-		#removeMsg{
-			position: fixed;
-			right: 485px;
+		#modifyMemberPwBtn{
+			width: 250px;
+			height: 40px;
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 4px;
+			background-color: #eaeaea;
+			color: black;
+			font-size: 15px;
+			font-weight: bold;
+		}
+		#removeMemberBtn{
+			width: 50px;
+			height: 40px;
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 4px;
+			background-color: #eaeaea;
+			color: black;
+			font-size: 15px;
+			font-weight: bold;
+		}
+		#modifyMemberPwBtn:hover, #removeMemberBtn:hover{
+			background:#ccc; 
+		}
+		/* 테이블 관련 */
+		table{
+			margin:30px auto;
+			border: 2px solid #ccc;
+			width: 600px;
+			height: 355px;
+		}
+		th{
+			width: 200px;
+			height : 60px;
+			background: #eaeaea;
+			font-size: large;
+			text-align: center;
+			border: 1px solid #ccc;
+		}
+		td{
+			padding:10px;
+			border: 1px solid #ccc;
+			text-align: center;
 		}
 		input{
 			width: 250px;
@@ -79,28 +114,6 @@
 			border-style: solid;
 			border-radius: 4px;
 			border-color: rgb(204, 204, 204);
-		}
-		#modifyMemberPwBtn{
-			width: 250px;
-			height: 40px;
-			border-width: 1px;
-			border-style: solid;
-			border-radius: 4px;
-			background-color: rgb(52, 152, 219);
-			color: white;
-			font-size: 15px;
-			font-weight: bold;
-		}
-		#removeBtn{
-			width: 50px;
-			height: 40px;
-			border-width: 1px;
-			border-style: solid;
-			border-radius: 4px;
-			background-color: rgb(52, 152, 219);
-			color: white;
-			font-size: 15px;
-			font-weight: bold;
 		}
 	</style>
 	<script>
@@ -119,23 +132,27 @@
 			<div class="text-center" th:include="/include/menu::sidemenu"></div>
 		</div>
 		<!-- 내용 -->
-		<div class="container section">
+		<div class="section">
 			<div>
+				<!-- 제목 -->
+				<div class="text-center title">
+					<span>회원정보</span>
+				</div>
 				<!-- 정보 확인 테이블 -->
 				<div>
-					<table class="table text-center">
+					<table>
 						<tr>
-							<td>사진</td>
+							<th>사진</th>
 							<td>
 								<img th:src="@{${'/upload/'+memberOne.memberPic}}" width="200" height="200">
 							</td>
 						</tr>
 						<tr>
-							<td>아이디</td>
+							<th>아이디</th>
 							<td th:text="${memberOne.memberId}"></td>
 						</tr>
 						<tr>
-							<td>비밀번호</td>
+							<th>비밀번호</th>
 							<td>
 								<form id="modifyMemberPwForm" method="post" action="/modifyMemberPw">
 									<div>
@@ -159,41 +176,41 @@
 							</td>
 						</tr>
 						<tr>
-							<td>이름</td>
+							<th>이름</th>
 							<td th:text="${memberOne.memberName}"></td>
 						</tr>
 						<tr>
-							<td>주소</td>
+							<th>주소</th>
 							<td th:text="${memberOne.memberAddr}"></td>
 						</tr>
 						<tr>
-							<td>전화번호</td>
+							<th>전화번호</th>
 							<td th:text="${memberOne.memberPhone}"></td>
 						</tr>
 						<tr>
-							<td>이메일</td>
+							<th>이메일</th>
 							<td th:text="${memberOne.memberEmail}"></td>
 						</tr> 
 					</table>
 				</div>	
 				<div class="row">
 					<!-- 회원 수정 -->
-					<div class="col-sm-6">
+					<div class="col-sm-4 text-left">
 						<a id="modifyMember" th:href="@{/modifyMember}">회원정보수정</a>
 					</div>
 					<!-- 회원 탈퇴 -->
-					<div id="removeMember" class="col-sm-6">
+					<div id="removeMember" class="col-sm-8 text-right">
 						<div>
 							<a class="removeMember" data-toggle="collapse" href="#remove">회원탈퇴</a>
 						</div>
-						<div id="remove" class="collapse removeMember">
+						<div id="remove" class="collapse">
 							<form id="removeMemberForm" method="post" action="/removeMember">
 								<div>
 									<br>
 									<input type="password" name="inputMemberPw" placeholder="비밀번호를 입력하세요.">
 									<button id="removeMemberBtn" type="button">탈퇴</button>
 								</div>
-								<div>
+								<div class="text-right">
 									<p>탈퇴하면 동일한 아이디로 재가입 할 수 없습니다.</p>
 								</div>
 							</form>

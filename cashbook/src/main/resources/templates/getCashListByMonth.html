@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>다이어리</title>
+		<title>월별 가계부 관리</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -42,12 +42,12 @@
 			}
 			/* 출력화면 style */
 			#section {
-				margin-left: 530px;
-				margin-right:500px;
+				margin:0 auto;
 				width:1000px;
 				background: white;
 				padding-top:50px;
 				padding-bottom:50px;
+				padding-left: 100px;
 			}
 			#title{
 				font-weight: bold;
@@ -66,7 +66,8 @@
 			}
 			.dateLinkAreaMargin{
 				margin-bottom: 20px;
-				margin-top: 30px;			
+				margin-top: 30px;
+				width: 980px;		
 			}
 			#month{
 				font-weight: bold;
@@ -94,8 +95,8 @@
 				border:none;
 				font-size: 20px;
 			}
-			.calendar{
-				width: 970px;
+			.calendar {
+				width: 1000px;
 			}
 			.import{
 				color:#6B66FF;

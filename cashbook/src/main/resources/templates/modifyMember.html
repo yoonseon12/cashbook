@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>Modify Member</title>
+		<title>회원 정보 수정</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -42,12 +42,57 @@
 		}
 		/* 출력화면 style */
 		.section {
-			margin-left: 530px;
-			margin-right:500px;
+			margin:0 auto;
 			width:1000px;
 			background: white;
 			padding-top:50px;
 			padding-bottom:50px;
+			padding-left: 100px;
+		}
+		.title{
+			font-weight: bold;
+		    font-size: 36px;
+		    text-align: center;
+		}
+		/* 테이블 관련 */
+		table{
+			margin:30px auto;
+			border: 2px solid #ccc;
+			width: 600px;
+			height: 355px;
+		}
+		input{
+			width: 250px;
+			height: 40px;
+			padding : 6px 12px;
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 4px;
+			border-color: rgb(204, 204, 204);
+		}
+		th{
+			width: 200px;
+			height : 60px;
+			background: #eaeaea;
+			font-size: large;
+			text-align: center;
+			border: 1px solid #ccc;
+		}
+		td{
+			padding:10px;
+			border: 1px solid #ccc;
+		}
+		/**/
+		#btn{
+			width: 100px;
+			height: 40px;
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 4px;
+			background-color: rgb(52, 152, 219);
+			color: white;
+			font-size: 15px;
+			font-weight: bold;
 		}
 		</style>
 		<script>
@@ -86,59 +131,59 @@
 			</div>
 			<!-- 내용 -->
 			<div class="container section">
-				<div class="text-center">
-					<h1>회원정보 수정</h1>
+				<!-- 제목 -->
+				<div class="text-center title">
+					<span>회원정보 수정</span>
 				</div>
+				<!-- 테이블 -->
 				<div>
-					<div>
-						<form id="modifyMemberForm" method="post" action="/modifyMember" enctype="multipart/form-data">
-							<table class="table">
-								<tr>
-									<td>아이디</td>
-									<td>
-										<input type="text" th:value="${memberOne.memberId}" name="memberId" readonly="readonly">
-									</td>
-								</tr>
-								<tr>
-									<td>이름</td>
-									<td>
-										<input type="text" id="memberName" name="memberName" th:value="${memberOne.memberName}">
-									</td>
-								</tr>
-								<tr>
-									<td>프로필 사진</td>
-									<td>
-										<input type="file" name="memberPic">
-										<span><strong th:text="${modifyMsg}"></strong></span>
-									</td>
-								</tr>
-								<tr>
-									<td>주소</td>
-									<td>
-										<input type="text" id="memberAddr" name="memberAddr" th:value="${memberOne.memberAddr}">
-									</td>
-								</tr>
-								<tr>
-									<td>전화번호</td>
-									<td>
-										<input type="text" id="memberPhone" name="memberPhone" th:value="${memberOne.memberPhone}">
-									</td>
-								</tr>
-								<tr>
-									<td>이메일</td>
-									<td>
-										<input type="text" id="memberEmail" name="memberEmail" th:value="${memberOne.memberEmail}">
-									</td>
-								</tr>
-							</table>
-							<div>
-								<span id="modifyMsg"></span>
-							</div>
-							<div class="text-center">
-								<button id="btn" type="button">정보수정</button>
-							</div>
-						</form>
-					</div>	
+					<form id="modifyMemberForm" method="post" action="/modifyMember" enctype="multipart/form-data">
+						<table>
+							<tr>
+								<th>아이디</th>
+								<td>
+									<input type="text" th:value="${memberOne.memberId}" name="memberId" readonly="readonly">
+								</td>
+							</tr>
+							<tr>
+								<th>이름</th>
+								<td>
+									<input type="text" id="memberName" name="memberName" th:value="${memberOne.memberName}">
+								</td>
+							</tr>
+							<tr>
+								<th>프로필 사진</th>
+								<td>
+									<input type="file" name="memberPic">
+									<span><strong th:text="${modifyMsg}"></strong></span>
+								</td>
+							</tr>
+							<tr>
+								<th>주소</th>
+								<td>
+									<input type="text" id="memberAddr" name="memberAddr" th:value="${memberOne.memberAddr}">
+								</td>
+							</tr>
+							<tr>
+								<th>전화번호</th>
+								<td>
+									<input type="text" id="memberPhone" name="memberPhone" th:value="${memberOne.memberPhone}">
+								</td>
+							</tr>
+							<tr>
+								<th>이메일</th>
+								<td>
+									<input type="text" id="memberEmail" name="memberEmail" th:value="${memberOne.memberEmail}">
+								</td>
+							</tr>
+						</table>
+						<div>
+							<span id="modifyMsg"></span>
+						</div>
+						<div class="text-center">
+							<button id="btn" type="button">정보수정</button>
+						</div>
+					</form>
 				</div>
 			</div>	
 		</div>
