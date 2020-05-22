@@ -87,6 +87,9 @@
 			padding:10px;
 			border: 1px solid #ccc;
 		}
+		.neccessary{
+			color:rgb(52, 152, 219);
+		}
 		/**/
 		#btn{
 			width: 100px;
@@ -116,6 +119,22 @@
 						$('#categoryNameDirect').hide();
 					}
 				});
+				$('#btn').click(function(){
+					if($('#categoryName').val()==""){
+						alert('카테고리를 선택해주세요');
+						return;
+					}
+					if($('#cashKind').val()==""){
+						alert('입출 여부를 선택해주세요');
+						return;
+					}
+					if($('#cashPrice').val().length<1){
+						alert('금액을 입력해주세요');
+						return;
+					}
+					$('#addCashForm').submit();
+					//console.log($('#cashKind').val());
+				});
 			});
 		</script>
 	</head>
@@ -144,10 +163,13 @@
 							</td>
 						</tr>
 						<tr>
-							<th>카테고리</th>
+							<th>
+								<span>카테고리</span>
+								<span class="neccessary">*</span>
+							</th>
 							<td>
 								<select id="categoryName">
-									<option>==선택해주세요==</option>
+									<option value="">==선택해주세요==</option>
 									<option value="direct">직접입력</option>
 									<option th:each="item, index : ${categoryList}" th:value="${item}" th:text="${item}"></option>
 								</select>
@@ -156,16 +178,24 @@
 							</td>
 						</tr>
 						<tr>
-							<th>수입 / 지출</th>
+							<th>
+								<span>입출 여부</span>
+								<span class="neccessary">*</span>
+							</th>
 							<td>
-								<select name="cashKind">
+								<select id="cashKind" name="cashKind">
+									<option value="">==선택해주세요==</option>
 									<option value="수입">수입</option>
 									<option value="지출">지출</option>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<th>금액</th>
+							<th>
+								<span>금액</span>
+								<span class="neccessary">*</span>
+							</th>
+							
 							<td>
 								<input type="text" id="cashPrice" name="cashPrice">
 							</td>
@@ -187,7 +217,7 @@
 						<span id="modifyMsg"></span>
 					</div>
 					<div class="text-center">
-						<button id="btn" type="submit">작성하기</button>
+						<button id="btn" type="button">작성하기</button>
 					</div>
 				</form>
 			</div>

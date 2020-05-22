@@ -172,7 +172,7 @@
 					<div id="total" class="col-sm-6">
 						<span id="hap">합계</span>&nbsp;&nbsp;
 						<span class="cashKindSum" th:if="${cashKindSum}>0" th:text="'+'+${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
-						<span class="cashKindSum" style="color:red;" th:if="${cashKindSum}<0" th:text="${#numbers.formatInteger(cashKindSum,3,'COMMA')}+원"></span>
+						<span class="cashKindSum" style="color:red;" th:if="${cashKindSum}<0" th:text="${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
 					</div>
 				</div>
 			</div>
