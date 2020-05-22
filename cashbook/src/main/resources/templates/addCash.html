@@ -91,6 +91,13 @@
 			color:rgb(52, 152, 219);
 		}
 		/**/
+		#msg{
+			margin-bottom: 20px;
+		}
+		#categoryCheacMsg{
+			font-size: 15px;
+			font-weight: bold;
+		}
 		#btn{
 			width: 100px;
 			height: 40px;
@@ -155,6 +162,8 @@
 			<!-- 테이블 -->
 			<div>
 				<form id="addCashForm" method="post" action="/addCash">
+					<input type="hidden" name="date" th:value="${date}"> <!-- date값 넘기기 위해 히든 -->
+					</div>
 					<table>
 						<tr>
 							<th>작성일</th>
@@ -213,8 +222,8 @@
 							</td>
 						</tr>
 					</table>
-					<div>
-						<span id="modifyMsg"></span>
+					<div id="msg" class="text-center">
+						<span id="categoryCheacMsg" th:text="${categoryCheacMsg}"></span>
 					</div>
 					<div class="text-center">
 						<button id="btn" type="button">작성하기</button>

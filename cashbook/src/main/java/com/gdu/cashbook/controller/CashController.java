@@ -123,24 +123,46 @@ public class CashController {
 			return "redirect:/login";
 		}
 		model.addAttribute("date", date);
-		
+
 		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
 		System.out.println(memberId+" <- CashController.addCash: memberId");
 		List<String> categoryList = categoryService.getMyCategoryList(memberId);
-		for(String c: categoryList) {
-		System.out.println(c);
-		}
 		model.addAttribute("categoryList", categoryList);
 		return "addCash";
 	}
 	@PostMapping("/addCash")
-	public String addCash(HttpSession session, Cash cash) {
-		System.out.println(cash);
+	public String addCash(HttpSession session, 
+							Model model, 
+							Cash cash,
+							@RequestParam(value="date") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate date) {
+		System.out.println(cash+" <- cash");
+		System.out.println(date+" <- date");
+		model.addAttribute("date", date);
 		if(session.getAttribute("loginMember")==null) { // 로그인 X
 			return "redirect:/login";
 		}
-		System.out.println(session.getAttribute("loginMember")+">>>>");
+		System.out.println(session.getAttribute("loginMember")+" <- CashController.addCash: session.loginMember");
 		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		
+		// 카테고리 중복 검사
+		Category category = new Category();
+		category.setMemberId(memberId);
+		category.setCategoryName(cash.getCategoryName());
+		System.out.println(category+" <- CashController.addCash: category");
+		String categoryNameCheck = categoryService.getMyCategoryCheck(category);
+		System.out.println(categoryNameCheck+" <-  CashController.addCash: categoryNameCheck");
+		if(categoryNameCheck!=null) { // 중복되는 카테고리 있음
+			System.out.println("중복된 카테고리 존재");
+			String categoryCheacMsg = "이미있는 카테고리 입니다. 다른 카테고리를 입력해주세요.";
+			model.addAttribute("categoryCheacMsg", categoryCheacMsg);
+			
+			List<String> categoryList = categoryService.getMyCategoryList(memberId);
+			model.addAttribute("categoryList", categoryList);
+			
+			return "addCash";
+		}
+		
+			
 		cash.setMemberId(memberId);
 		System.out.println(cash+" <cash");
 		cashService.addCash(cash);
