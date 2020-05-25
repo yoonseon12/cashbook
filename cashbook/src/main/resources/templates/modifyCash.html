@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>가계부 작성</title>
+		<title>가계부 수정</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -150,18 +150,17 @@
 		<div id="sidemenu">
 			<div class="text-center" th:include="/include/menu::sidemenu"></div>
 		</div>
-		<!-- 내용 -->
 		<div class="section">
 			<!-- 제목 -->
 			<div class="title">
 				<span th:text="${#temporals.format(date, 'yyyy년')}+' 가계부'"></span>
 			</div>
 			<div class="subtitle">
-				<span>가계부 작성</span>
+				<span>가계부 수정</span>
 			</div>
 			<!-- 테이블 -->
 			<div>
-				<form id="addCashForm" method="post" action="/addCash">
+				<form id="addCashForm" method="post" action="/modifyCash">
 					<input type="hidden" name="date" th:value="${date}"> <!-- date값 넘기기 위해 히든 -->
 					<div>
 						<table>

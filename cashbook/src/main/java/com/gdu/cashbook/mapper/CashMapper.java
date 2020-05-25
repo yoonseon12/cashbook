@@ -21,4 +21,6 @@ public interface CashMapper {
 	public List<DayAndPrice> selectDayAndPriceList(Map<String, Object> map);
 	// 가계부 추가
 	public void addCash(Cash cash);
+	// 가계부 수정
+	public void modifyCash(Cash cash);
 }
