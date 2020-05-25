@@ -155,6 +155,10 @@ public class CashController {
 			
 			int categoryNameCheck = categoryService.getMyCategoryCheck(category);
 			System.out.println(categoryNameCheck+" <-  CashController.addCash: categoryNameCheck");
+			if(categoryNameCheck == 0) { // 중복되는 카테고리 없음
+				// 카테고리 추가
+				categoryService.addCategory(category);
+			}
 			if(categoryNameCheck != 0) { // 중복되는 카테고리 있음
 				System.out.println("중복된 카테고리 존재"); model.addAttribute("date", date);
 	
@@ -170,21 +174,22 @@ public class CashController {
 			cash.setCategoryName(categoryNameDirect); // 직접입력한 categoryName 주입
 		}
 		System.out.println(cash + " <- CashController.addCash: cash (memberId 주입전)");
-		System.out.println(session.getAttribute("loginMember") + " <- CashController.addCash: session.loginMember");
 		cash.setMemberId(memberId);
 		System.out.println(cash + " <- CashController.addCash: cash (memberId 주입후)");
 		cashService.addCash(cash);
 		return "redirect:/getCashListByDate";
-	};
+	}
 
 	// 가계부 수정
 	@GetMapping("/modifyCash")
-	public String modifyCash(HttpSession session, Model model, @RequestParam(value = "cashNo") int cashNo,
-			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+	public String modifyCash(HttpSession session, Model model, 
+							@RequestParam(value = "cashNo") int cashNo,
+							@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
 			return "redirect:/login";
 		}
 		System.out.println(cashNo + " <- CashController.modifyCash: cashNo");
+		model.addAttribute("cashNo", cashNo);
 		System.out.println(date + " <- CashController.modifyCash: date");
 		model.addAttribute("date", date);
 		// 회원의 카테고리 받아오기
@@ -197,41 +202,49 @@ public class CashController {
 
 	@PostMapping("/modifyCash")
 	public String modifyCash(HttpSession session, Model model, Cash cash,
-			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+			@RequestParam(value = "categoryNameDirect") String categoryNameDirect) {
 		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
 			return "redirect:/login";
 		}
-		System.out.println(cash + " <- CashController.addCash: cash (memberId 주입전)");
-		System.out.println(date + " <- CashController.addCash: date");
-
-		System.out.println(session.getAttribute("loginMember") + " <- CashController.modifyCash: session.loginMember");
+		System.out.println(cash + " <- CashController.modifyCash: cash");
+		System.out.println(date + " <- CashController.modifyCash: date");
+		System.out.println(cash.getCashNo() + " <- CashController.modifyCash: cashNo");
+		System.out.println(categoryNameDirect + " <- CashController.modifyCash: categoryNameDirect(직접입력한 카테고리 명)");
 		String memberId = ((LoginMember) session.getAttribute("loginMember")).getMemberId();
-
+		//카테고리를 직접입력했다면
+		if (categoryNameDirect != "") {
+			System.out.println("카테고리를 직접 입력함");
+			// 카테고리 중복 검사
+			Category category = new Category();
+			category.setMemberId(memberId);
+			category.setCategoryName(categoryNameDirect);
+			System.out.println(category + " <- CashController.addCash: category");
+			
+			int categoryNameCheck = categoryService.getMyCategoryCheck(category);
+			System.out.println(categoryNameCheck+" <-  CashController.modifyCash: categoryNameCheck");
+			if(categoryNameCheck == 0) { // 중복되는 카테고리 없음
+				// 카테고리 추가
+				categoryService.addCategory(category);
+			}
+			if(categoryNameCheck != 0) { // 중복되는 카테고리 있음
+				System.out.println("중복된 카테고리 존재"); model.addAttribute("date", date);
+	
+				String categoryCheacMsg = "이미있는 카테고리 입니다. 다른 카테고리를 입력해주세요.";
+				model.addAttribute("categoryCheacMsg", categoryCheacMsg);
+	
+				List<String> categoryList = categoryService.getMyCategoryList(memberId);
+				model.addAttribute("categoryList", categoryList);
+				 
+				return "modifyCash";
+			}
+			System.out.println("사용가능한 카테고리 이름");
+			cash.setCategoryName(categoryNameDirect); // 직접입력한 categoryName 주입
+		}
+		System.out.println(cash + " <- CashController.modifyCash: cash (memberId 주입전)");
 		cash.setMemberId(memberId);
 		System.out.println(cash + " <- CashController.addCash: cash (memberId 주입후)");
-		System.out.println();
-
-		// 카테고리 중복 검사
-		Category category = new Category();
-		category.setMemberId(memberId);
-		category.setCategoryName(cash.getCategoryName());
-		System.out.println(category + " <- CashController.modifyCash: category");
-		int categoryNameCheck = categoryService.getMyCategoryCheck(category);
-		System.out.println(categoryNameCheck + " <-  CashController.modifyCash: categoryNameCheck");
-		if (categoryNameCheck != 0) { // 중복되는 카테고리 있음
-			System.out.println("중복된 카테고리 존재");
-			model.addAttribute("date", date);
-
-			String categoryCheacMsg = "이미있는 카테고리 입니다. 다른 카테고리를 입력해주세요.";
-			model.addAttribute("categoryCheacMsg", categoryCheacMsg);
-
-			List<String> categoryList = categoryService.getMyCategoryList(memberId);
-			model.addAttribute("categoryList", categoryList);
-
-			return "modifyCash";
-		}
 		cashService.modifyCash(cash);
-
 		return "redirect:/getCashListByDate";
 	}
 }

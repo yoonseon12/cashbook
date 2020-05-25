@@ -41,12 +41,6 @@ public class CashService {
 	}
 	// 가계부 추가
 	public void addCash(Cash cash) {
-		// 직접입력한 카테고리 추가
-		Category category = new Category();
-		category.setMemberId(cash.getMemberId());
-		category.setCategoryName(cash.getCategoryName());
-		System.out.println(category+" <- CashService.addCash: category");
-		categoryMapper.addCategory(category);
 		// 가계부 추가
 		cashMapper.addCash(cash);
 	}

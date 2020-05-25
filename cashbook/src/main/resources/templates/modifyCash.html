@@ -111,38 +111,35 @@
 		}
 		</style>
 		<script>
-			$(document).ready(function(){
-				//직접입력 input박스 기존에는 숨어있다가
-				$('#categoryNameDirect').hide();
-				$('#categoryName').change(function() {
-			    	//직접입력을 누를 때 나타남
-					if($('#categoryName').val() == 'direct') {
-						$('#categoryNameDirect').show();
-						$('#categoryName').removeAttr('name'); // 직접입력 선택하면 select태그 name속성 사라짐
-						$('#categoryNameDirect').attr('name','categoryName'); // input 태그 name속성 생김
-					}  else {
-						$('#categoryNameDirect').removeAttr('name'); // 직접입력 아닐때 input태그 name속성 사라짐
-						$('#categoryName').attr('name','categoryName'); // input 태그 name속성 생김
-						$('#categoryNameDirect').hide();
-					}
-				});
-				$('#btn').click(function(){
-					if($('#categoryName').val()==""){
-						alert('카테고리를 선택해주세요');
-						return;
-					}
-					if($('#cashKind').val()==""){
-						alert('입출 여부를 선택해주세요');
-						return;
-					}
-					if($('#cashPrice').val().length<1){
-						alert('금액을 입력해주세요');
-						return;
-					}
-					$('#addCashForm').submit();
-					//console.log($('#cashKind').val());
-				});
+		$(document).ready(function(){
+			//직접입력 input박스 기존에는 숨어있다가
+			$('#categoryNameDirect').hide();
+			$('#categoryName').change(function() {
+		    	//직접입력을 누를 때 나타남
+				if($('#categoryName').val() == 'direct') {
+					$('#categoryNameDirect').show();
+				}  else {
+					//직접입력을 취소하면 숨겨짐
+					$('#categoryNameDirect').hide();
+				}
 			});
+			$('#btn').click(function(){
+				if($('#categoryName').val()==""){
+					alert('카테고리를 선택해주세요');
+					return;
+				}
+				if($('#cashKind').val()==""){
+					alert('입출 여부를 선택해주세요');
+					return;
+				}
+				if($('#cashPrice').val().length<1){
+					alert('금액을 입력해주세요');
+					return;
+				}
+				$('#addCashForm').submit();
+				//console.log($('#cashKind').val());
+			});
+		});
 		</script>
 	</head>
 	<body>
@@ -161,6 +158,7 @@
 			<!-- 테이블 -->
 			<div>
 				<form id="addCashForm" method="post" action="/modifyCash">
+					<input type="hidden" name="cashNo" th:value="${cashNo}"> <!-- date값 넘기기 위해 히든 -->
 					<input type="hidden" name="date" th:value="${date}"> <!-- date값 넘기기 위해 히든 -->
 					<div>
 						<table>
@@ -176,13 +174,12 @@
 									<span class="neccessary">*</span>
 								</th>
 								<td>
-									<select id="categoryName">
+									<select id="categoryName" name="categoryName">
 										<option value="">==선택해주세요==</option>
 										<option value="direct">직접입력</option>
 										<option th:each="item, index : ${categoryList}" th:value="${item}" th:text="${item}"></option>
 									</select>
-									<!-- <span id="categoryNameDirect"></span> -->
-									<input type="text" id="categoryNameDirect">
+									<input type="text" id="categoryNameDirect" name="categoryNameDirect">
 								</td>
 							</tr>
 							<tr>

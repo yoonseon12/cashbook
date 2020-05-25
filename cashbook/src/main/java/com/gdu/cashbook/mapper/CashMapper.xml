@@ -78,6 +78,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			cash_price = #{cashPrice},
 			cash_place   = #{cashPlace},
 			cash_memo = #{cashMemo}
-		WHERE member_id  = #{memberId}
+		WHERE cash_no  = #{cashNo}
 	</update>
 </mapper>

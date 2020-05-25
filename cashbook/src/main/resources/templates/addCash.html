@@ -114,17 +114,13 @@
 			$(document).ready(function(){
 				//직접입력 input박스 기존에는 숨어있다가
 				$('#categoryNameDirect').hide();
-
 				$('#categoryName').change(function() {
 			    	//직접입력을 누를 때 나타남
 					if($('#categoryName').val() == 'direct') {
-
 						$('#categoryNameDirect').show();
 					}  else {
 						//직접입력을 취소하면 숨겨짐
-
 						$('#categoryNameDirect').hide();
-
 					}
 				});
 				$('#btn').click(function(){
