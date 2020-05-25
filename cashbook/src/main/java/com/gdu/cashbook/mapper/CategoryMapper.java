@@ -13,5 +13,5 @@ public interface CategoryMapper {
 	// 자신의 카테고리 가져오기
 	public List<String> myCategoryList(String memberId);
 	// 카테고리 중복 확인
-	public String myCategoryCheck(Category category);
+	public int myCategoryCheck(Category category);
 }

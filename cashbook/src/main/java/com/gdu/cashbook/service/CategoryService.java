@@ -18,7 +18,7 @@ public class CategoryService {
 		return categoryMapper.myCategoryList(memberId);
 	}
 	// 카테고리 중복 확인
-	public String getMyCategoryCheck(Category category) {
+	public int getMyCategoryCheck(Category category) {
 		return categoryMapper.myCategoryCheck(category);
 	}
 }

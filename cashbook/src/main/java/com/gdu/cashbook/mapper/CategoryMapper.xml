@@ -15,13 +15,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	<!-- 자신의 카테고리 가져오기 -->
 	<select id="myCategoryList" parameterType="String" resultType="String">
-		SELECT category_name AS categoryName
+		SELECT DISTINCT 
+			category_name AS categoryName
 		FROM category
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 카테고리 중복 확인 -->
-	<select id="myCategoryCheck" parameterType="com.gdu.cashbook.vo.Category" resultType="String">
-		SELECT category_name
+	<select id="myCategoryCheck" parameterType="com.gdu.cashbook.vo.Category" resultType="int">
+		SELECT COUNT(category_name)
 		FROM category
 		WHERE member_id   = #{memberId} 
 		AND category_name = #{categoryName}
