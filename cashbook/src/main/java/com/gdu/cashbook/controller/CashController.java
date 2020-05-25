@@ -93,19 +93,25 @@ public class CashController {
 		System.out.println(memberId);
 		System.out.println(year);
 		System.out.println(month);
-		// 일별 수입 지출 총액
-		List<DayAndPrice> dayAndPriceList = cashService.getCashPriceList(memberId, year, month);
+		
+		Map<String,Object> price = cashService.getCashPriceList(memberId, year, month);
+		// 일별 금액 (월별 가계부 관리)
+		List<DayAndPrice> dayAndPriceList = (List<DayAndPrice>) price.get("dayAndPrice");
 		for (DayAndPrice dp : dayAndPriceList) {
-			System.out.println(dp + " <- ㅇㅁㄴ");
+			System.out.println(dp + " <- 해당 일 수입 지출 총액");
 		}
 		model.addAttribute("dayAndPriceList", dayAndPriceList);
+		// 월별 금액 합계 (월별 가계부 관리)
+		int monthCashKindSum = (int) price.get("monthAndPrice");
+		System.out.println(monthCashKindSum+ " <- 해달 월 수입 지출 총액");
+		model.addAttribute("monthCashKindSum", monthCashKindSum);
 		/*
 		 * 0. 오늘날짜 LocalDate타입 1. 오늘날짜 Calendar타입 2. 이번달의 마지막 일 3. 이번달 1일의 요일
 		 */
 		model.addAttribute("date", date);
 		model.addAttribute("month", cDate.get(Calendar.MONTH) + 1); // 월
 		model.addAttribute("lastDay", cDate.getActualMaximum(Calendar.DATE)); // 월별 마지막 일
-
+		System.out.println(cDate.getActualMaximum(Calendar.DATE)+"<<<<<<<<<<");
 		Calendar firstDay = cDate;
 		firstDay.set(Calendar.DATE, 1); // cDate에서 일 만 1일로 변경
 		System.out.println(firstDay.get(Calendar.YEAR) + "," + (firstDay.get(Calendar.MONTH) + 1) + ","
@@ -113,6 +119,11 @@ public class CashController {
 		System.out.println("firstDay.get(Calendar.DAY_OF_WEEK):" + firstDay.get(Calendar.DAY_OF_WEEK));// 1 일요일, 2월요일,
 																										// ....7 토요일
 		model.addAttribute("firstDayOfWeek", firstDay.get(Calendar.DAY_OF_WEEK));
+		// 마지막날 요일
+		Calendar lastDay = Calendar.getInstance();
+		lastDay.set(cDate.get(Calendar.YEAR), cDate.get(Calendar.MONTH), cDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+		model.addAttribute("lastDayOfWeek", lastDay.get(Calendar.DAY_OF_WEEK));
+		
 		return "getCashListByMonth";
 	}
 
@@ -197,6 +208,8 @@ public class CashController {
 		System.out.println(memberId + " <- CashController.addCash: memberId");
 		List<String> categoryList = categoryService.getMyCategoryList(memberId);
 		model.addAttribute("categoryList", categoryList);
+		// 회원 가계부내용 받아오기
+		model.addAttribute("cash", cashService.getSelectCashOne(cashNo));
 		return "modifyCash";
 	}
 

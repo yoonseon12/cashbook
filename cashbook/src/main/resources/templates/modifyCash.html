@@ -202,19 +202,19 @@
 								</th>
 								
 								<td>
-									<input type="text" id="cashPrice" name="cashPrice">
+									<input type="text" id="cashPrice" name="cashPrice" th:value="${cash.cashPrice}">
 								</td>
 							</tr>
 							<tr>
 								<th>장소</th>
 								<td>
-									<input type="text" id="cashPlace" name="cashPlace">
+									<input type="text" id="cashPlace" name="cashPlace" th:value="${cash.cashPlace}">
 								</td>
 							</tr>
 							<tr>
 								<th>메모</th>
 								<td>
-									<input type="text" id="cashMemo" name="cashMemo">
+									<input type="text" id="cashMemo" name="cashMemo" th:value="${cash.cashMemo}">
 								</td>
 							</tr>
 						</table>

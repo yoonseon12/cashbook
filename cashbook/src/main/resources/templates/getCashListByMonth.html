@@ -47,7 +47,7 @@
 				background: white;
 				padding-top:50px;
 				padding-bottom:50px;
-				padding-left: 100px;
+				padding-left: 50px;
 			}
 			#title{
 				font-weight: bold;
@@ -73,6 +73,16 @@
 				font-weight: bold;
 				font-size: 24px;
 				text-align: center;
+			}
+			#statisticsBtn{
+				font-size: 16px; 
+				color: white;
+				text-align: center; 
+				background-color: rgb(52, 152, 219);
+				width:100px;
+				height: 40px;
+				margin-top: 7px;
+				margin-left: 5px;
 			}
 			/* 달력 */
 			div.gd-left{
@@ -105,21 +115,39 @@
 			.expense{
 				color:#F15F5F;
 			}
-			.weekday{
+			.WEEKDAY{
 				color:black;
+				padding-top: 2px;
+				padding-left: 0px;
+				padding-right: 100px;
+				padding-bottom: 70px;
 			}
 			.SAT{
 				color:blue;
+				padding-top: 2px;
+				padding-left: 0px;
+				padding-right: 100px;
+				padding-bottom: 70px;
 			}
 			.SUN{
 				color:red;
+				padding-top: 2px;
+				padding-left: 0px;
+				padding-right: 100px;
+				padding-bottom: 70px;
 			}
 			#hap{
-				position: fixed;
-				right:420px;
-				bottom: 120px;
-				font-weight: bold;
 				font-size: 36px;
+				text-align: right;
+			}
+			.red{
+				color:red;
+			}
+			.blue{
+				color: rgb(52, 152, 219);
+			}
+			.black{
+				color:black;
 			}
 		</style>
 	</head>
@@ -130,7 +158,7 @@
 				<div class="text-center" th:include="/include/menu::sidemenu"></div>
 			</div>
 			<!-- 내용 -->
-			<div class="container" id="section">
+			<div id="section">
 				<!-- 제목 -->
 				<div id="title">
 					<span th:text="${#temporals.format(date, 'yyyy년')}+' 가계부'"></span>
@@ -160,22 +188,34 @@
 					<div class="gd-left gd-title">목</div>
 					<div class="gd-left gd-title">금</div>
 					<div class="gd-left gd-title SAT">토</div>
+					<!-- 날짜별 공간채우기 -->
 					<div th:class="(${index.index%7}==0 ? 'gd-clear gd-left' : 'gd-left')"
-						 th:each="i,index : ${#numbers.sequence(1, lastDay+firstDayOfWeek-1)}"> <!-- 날짜별 공간채우기 -->
-						<div th:if="${i-(firstDayOfWeek-1)}>0"> <!-- 월별 일 채우기 -->
-								<a th:class="${index.index%7}==6 ? 'SAT' : (${index.index%7}==0 ? 'SUN' : weekday)"
+						 th:each="i,index : ${#numbers.sequence(1, lastDay+ firstDayOfWeek-1 + 7-lastDayOfWeek)}">
+						 <!-- 월별 일 채우기 -->
+						<div th:if="${i-(firstDayOfWeek-1)>0 && i-(firstDayOfWeek-1)<=lastDay}">
+								<a th:class="${index.index%7}==6 ? 'SAT' : (${index.index%7}==0 ? 'SUN' : WEEKDAY)"
 								   th:href="@{/getCashListByDate(date=${#temporals.format(date, 'yyyy-MM')}+(${i-(firstDayOfWeek-1)}<10 ? '-0' : '-')+${i-(firstDayOfWeek-1)})}"
 								   th:text="${i-(firstDayOfWeek-1)}"></a>
 						</div>
+						<!-- 금액 채우기 -->
 						<div th:class="${dp.price}>0 ? 'import' : 'expense'"  
 							 th:each="dp : ${dayAndPriceList}" 
 							 th:if="${dp.day}==${i-(firstDayOfWeek-1)}" 
 							 th:text="${dp.price}>0 ? '+'+${#numbers.formatInteger(dp.price,0,'COMMA')} : ${#numbers.formatInteger(dp.price,0,'COMMA')}">
-						</div> <!-- 금액 채우기 -->
+						</div>
 					</div>
 				</div>
-				<div id="hap">
-					<span>합계 : 0000</span>
+				
+				<div class="row">
+					<div class="col-sm-6">
+						<a th:href="@{/addCash(date=${date})}" id="statisticsBtn" class="btn">월별 비교</a>
+					</div>
+					<div id="hap" class="col-sm-6">
+						<span>합계 :&nbsp;</span>
+						<span class="blue" th:if="${monthCashKindSum}>0" th:text="'+'+${#numbers.formatInteger(monthCashKindSum,0,'COMMA')}+원"></span>
+						<span class="black" th:if="${monthCashKindSum}==0" th:text="${#numbers.formatInteger(monthCashKindSum,0,'COMMA')}+원"></span>
+						<span class="red" th:if="${monthCashKindSum}<0" th:text="${#numbers.formatInteger(monthCashKindSum,0,'COMMA')}+원"></span>
+					</div>
 				</div>
 			</div>	
 		</div>	

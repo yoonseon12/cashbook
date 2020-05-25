@@ -15,12 +15,16 @@ public interface CashMapper {
 	public List<Cash> selectCashListByToday(Cash cash);
 	// 가계부 내용 삭제
 	public void removeCash(int cashNo);
-	// 합계 (일별 가계부 관리)
-	public int selectCashKindSum(Cash cash);
-	// 일별 합계(월별 가계부 관리)
+	// 금액 합계 (일별 가계부 관리)
+	public int selectDayCashKindSum(Cash cash);
+	// 일별 금액 (월별 가계부 관리)
 	public List<DayAndPrice> selectDayAndPriceList(Map<String, Object> map);
+	// 월별 금액 합계(월별 가계부 관리)
+	public int selectMonthAndPriceList(Map<String, Object> map);
 	// 가계부 추가
 	public void addCash(Cash cash);
+	// 수정창 사용 가계부 내용 불러오기
+	public Cash selectCashOne(int cashNo);
 	// 가계부 수정
 	public void modifyCash(Cash cash);
 }

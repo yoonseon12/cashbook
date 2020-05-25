@@ -62,11 +62,9 @@
 				width:100px;
 				height: 40px;
 			}
-			#total{
-				text-align: right;
-			}
 			#hap{
-				font-size: xx-large;
+				text-align: right;
+				font-size: 36px;
 			}
 			#date{
 				font-weight: bold;
@@ -100,9 +98,8 @@
 				background: #eaeaea;
 			}
 			.cashKindSum{
-				font-size: xx-large;
 				color: rgb(52, 152, 219);
-			}
+			} 
 		</style>
 	</head>
 	<body>
@@ -169,8 +166,8 @@
 						<a th:href="@{/addCash(date=${date})}" id="addCashLink" class="btn">작성</a>
 					</div>
 					<!-- 합계 -->
-					<div id="total" class="col-sm-6">
-						<span id="hap">합계</span>&nbsp;&nbsp;
+					<div id="hap" class="col-sm-6">
+						<span>합계 :&nbsp;</span>
 						<span class="cashKindSum" th:if="${cashKindSum}>0" th:text="'+'+${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
 						<span class="cashKindSum" style="color:red;" th:if="${cashKindSum}<0" th:text="${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
 					</div>
