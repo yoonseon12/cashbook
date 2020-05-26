@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdu.cashbook.mapper.QnaboardMapper">
+	<select id="selectQnaboardListAll" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.Qnaboard">
+		SELECT
+			  qnaboard_no AS qnaboardNo
+			, member_id AS memberId
+			, qnaboard_title AS qnaboardTitle
+			, qnaboard_content AS qnaboardContent
+			, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
+		FROM qnaboard
+		WHERE member_id = #{memberId}
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<select id="selectQnaboardCount" parameterType="String" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM qnaboard
+		WHERE member_id = #{memberId}
+	</select>
+</mapper>

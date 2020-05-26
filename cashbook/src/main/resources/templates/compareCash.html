@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>홈</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<style>
+			/* 메뉴바 style */
+			#sidemenu {
+				width: 200px;
+				height: 100%;
+				position: fixed;
+				background: rgb(52, 152, 219);
+				overflow: hidden;
+			}
+			.menuLink{
+				font-size: 20px;
+				color:black;
+				font-size: 23px;
+				font-weight:700;
+				text-decoration: none;
+			}
+			.menuLink:hover{
+				color:white;
+				text-decoration: none;
+			}
+			.menuTitle{
+				font-size: 20px;
+				color:white;
+			}
+			.menuTitleArea{
+				margin: 40px 0px;
+			}
+			.menuArea{
+				margin: 50px 0px;
+			}
+			#cashbookMonth{
+				color:white;
+			}
+			/* 출력화면 style */
+			#section {
+				margin:0 auto;
+				width:70%;
+				background: white;
+				padding-top:50px;
+				padding-bottom:50px;
+				padding-left:100px;
+			}
+			.title{
+				font-weight: bold;
+				font-size: 36px;
+				text-align: left;
+			}
+			.subtitle{
+			font-weight: bold;
+		    font-size: 24px;
+		    margin-top: 100px;
+		    margin-bottom: 70px;
+			}
+			.red{
+				color:red;
+			}
+			.blue{
+				color: rgb(52, 152, 219);
+			}
+			.black{
+				color:black;
+			}
+			/* 테이블 관련 */
+			table{
+				border:2px solid #ccc;
+				width: 100%;
+				height: 130px;
+				table-layout: fixed;
+			}
+			th{
+				background: #eaeaea;
+			}
+			th,td,tr{
+				border: 1px solid #ccc;
+			}
+			.th{
+				font-size:17px;
+				color:black;
+				text-decoration: none;
+			}
+			.th:hover{
+				font-size:19px;
+				color:black;
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<!-- Side Menu -->
+			<div id="sidemenu">
+				<div class="text-center" th:include="/include/menu::sidemenu"></div>
+			</div>
+			<!-- 내용 -->
+			<div id="section">
+				<!-- 제목 -->
+				<div class="title">
+					<span th:text="${#temporals.format(date, 'yyyy년')}+' 가계부'"></span>
+				</div>
+				<div class="subtitle text-center">
+					<span th:text="${#temporals.format(date, 'yyyy년')}+' 월별 비교'"></span>
+				</div>
+				<!-- 목록출력 -->
+				<div>
+					<table class="text-center">
+						<tr>
+							<th th:each="i,index : ${#numbers.sequence(1, 12)}">
+							<a class="th" th:href="@{/getCashListByMonth(date=${#temporals.format(date, 'yyyy')}+'-'+(${i}<10 ? '0':'')+${i}+'-'+10)}" th:text="${i}+월"></a>
+						</tr>
+						<tr>
+							<td th:each="i,index : ${#numbers.sequence(1, 12)}">
+								<div th:each="dp : ${yearPriceList}" th:if="${dp.day}==${i}">
+									<span class="blue" th:if="${dp.price}>0" th:text="'+'+${#numbers.formatInteger(dp.price,0,'COMMA')}+원"></span>
+									<span class="black" th:if="${dp.price}==0" th:text="${#numbers.formatInteger(dp.price,0,'COMMA')}+원"></span>
+									<span class="red" th:if="${dp.price}<0" th:text="${#numbers.formatInteger(dp.price,0,'COMMA')}+원"></span>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

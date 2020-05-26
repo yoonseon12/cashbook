@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>QnA</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<style>
+			/* 메뉴바 style */
+			#sidemenu {
+				width: 200px;
+				height: 100%;
+				position: fixed;
+				background: rgb(52, 152, 219);
+				overflow: hidden;
+			}
+			.menuLink{
+				font-size: 20px;
+				color:black;
+				font-size: 23px;
+				font-weight:700;
+				text-decoration: none;
+			}
+			.menuLink:hover{
+				color:white;
+				text-decoration: none;
+			}
+			.menuTitle{
+				font-size: 20px;
+				color:white;
+			}
+			.menuTitleArea{
+				margin: 40px 0px;
+			}
+			.menuArea{
+				margin: 50px 0px;
+			}
+			#qnaboard{
+				color:white;
+			}
+			/* 출력화면 style */
+			#section {
+				margin:0 auto;
+				width:1100px;
+				background: white;
+				padding-top:50px;
+				padding-bottom:50px;
+				padding-left: 150px;
+			}
+			#title{
+				font-weight: bold;
+				font-size: 36px;
+				text-align: left;
+			}
+			.pageLink{
+				margin-top: 30px;
+			}
+			.btn-sm{
+				margin: 0px 5px;
+				border-width: 0px;
+				background-color: #ccc;
+				font-weight: ;
+				color:black;
+			}
+			a:hover{
+				text-decoration: none;
+				color:black;
+			}
+			/* 테이블 관련 */
+			table{
+				border:2px solid #ccc;
+				margin-top:50px;
+				width: 100%;
+			}
+			th{
+				background: #eaeaea;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<!-- Side Menu -->
+			<div id="sidemenu">
+				<div class="text-center" th:include="/include/menu::sidemenu"></div>
+			</div>
+			<!-- 내용 -->
+			<div id="section">
+				<!-- 제목 -->
+				<div id="title">
+					<span>QnA 게시판</span>
+				</div>
+				<!-- 게시판 목록 -->
+				<div>
+					<table class="table text-center">
+						<tr>
+							<th width="15%">No</th>
+							<th width="300">제목</th>
+							<th width="20%">작성자</th>
+							<th width="25%">작성일</th>
+						</tr>
+						<tr th:each="qnaboard : ${qnaboardList}">
+							<td th:text="${qnaboard.qnaboardNo}"></td>
+							<td>
+								<a class="" href="" th:text="${qnaboard.qnaboardTitle}"></a>
+							</td>
+							<td th:text="${qnaboard.memberId}"></td>
+							<td th:text="${qnaboard.qnaboardDate}"></td>
+						</tr>
+					</table>
+				</div>
+				<!-- 페이징 -->
+				<div class="pageLink text-center">
+					<span>
+						<a class="btn-sm" th:href="@{/qnaboard(currentPage=1)}"><<</a>
+					</span>
+					<span th:if="${currentPage}==1">
+						<a class="btn-sm" th:href="@{/qnaboard(currentPage=1)}">이전</a>
+					</span>
+					<span th:if="${currentPage}>1">
+						<a class="btn-sm" th:href="@{/qnaboard(currentPage=${currentPage-1})}">이전</a>
+					</span>
+					<span th:text="'-'+${currentPage}+'-'"></span>
+					<span  th:if="${currentPage}<${lastPage}">
+						<a class="btn-sm" th:href="@{/qnaboard(currentPage=${currentPage+1})}">다음</a>
+					</span>
+					<span th:if="${currentPage}==${lastPage}">
+						<a class="btn-sm" th:href="@{/qnaboard(currentPage=${lastPage})}">다음</a>
+					</span>
+					<span>
+						<a class="btn-sm" th:href="@{/qnaboard(currentPage=${lastPage})}">>></a>
+					</span>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
