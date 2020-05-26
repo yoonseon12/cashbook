@@ -17,7 +17,6 @@
 				overflow: hidden;
 			}
 			.menuLink{
-				font-size: 20px;
 				color:black;
 				font-size: 23px;
 				font-weight:700;
@@ -74,7 +73,7 @@
 				font-size: 24px;
 				text-align: center;
 			}
-			#statisticsBtn{
+			#compareCashBtn{
 				font-size: 16px; 
 				color: white;
 				text-align: center; 
@@ -92,7 +91,7 @@
 				border: 1px solid black;
 				margin: 2px 2px;
 				border-radius: 5px;
-				padding: 1px 5px;
+				padding: 5px 10px;
 				font-weight: bold;
 			}
 			div.gd-clear{
@@ -107,7 +106,6 @@
 			}
 			.calendar {
 				width: 1000px;
-				
 			}
 			.import{
 				color:#6B66FF;
@@ -135,6 +133,20 @@
 				padding-left: 0px;
 				padding-right: 100px;
 				padding-bottom: 70px;
+			}
+			.SUN:hover{
+				color: red;
+				text-decoration: none;
+				font-size:18px;
+			}
+			.SAT:hover{
+				color: blue;
+				text-decoration: none;
+				font-size:17px;
+			}.WEEKDAY:hover{
+				color: black;
+				text-decoration: none;
+				font-size:17px;
 			}
 			#hap{
 				font-size: 36px;
@@ -208,7 +220,7 @@
 				
 				<div class="row">
 					<div class="col-sm-6">
-						<a th:href="@{/addCash(date=${date})}" id="statisticsBtn" class="btn">월별 비교</a>
+						<a th:href="@{/compareCash(date=${date})}" id="compareCashBtn" class="btn">월별 비교</a>
 					</div>
 					<div id="hap" class="col-sm-6">
 						<span>합계 :&nbsp;</span>

@@ -3,71 +3,6 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.CashMapper">
-	<!-- 로그인 회원의 오늘 날짜 cash 목록 -->
-	<select id="selectCashListByToday" parameterType="com.gdu.cashbook.vo.Cash" resultType="com.gdu.cashbook.vo.Cash">
-		SELECT
-			cash_no       AS cashNo,
-			category_name AS categoryName,
-			cash_kind     AS cashKind,
-			cash_price    AS cashPrice,
-			cash_place    AS cashPlace,
-			cash_memo     AS cashMemo
-		FROM cash
-		WHERE member_id = #{memberId}
-		AND   cash_date = #{cashDate}
-		ORDER BY cash_no ASC
-	</select>
-	<!-- 가계부 내용 삭제 -->
-	<delete id="removeCash" parameterType="int">
-		DELETE
-		FROM cash 
-		WHERE cash_no = #{cashNo}
-	</delete>
-	<!-- 금액 합계 (일별 가계부 관리) -->
-	<select id="selectDayCashKindSum" parameterType="com.gdu.cashbook.vo.Cash" resultType="int">
-		SELECT
-			(SELECT IFNULL(SUM(cash_price) ,'0')
-			 FROM cash
-			 WHERE member_id = #{memberId} 
-			 AND   cash_kind = '수입'
-			 AND   cash_date = #{cashDate})
-			-
-			(SELECT IFNULL(SUM(cash_price) ,'0') 
-			 FROM cash
-			 WHERE member_id = #{memberId}
-			 AND   cash_kind = '지출'
-			 AND   cash_date = #{cashDate})
-		FROM dual
-	</select>
-	<!-- 일별 금액 (월별 가계부 관리) -->
-	<select id="selectDayAndPriceList" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.DayAndPrice">
-		SELECT DAY(cash_date) AS day,
-			   SUM(CASE WHEN cash_kind='수입' THEN cash_price
-						WHEN cash_kind='지출' THEN -cash_price END) AS price
-		FROM cash
-		WHERE member_id = #{memberId}
-		AND  YEAR(cash_date) = #{year}
-		AND MONTH(cash_date) = #{month}
-		GROUP BY DAY(cash_date)
-	</select>
-	<!-- 월별 금액 합계(월별 가계부 관리) -->
-	<select id="selectMonthAndPriceList" parameterType="java.util.Map" resultType="int">
-		SELECT
-			(SELECT IFNULL(SUM(cash_price) ,'0')
-			 FROM cash
-			 WHERE member_id = #{memberId} 
-			 AND   cash_kind = '수입'
-			 AND  YEAR(cash_date) = #{year}
-		     AND MONTH(cash_date) = #{month})
-			-
-			(SELECT IFNULL(SUM(cash_price) ,'0') 
-			 FROM cash
-			 WHERE member_id = #{memberId}
-			 AND   cash_kind = '지출'
-			 AND  YEAR(cash_date) = #{year}
-		     AND MONTH(cash_date) = #{month})
-		FROM dual
-	</select>
 	<!-- 가계부 추가 -->
 	<insert id="addCash" parameterType="com.gdu.cashbook.vo.Cash">
 		INSERT INTO cash(
@@ -88,6 +23,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{cashMemo}
 		)
 	</insert>
+	<!-- 가계부 삭제 -->
+	<delete id="removeCash" parameterType="int">
+		DELETE
+		FROM cash 
+		WHERE cash_no = #{cashNo}
+	</delete>
+	<!-- 가계부 수정 -->
+	<update id="modifyCash" parameterType="com.gdu.cashbook.vo.Cash">
+		UPDATE cash
+		SET cash_kind  = #{cashKind},
+			category_name  = #{categoryName},
+			cash_price = #{cashPrice},
+			cash_place   = #{cashPlace},
+			cash_memo = #{cashMemo}
+		WHERE cash_no  = #{cashNo}
+	</update>
 	<!-- 수정창 사용 가계부 내용 불러오기 -->
 	<select id="selectCashOne" parameterType="int" resultType="com.gdu.cashbook.vo.Cash">
 		SELECT
@@ -100,14 +51,90 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM cash
 		WHERE cash_no = #{cashNo}
 	</select>
-	<!-- 가계부 수정 -->
-	<update id="modifyCash" parameterType="com.gdu.cashbook.vo.Cash">
-		UPDATE cash
-		SET cash_kind  = #{cashKind},
-			category_name  = #{categoryName},
-			cash_price = #{cashPrice},
-			cash_place   = #{cashPlace},
-			cash_memo = #{cashMemo}
-		WHERE cash_no  = #{cashNo}
-	</update>
+	<!-- 오늘날짜의 가계부 관리 -->
+	<select id="selectCashListByToday" parameterType="com.gdu.cashbook.vo.Cash" resultType="com.gdu.cashbook.vo.Cash">
+		SELECT
+			cash_no       AS cashNo,
+			category_name AS categoryName,
+			cash_kind     AS cashKind,
+			cash_price    AS cashPrice,
+			cash_place    AS cashPlace,
+			cash_memo     AS cashMemo
+		FROM cash
+		WHERE member_id = #{memberId}
+		AND   cash_date = #{cashDate}
+		ORDER BY cash_no ASC
+	</select>
+	<!-- 금액 합계 (일별 가계부 관리) -->
+	<select id="selectTotPriceOfDay" parameterType="com.gdu.cashbook.vo.Cash" resultType="int">
+		SELECT
+			(SELECT IFNULL(SUM(cash_price) ,'0')
+			 FROM cash
+			 WHERE member_id = #{memberId} 
+			 AND   cash_kind = '수입'
+			 AND   cash_date = #{cashDate})
+			-
+			(SELECT IFNULL(SUM(cash_price) ,'0') 
+			 FROM cash
+			 WHERE member_id = #{memberId}
+			 AND   cash_kind = '지출'
+			 AND   cash_date = #{cashDate})
+		FROM dual
+	</select>
+	<!-- 일별 금액 (월별 가계부 관리) -->
+	<select id="selectListPriceOfDay" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.DayAndPrice">
+		SELECT DAY(cash_date) AS day,
+			   SUM(CASE WHEN cash_kind='수입' THEN cash_price
+						WHEN cash_kind='지출' THEN -cash_price END) AS price
+		FROM cash
+		WHERE member_id = #{memberId}
+		AND  YEAR(cash_date) = #{year}
+		AND MONTH(cash_date) = #{month}
+		GROUP BY DAY(cash_date)
+	</select>
+	<!-- 월별 금액 합계(월별 가계부 관리) -->
+	<select id="selectTotPriceOfMonth" parameterType="java.util.Map" resultType="int">
+		SELECT
+			(SELECT IFNULL(SUM(cash_price) ,'0')
+			 FROM cash
+			 WHERE member_id = #{memberId} 
+			 AND   cash_kind = '수입'
+			 AND  YEAR(cash_date) = #{year}
+		     AND MONTH(cash_date) = #{month})
+			-
+			(SELECT IFNULL(SUM(cash_price) ,'0') 
+			 FROM cash
+			 WHERE member_id = #{memberId}
+			 AND   cash_kind = '지출'
+			 AND  YEAR(cash_date) = #{year}
+		     AND MONTH(cash_date) = #{month})
+		FROM dual
+	</select>
+	<!-- 이번년도의 월별 금액 리스트(월별 비교) -->
+	<select id="selectListPriceOfYear" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.DayAndPrice">
+		SELECT 
+			MONTH(cash_date) as day,
+			SUM(CASE WHEN cash_kind='수입' THEN cash_price
+				WHEN cash_kind='지출' THEN -cash_price END) AS price
+		FROM cash
+		WHERE      member_id = #{memberId}
+		AND  YEAR(cash_date) = #{year}
+		GROUP BY MONTH(cash_date)
+	</select>
+	<!-- 이번년도의 월별 금액 합계(월별 비교) -->
+	<select id="selectTotPriceOfYear" parameterType="java.util.Map" resultType="int">
+		SELECT
+			(SELECT IFNULL(SUM(cash_price) ,'0')
+			 FROM cash
+			 WHERE member_id = #{memberId} 
+			 AND   cash_kind = '수입'
+			 AND  YEAR(cash_date) = #{year})
+			-
+			(SELECT IFNULL(SUM(cash_price) ,'0') 
+			 FROM cash
+			 WHERE member_id = #{memberId}
+			 AND   cash_kind = '지출'
+			 AND  YEAR(cash_date) = #{year})
+		FROM dual
+	</select>
 </mapper>

@@ -18,38 +18,13 @@ import com.gdu.cashbook.vo.DayAndPrice;
 public class CashService {
 	@Autowired private CashMapper cashMapper; 
 	@Autowired private CategoryMapper categoryMapper;
-	// 가계부 리스트 출력
-	public Map<String, Object> getCashListByDate(Cash cash){
-		List<Cash> cashList = cashMapper.selectCashListByToday(cash);
-		int dayCashKindSum = cashMapper.selectDayCashKindSum(cash);
-		Map<String, Object> map = new HashMap<>();
-		map.put("cashList", cashList);
-		map.put("cashKindSum", dayCashKindSum);
-		return map;
+	// 가계부 추가
+	public void addCash(Cash cash) {
+		cashMapper.addCash(cash);
 	}
 	// 가계부 삭제
 	public void removeCash(int cashNo) {
 		cashMapper.removeCash(cashNo);
-	}
-	// 일별,월별 금액 합계(월별 가계부 관리)
-	public Map<String, Object> getCashPriceList(String memberId, int year, int month){
-		Map<String, Object> inputMap = new HashMap<>();
-		inputMap.put("memberId", memberId);
-		inputMap.put("year", year);
-		inputMap.put("month", month);
-		Map<String, Object> outputMap = new HashMap<>();
-		outputMap.put("dayAndPrice",cashMapper.selectDayAndPriceList(inputMap)); // 월별 금액
-		outputMap.put("monthAndPrice",cashMapper.selectMonthAndPriceList(inputMap)); // 월별 금액 합계
-		return outputMap;
-	}
-	// 가계부 추가
-	public void addCash(Cash cash) {
-		// 가계부 추가
-		cashMapper.addCash(cash);
-	}
-	// 수정창 사용 가계부 내용 불러오기
-	public Cash getSelectCashOne(int cashNo) {
-		return cashMapper.selectCashOne(cashNo);
 	}
 	// 가계부 수정
 	public void modifyCash(Cash cash) {
@@ -61,5 +36,39 @@ public class CashService {
 		categoryMapper.addCategory(category);
 		// 가계부 수정
 		cashMapper.modifyCash(cash);
+	}
+	// 수정창 사용 가계부 내용 불러오기
+	public Cash getSelectCashOne(int cashNo) {
+		return cashMapper.selectCashOne(cashNo);
+	}
+	// 일별 가계부 관리
+	public Map<String, Object> getCashListByDay(Cash cash){
+		List<Cash> cashList = cashMapper.selectCashListByToday(cash); // 로그인 회원의 오늘 날짜 cash 목록
+		int dayCashKindSum = cashMapper.selectTotPriceOfDay(cash); // 일별 금액 합계 (일별 가계부 관리)
+		Map<String, Object> map = new HashMap<>();
+		map.put("cashList", cashList);
+		map.put("cashKindSum", dayCashKindSum);
+		return map;
+	}
+	// 다이어리 (월별 가계부 관리)
+	public Map<String, Object> getCashbookByMonth(String memberId, int year, int month){
+		Map<String, Object> inputMap = new HashMap<>();
+		inputMap.put("memberId", memberId);
+		inputMap.put("year", year);
+		inputMap.put("month", month);
+		Map<String, Object> outputMap = new HashMap<>();
+		outputMap.put("dayAndPrice",cashMapper.selectListPriceOfDay(inputMap)); // 일별 금액 리스트(월별 가계부 관리)
+		outputMap.put("monthAndPrice",cashMapper.selectTotPriceOfMonth(inputMap)); // 월별 금액 합계(월별 가계부 관리)
+		return outputMap;
+	}
+	// 이번년도 월별 금액 합계(월별 비교)
+	public Map<String, Object> getCashbookByYear(String memberId, int year){
+		Map<String, Object> inputMap = new HashMap<>();
+		inputMap.put("memberId", memberId);
+		inputMap.put("year", year);
+		Map<String, Object> outputMap = new HashMap<>();
+		outputMap.put("yearPriceList",cashMapper.selectListPriceOfYear(inputMap)); // 이번년도의 월별 금액 리스트(월별 비교)
+		outputMap.put("yearPriceTotal", cashMapper.selectTotPriceOfYear(inputMap)); // 이번년도의 월별 금액 합계(월별 비교)
+		return outputMap;
 	}
 }

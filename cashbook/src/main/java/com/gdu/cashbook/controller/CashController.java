@@ -33,7 +33,7 @@ public class CashController {
 	private CategoryService categoryService;
 
 	@GetMapping("/getCashListByDate")
-	// 가계부 출력
+	// 일별 가계부 관리
 	public String getCashListByDate(HttpSession session, Model model,
 			@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		if (session.getAttribute("loginMember") == null) { // 로그인 상태 X
@@ -52,7 +52,7 @@ public class CashController {
 		Cash cash = new Cash(); // + id, + date(yyyy-mm-dd)
 		cash.setMemberId(loginMemberId);
 		cash.setCashDate(date.toString());
-		Map<String, Object> map = cashService.getCashListByDate(cash);
+		Map<String, Object> map = cashService.getCashListByDay(cash);
 		model.addAttribute("cashKindSum", map.get("cashKindSum"));
 		model.addAttribute("cashList", map.get("cashList"));
 		return "getCashListByDate";
@@ -71,7 +71,7 @@ public class CashController {
 		return "redirect:/getCashListByDate?day=" + date;
 	}
 
-	// 다이어리
+	// 다이어리 (월별 가계부 관리)
 	@GetMapping("/getCashListByMonth")
 	public String getCashListByMonth(HttpSession session, Model model,
 			@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
@@ -94,7 +94,7 @@ public class CashController {
 		System.out.println(year);
 		System.out.println(month);
 		
-		Map<String,Object> price = cashService.getCashPriceList(memberId, year, month);
+		Map<String,Object> price = cashService.getCashbookByMonth(memberId, year, month);
 		// 일별 금액 (월별 가계부 관리)
 		List<DayAndPrice> dayAndPriceList = (List<DayAndPrice>) price.get("dayAndPrice");
 		for (DayAndPrice dp : dayAndPriceList) {
@@ -256,8 +256,32 @@ public class CashController {
 		}
 		System.out.println(cash + " <- CashController.modifyCash: cash (memberId 주입전)");
 		cash.setMemberId(memberId);
-		System.out.println(cash + " <- CashController.addCash: cash (memberId 주입후)");
+		System.out.println(cash + " <- CashController.modifyCash: cash (memberId 주입후)");
 		cashService.modifyCash(cash);
 		return "redirect:/getCashListByDate";
+	}
+	// 월별 비교
+	@GetMapping("/compareCash")
+	public String compareCash(HttpSession session, Model model, Cash cash,
+			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
+			return "redirect:/login";
+		}
+		System.out.println(date+" <- CashController.compareCash: date");
+		model.addAttribute("date", date);
+		String memberId = ((LoginMember) session.getAttribute("loginMember")).getMemberId();
+		int year = date.getYear();
+		System.out.println(memberId);
+		System.out.println(year);
+		Map<String,Object> cashbookByYear = cashService.getCashbookByYear(memberId, year);
+		List<DayAndPrice> yearPriceList = (List<DayAndPrice>) cashbookByYear.get("yearPriceList");
+		for (DayAndPrice dp : yearPriceList) {
+			System.out.println(dp + " <- 해당 년도 월별 총액 목록");
+		}
+		model.addAttribute("yearPriceList", yearPriceList);
+		//int yearPriceTotal = (int) cashbookByYear.get+" <- CashController.compareCash: yearPriceTotal");
+		//System.out.println(yearPriceTotal+" <- CashController.compareCash: yearPriceTotal");
+		//model.addAttribute("yearPriceTotal", yearPriceTotal);
+		return "compareCash";
 	}
 }

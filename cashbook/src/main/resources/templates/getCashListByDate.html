@@ -97,9 +97,15 @@
 			th{
 				background: #eaeaea;
 			}
-			.cashKindSum{
+			.red{
+				color:red;
+			}
+			.blue{
 				color: rgb(52, 152, 219);
-			} 
+			}
+			.black{
+				color:black;
+			}
 		</style>
 	</head>
 	<body>
@@ -168,8 +174,9 @@
 					<!-- 합계 -->
 					<div id="hap" class="col-sm-6">
 						<span>합계 :&nbsp;</span>
-						<span class="cashKindSum" th:if="${cashKindSum}>0" th:text="'+'+${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
-						<span class="cashKindSum" style="color:red;" th:if="${cashKindSum}<0" th:text="${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
+						<span class="blue" th:if="${cashKindSum}>0" th:text="'+'+${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
+						<span class="black" th:if="${cashKindSum}==0" th:text="${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
+						<span class="red" th:if="${cashKindSum}<0" th:text="${#numbers.formatInteger(cashKindSum,0,'COMMA')}+원"></span>
 					</div>
 				</div>
 			</div>
