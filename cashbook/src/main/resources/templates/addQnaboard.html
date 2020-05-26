@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>게시글 작성</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<style>
+			/* 메뉴바 style */
+			#sidemenu {
+				width: 200px;
+				height: 100%;
+				position: fixed;
+				background: rgb(52, 152, 219);
+				overflow: hidden;
+			}
+			.menuLink{
+				font-size: 20px;
+				color:black;
+				font-size: 23px;
+				font-weight:700;
+				text-decoration: none;
+			}
+			.menuLink:hover{
+				color:white;
+				text-decoration: none;
+			}
+			.menuTitle{
+				font-size: 20px;
+				color:white;
+			}
+			.menuTitleArea{
+				margin: 40px 0px;
+			}
+			.menuArea{
+				margin: 50px 0px;
+			}
+			#qnaboard{
+				color:white;
+			}
+			/* 출력화면 style */
+			#section {
+				margin:0 auto;
+				width:1100px;
+				background: white;
+				padding-top:50px;
+				padding-bottom:50px;
+				padding-left: 150px;
+			}
+			#title{
+				font-weight: bold;
+				font-size: 36px;
+				text-align: left;
+			}
+			input{
+				width: 100%;
+				height: 40px;
+				padding : 6px 12px;
+				border-width: 1px;
+				border-style: solid;
+				border-radius: 4px;
+				border-color: rgb(204, 204, 204);
+			}
+			textarea{
+				width: 100%;
+				height: 300px;
+				padding : 6px 12px;
+				border-width: 1px;
+				border-style: solid;
+				border-radius: 4px;
+				border-color: rgb(204, 204, 204);
+			}
+			.titleArea{
+				margin : 40px 30px 40px 30px;
+			}
+			.contentArea{
+				margin : 0px 30px 20px 30px;
+			}
+			#btn{
+				width:80px;
+				height: 38px;
+				border-radius: 4px;
+				background-color: #ccc;
+				border:none;
+				color:#4C4C4C;
+				padding : 7px 5px;
+			}
+			.today{
+				padding-top : 30px;
+				padding-right: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<!-- Side Menu -->
+			<div id="sidemenu">
+				<div class="text-center" th:include="/include/menu::sidemenu"></div>
+			</div>
+			<!-- 내용 -->
+			<div id="section">
+				<!-- 제목 -->
+				<div class=row>
+					<div id="title" class="col-sm-6 text-left">
+						<span>게시글 작성</span>
+					</div>
+					<div class="col-sm-6 text-right today">
+						<span th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"></span>
+					</div>
+				</div>
+				<hr>
+				<!-- 입력 창 -->
+				<div class="text-center">
+					<form method="post" action="/addQnaboard">
+						<div class="titleArea">
+							<input type="text" name="qnaboardTitle" placeholder="제목을 입력하세요">
+						</div>
+						<div class="contentArea">
+							<textarea name="qnaboardContent" placeholder="내용을 입력하세요"></textarea>
+						</div>
+						<div>
+							<button id="btn" type="submit">작성완료</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

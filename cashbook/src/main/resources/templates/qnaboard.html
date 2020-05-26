@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>QnA</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -58,11 +59,10 @@
 				margin-top: 30px;
 			}
 			.btn-sm{
-				margin: 0px 5px;
+				margin: 0px 10px;
 				border-width: 0px;
 				background-color: #ccc;
-				font-weight: ;
-				color:black;
+				color:#4C4C4C;
 			}
 			a:hover{
 				text-decoration: none;
@@ -71,11 +71,40 @@
 			/* 테이블 관련 */
 			table{
 				border:2px solid #ccc;
-				margin-top:50px;
+				margin-top:10px;
 				width: 100%;
 			}
 			th{
 				background: #eaeaea;
+			}
+			/* 검색 */
+			#area{
+				margin-top: 50px;
+			}
+			#searchWord{
+				width: 200px;
+				height: 39px;
+				padding: 2px 5px;
+			}
+			#searchBtn{
+				width:40px;
+				height: 38px;
+				border-radius: 4px;
+				background-color: #ccc;
+				border:none;
+			}
+			/* 문의하기 */
+			#addQnaboard{
+				width:80px;
+				height: 38px;
+				border-radius: 4px;
+				background-color: #ccc;
+				border:none;
+				color:#4C4C4C;
+				padding : 7px 5px;
+			}
+			#addQnaboard:hover {
+				color:black;
 			}
 		</style>
 	</head>
@@ -90,6 +119,19 @@
 				<!-- 제목 -->
 				<div id="title">
 					<span>QnA 게시판</span>
+				</div>
+				<!-- 검색 링크 -->
+				<div id="area" class="row">
+					<!-- 검색 링크 -->
+					<div class="col-sm-6 text-left">
+						<a id="addQnaboard" class="btn" th:href="@{/addQnaboard}">문의하기</a>
+					</div>
+					<div class="col-sm-6 text-right">
+						<form method="post" action="/qnaboard">
+							<input id="searchWord" type="text" name="searchWord">		
+							<button id="searchBtn" type="button"><i class="fa fa-search"></i></button>
+						</form>
+					</div>
 				</div>
 				<!-- 게시판 목록 -->
 				<div>

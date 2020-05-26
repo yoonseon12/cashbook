@@ -13,4 +13,6 @@ public interface QnaboardMapper {
 	public List<Qnaboard> selectQnaboardListAll(Map<String, Object> map);
 	// 회원의 게시글 총 개수
 	public int selectQnaboardCount(String memberId);
+	// 게시글 추가
+	public void insestQnaboard(Qnaboard qnaboard);
 }

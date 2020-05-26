@@ -1,5 +1,7 @@
 package com.gdu.cashbook.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.cashbook.service.QnaboardService;
@@ -35,11 +38,31 @@ public class QnaboardController {
 		Map<String, Object> map = new HashMap<>();
 		map = qnaboardService.getQnaboardList(memberId, currentPage, rowPerPage);
 		List<Qnaboard> qnaboardList = (List<Qnaboard>) map.get("qnaboardList");
-		for(Qnaboard q : qnaboardList) {
+		/*for(Qnaboard q : qnaboardList) {
 			System.out.println(q);
-		}
+		}*/
 		model.addAttribute("qnaboardList", qnaboardList);
 		model.addAttribute("lastPage", map.get("lastPage"));
 		return "qnaboard";
+	}
+	// 게시글 추가
+	@GetMapping("/addQnaboard")
+	public String addQnaboard(HttpSession session, Model model) {
+		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
+			return "redirect:/login";
+		}
+		return "addQnaboard";
+	}
+	@PostMapping("/addQnaboard")
+	public String addQnaboard(HttpSession session, Qnaboard qnaboard) {
+		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
+			return "redirect:/login";
+		}
+		System.out.println(qnaboard+" <- Qnaboard.addQnaboard: qnaboard");
+		String memberId= ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		System.out.println(memberId+" <- Qnaboard.addQnaboard: memberId");
+		qnaboard.setMemberId(memberId);
+		qnaboardService.addQnaboardList(qnaboard);
+		return "redirect:/qnaboard";
 	}
 }

@@ -36,4 +36,8 @@ public class QnaboardService {
 		outputMap.put("lastPage", lastPage);
 		return outputMap;
 	}
+	// 게시글 추가
+	public void addQnaboardList(Qnaboard qnaboard) {
+		qnaboardMapper.insestQnaboard(qnaboard);
+	}
 }

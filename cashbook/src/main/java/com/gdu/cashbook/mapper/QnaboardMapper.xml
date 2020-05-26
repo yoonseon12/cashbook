@@ -3,6 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.QnaboardMapper">
+	<!-- 게시물 출력 -->
 	<select id="selectQnaboardListAll" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.Qnaboard">
 		SELECT
 			  qnaboard_no AS qnaboardNo
@@ -10,14 +11,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, qnaboard_title AS qnaboardTitle
 			, qnaboard_content AS qnaboardContent
 			, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
-		FROM qnaboard
+		FROM qnaboard 
 		WHERE member_id = #{memberId}
+		ORDER BY qnaboard_no DESC
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>
+	<!-- 게시물 총 개수 -->
 	<select id="selectQnaboardCount" parameterType="String" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM qnaboard
 		WHERE member_id = #{memberId}
 	</select>
+	<!-- 게시물 입력 -->
+	<insert id="insestQnaboard" parameterType="com.gdu.cashbook.vo.Qnaboard">
+		INSERT INTO qnaboard(
+			member_id,
+			qnaboard_title,
+			qnaboard_content,
+			qnaboard_date
+		) VALUES(
+			#{memberId},
+			#{qnaboardTitle},
+			#{qnaboardContent},
+			NOW()
+		) 
+	</insert>
 </mapper>
