@@ -1,6 +1,6 @@
 package com.gdu.cashbook.service;
 
-import java.io.File;
+import java.io.File;	
 import java.io.IOException;
 import java.util.UUID;
 
@@ -14,8 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.gdu.cashbook.mapper.CommentMapper;
 import com.gdu.cashbook.mapper.MemberIdMapper;
 import com.gdu.cashbook.mapper.MemberMapper;
+import com.gdu.cashbook.mapper.QnaboardMapper;
+import com.gdu.cashbook.mapper.CashMapper;
+import com.gdu.cashbook.mapper.CategoryMapper;
 import com.gdu.cashbook.vo.LoginMember;
 import com.gdu.cashbook.vo.Member;
 import com.gdu.cashbook.vo.MemberForm;
@@ -27,6 +31,10 @@ public class MemberService {
 	@Autowired private MemberMapper memberMapper;
 	@Autowired private MemberIdMapper memberIdMapper;
 	@Autowired private JavaMailSender javaMailSender;
+	@Autowired private CommentMapper commentMapper;
+	@Autowired private QnaboardMapper qnaboardMapper;
+	@Autowired private CashMapper cashMapper;
+	@Autowired private CategoryMapper categoryMapper;
 	@Value("C:\\GIT_CASHBOOK\\cashbook\\src\\main\\resources\\static\\upload\\")
 	private String path; // 회원가입시 프로필사진 저장 경로
 	// 아이디 중복확인
@@ -89,17 +97,29 @@ public class MemberService {
 	// 회원 탈퇴
 	public void removeMember(LoginMember loginMember) {
 		System.out.println("서비스접근");
-		// 1. 회원 프로필 사진 삭제
-		// 1-1. 파일이름
+		// 1. 회원 기록 삭제
+		// 1-1. 파일이름 조회
 		System.out.println(loginMember.getMemberId()+"<<<<<");
 		String memberPic = memberMapper.selectMemberPic(loginMember.getMemberId());
 		System.out.println(memberPic+" <- MemberService.removeMember: memberPic");
-		// 1-2. 파일삭제
+		// 1-1-2. 파일삭제
 		File file = new File(path+memberPic);
 		if(file.exists()) {
 			file.delete();
 		}
 		System.out.println("사진삭제 완료");
+		// 1-2 회원 댓글 삭제
+		String loginMemberId = loginMember.getMemberId();
+		commentMapper.memberDeleteComment(loginMemberId);
+		System.out.println("댓글삭제 완료");
+		// 1-3 회원 게시글 삭제
+		qnaboardMapper.memberMeleteQnaboard(loginMemberId);
+		System.out.println("게시글삭제 완료");
+		// 1-4 회원 카테고리 삭제
+		categoryMapper.memberDeleteCategory(loginMemberId);
+		// 1-5 회원 가계부 삭제
+		cashMapper.memberDeleteCash(loginMemberId);
+		System.out.println("가계부삭제 완료");
 		// 2. 회원탈퇴 시키고
 		memberMapper.deleteMember(loginMember);
 		System.out.println("회원 탈퇴 완료");

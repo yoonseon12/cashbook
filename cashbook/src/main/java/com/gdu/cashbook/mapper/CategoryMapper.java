@@ -14,4 +14,6 @@ public interface CategoryMapper {
 	public List<String> myCategoryList(String memberId);
 	// 카테고리 중복 확인
 	public int myCategoryCheck(Category category);
+	// 회원탈퇴시 카테고리 삭제
+	public void memberDeleteCategory(String memberId);
 }

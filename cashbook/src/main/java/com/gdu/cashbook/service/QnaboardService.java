@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gdu.cashbook.mapper.CommentMapper;
 import com.gdu.cashbook.mapper.QnaboardMapper; 
 import com.gdu.cashbook.vo.Qnaboard;
 
@@ -15,6 +16,7 @@ import com.gdu.cashbook.vo.Qnaboard;
 @Transactional
 public class QnaboardService {
 	@Autowired private QnaboardMapper qnaboardMapper;
+	@Autowired private CommentMapper commentMapper;
 	// 게시글 목록
 	public Map<String, Object> getQnaboardListAll(String memberId, int currentPage, int rowPerPage){
 		int beginRow = (currentPage-1)*rowPerPage;
@@ -55,6 +57,9 @@ public class QnaboardService {
 	}
 	// 게시글 삭제
 	public void removeQnaboard(int qnaboardNo) {
+		// 1. 댓글삭제
+		commentMapper.qnaboardDeleteComment(qnaboardNo);
+		// 2. 게시글 삭제
 		qnaboardMapper.deleteQnaboard(qnaboardNo);
 	}
 	// 게시글 수정

@@ -29,4 +29,6 @@ public interface QnaboardMapper {
 	public void deleteQnaboard(int qnaboardNo);
 	// 게시글 수정
 	public void updateQnaboard(Qnaboard qnaboard);
+	// 회원탈퇴 시 게시글 삭제
+	public void memberMeleteQnaboard(String memberId);
 }

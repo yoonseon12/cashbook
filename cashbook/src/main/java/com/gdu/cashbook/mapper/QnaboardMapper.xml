@@ -91,4 +91,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE qnaboard_no = #{qnaboardNo}
 		AND member_id     = #{memberId}
 	</update>
+	<!-- 회원탈퇴시 게시글 삭제 -->
+	<delete id="memberMeleteQnaboard" parameterType="String">
+		DELETE 
+		FROM qnaboard
+		WHERE member_id = #{memberId}
+	</delete>
 </mapper>

@@ -67,4 +67,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND	qnaboard_no  = #{qnaboardNo}
 		AND	   member_id = #{memberId}
 	</update>
+	<!-- 회원탈퇴시 댓글 삭제 -->
+	<delete id="memberDeleteComment" parameterType="String">
+		DELETE 
+		FROM comment
+		WHERE member_id = #{memberId}
+	</delete>
+	<!-- 게시글삭제시 댓글 삭제 -->
+	<delete id="qnaboardDeleteComment" parameterType="int">
+		DELETE 
+		FROM comment
+		WHERE qnaboard_no = #{qnaboardNo}
+	</delete>
 </mapper>

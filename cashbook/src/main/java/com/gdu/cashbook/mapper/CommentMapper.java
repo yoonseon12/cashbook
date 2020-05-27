@@ -21,4 +21,8 @@ public interface CommentMapper {
 	public Comment selectCommentListOne(Map<String, Object> map);
 	// 댓글 수정
 	public void updateComment(Comment comment);
+	// 회원 탈퇴시 댓글 삭제
+	public void memberDeleteComment(String memberId);
+	// 게시글삭제시 댓글 삭제
+	public void qnaboardDeleteComment(int qnaboardNo);
 }

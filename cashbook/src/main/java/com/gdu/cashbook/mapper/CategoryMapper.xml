@@ -27,4 +27,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE member_id   = #{memberId} 
 		AND category_name = #{categoryName}
 	</select>
+	<!-- 회원탈퇴시 카테고리 삭제 -->
+	<delete id="memberDeleteCategory" parameterType="String">
+		DELETE
+		FROM category
+		WHERE member_id = #{memberId}
+	</delete>
 </mapper>

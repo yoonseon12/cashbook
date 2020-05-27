@@ -31,4 +31,6 @@ public interface CashMapper {
 	public List<DayAndPrice> selectListPriceOfYear(Map<String, Object> map);
 	// 이번년도 월별 금액 합계(월별 비교)
 	public int selectTotPriceOfYear(Map<String, Object> map);
+	// 회원 탈퇴시 가계부 삭제
+	public void memberDeleteCash(String memberId);
 }

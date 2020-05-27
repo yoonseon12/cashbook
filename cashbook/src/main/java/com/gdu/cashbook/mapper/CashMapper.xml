@@ -137,4 +137,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 AND  YEAR(cash_date) = #{year})
 		FROM dual
 	</select>
+	<!-- 회원탈퇴시 게시글 삭제 -->
+	<delete id="memberDeleteCash" parameterType="String">
+		DELETE
+		FROM cash 
+		WHERE member_id = #{memberId}
+	</delete>
 </mapper>
