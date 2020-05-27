@@ -93,12 +93,6 @@
 			.idArea,.commentInputArea{
 				margin : 0px 0px 20px 0px;
 			}
-			.commentArea{
-				margin : 0px 0px 5px 0px;
-			}
-			.commentPageBtnArea{
-				maring-top: 30px;
-			}
 			.padding0{
 				padding : 0px;
 			}
@@ -123,7 +117,7 @@
 				text-align: center;
 				background-color: rgb(230, 230, 230);
 				border-radius: 25px;
-				font-weight: 600;			
+				font-weight: 600;
 			}
 			#commentInputBtn{
 				width:100px;
@@ -134,30 +128,23 @@
 				color:black;
 				padding : 7px 5px;
 			}
-			.commentBtn{
-				width:100%;
-				height: 40px;
-				border-radius: 4px;
-				background-color: rgb(224, 224, 224);
-				border:none;
-				color:black;
-				padding : 7px 5px;
-			}
-			.btn-sm{
-				margin: 0px 10px;
-				border-width: 0px;
-				background-color: #ccc;
-				color:#4C4C4C;
-			}
 		</style>
 		<script>
 			$(document).ready(function(){
-				$('#commentInputBtn').click(function(){
-					if($('#commentContent').val()==""){
-						alert("댓글을 작성해주세요.");
+				$('#commentContent').focus();
+				$('#btn').click(function(){
+					if($('#qnaboardTitle').val()==""){
+						alert("제목을 입력해주세요");
 						return;
 					}
-					$('#addCommentForm').submit();
+					if($('#qnaboardTitle').val().length<4){
+						alert("제목을 4자리 이상 입력해주세요");
+						return;
+					}
+					if($('#qnaboardContent').val()==""){
+						alert("내용을 입력해주세요");
+						return;
+					}
 				});
 			});
 		</script>
@@ -196,7 +183,7 @@
 				<!-- 게시글 -->
 				<div>
 					<div class="titleArea">
-						<input type="text" id="qnaboardTitle" class="inputBox" th:value="${qnaboard.qnaboardTitle}" disabled="disabled">
+						<input type="text" class="inputBox qnaboardTitle" th:value="${qnaboard.qnaboardTitle}" disabled="disabled">
 					</div>
 					<div class="row idArea">
 						<div class="col-sm-6 padding0">
@@ -224,61 +211,21 @@
 				<br>
 				<!-- 댓글 -->
 				<div>
-					<!-- 댓글 입력창 -->
+					<!-- 댓글 수정 창 -->
 					<div>
-						<form id="addCommentForm" method="post" action="/addComment">
+						<form method="post" action="/modifyComment">
+							<input type="hidden" name="commentNo" th:value="${modifyCommentNo}">
 							<input type="hidden" name="qnaboardNo" th:value="${qnaboard.qnaboardNo}">
 							<input type="hidden" name="memberId" th:value="${qnaboard.memberId}">
 							<div class="row commentInputArea">
 								<div class="col-sm-10 padding0">
-									<input type="text" id="commentContent" class="inputBox" name="commentContent">
+									<input type="text" id="commentContent" class="inputBox" name="commentContent" th:value="${comment.commentContent}">
 								</div>
 								<div class="col-sm-2 text-right padding0">
-									<button id="commentInputBtn" type="button">댓글입력</button>
+									<button id="commentInputBtn" type="submit">수정완료</button>
 								</div>
 							</div>
 						</form>
-					</div>
-					<!-- 댓글 목록 -->
-					<div>
-						<!-- 댓글 출력 -->
-						<div class="row commentArea" th:each="comment : ${commentList}">
-							<div class="col-sm-2 padding0">
-								<input type="text" class="inputBox text-center" th:value="${comment.memberId}" disabled="disabled">
-							</div>
-							<div class="col-sm-8 padding0">
-								<input type="text" class="inputBox" th:value="${comment.commentContent}" disabled="disabled">
-							</div>
-							<div class="col-sm-1 padding0">
-								<a class="btn commentBtn" th:href="@{/modifyComment(qnaboardNo=${qnaboard.qnaboardNo}, commentNo=${comment.commentNo})}">수정</a>
-							</div>
-							<div class="col-sm-1 padding0">
-								<a class="btn commentBtn" th:href="@{/removeComment(qnaboardNo=${qnaboard.qnaboardNo}, commentNo=${comment.commentNo})}">삭제</a>
-							</div>
-						</div>
-						<br>
-						<!-- 댓글 페이징 -->
-						<div class="text-center" th:if="${totalCount != 0 }">
-							<span>
-								<a class="btn-sm" th:href="@{/qnaboardOne(commentCurrentPage=1, qnaboardNo=${qnaboard.qnaboardNo})}"><<</a>
-							</span>
-							<span th:if="${commentCurrentPage}==1">
-								<a class="btn-sm" th:href="@{/qnaboardOne(commentCurrentPage=1, qnaboardNo=${qnaboard.qnaboardNo})}">이전</a>
-							</span>
-							<span th:if="${commentCurrentPage}>1">
-								<a class="btn-sm" th:href="@{/qnaboardOne(commentCurrentPage=${commentCurrentPage-1}, qnaboardNo=${qnaboard.qnaboardNo})}">이전</a>
-							</span>
-							<span th:text="'-'+${commentCurrentPage}+'-'"></span>
-							<span th:if="${commentCurrentPage}<${lastPage}">
-								<a class="btn-sm" th:href="@{/qnaboardOne(commentCurrentPage=${commentCurrentPage+1}, qnaboardNo=${qnaboard.qnaboardNo})}">다음</a>
-							</span>
-							<span th:if="${commentCurrentPage}==${lastPage}">
-								<a class="btn-sm" th:href="@{/qnaboardOne(commentCurrentPage=${lastPage}, qnaboardNo=${qnaboard.qnaboardNo})}">다음</a>
-							</span>
-							<span>
-								<a class="btn-sm" th:href="@{/qnaboardOne(commentCurrentPage=${lastPage}, qnaboardNo=${qnaboard.qnaboardNo})}">>></a>
-							</span>
-						</div>
 					</div>
 				</div>
 			</div>

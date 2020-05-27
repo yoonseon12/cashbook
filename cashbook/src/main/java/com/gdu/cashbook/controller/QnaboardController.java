@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gdu.cashbook.service.CommentService;
 import com.gdu.cashbook.service.QnaboardService;
+import com.gdu.cashbook.vo.Comment;
 import com.gdu.cashbook.vo.LoginMember;
 import com.gdu.cashbook.vo.Qnaboard;
 
 @Controller
 public class QnaboardController {
 	@Autowired private QnaboardService qnaboardService;
+	@Autowired private CommentService commentService;
 	// 게시글 목록
 	@GetMapping({"/qnaboard","/qnaboardList"})
 	public String qnaboardList(HttpSession session, Model model, Qnaboard qnaboard,
@@ -41,8 +44,8 @@ public class QnaboardController {
 		/*for(Qnaboard q : qnaboardList) {
 			System.out.println(q);
 		}*/
-		model.addAttribute("qnaboardList", qnaboardList);
-		model.addAttribute("lastPage", map.get("lastPage"));
+		model.addAttribute("qnaboardList", qnaboardList); // 게시글 목록
+		model.addAttribute("lastPage", map.get("lastPage")); // 마지막페이지
 		return "qnaboard/qnaboardList";
 	}
 	// 게시글 추가
@@ -66,8 +69,8 @@ public class QnaboardController {
 	}
 	// 게시글 상세보기
 	@GetMapping("/qnaboardOne")
-	public String qnabroadOne(HttpSession session, Model model, 
-							@RequestParam(value="qnaboardNo") int qnaboardNo) {
+	public String qnabroadOne(HttpSession session, Model model, int qnaboardNo,
+							@RequestParam(value="commentCurrentPage", defaultValue = "1") int commentCurrentPage) {
 		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
 			return "redirect:/login";
 		}
@@ -76,14 +79,28 @@ public class QnaboardController {
 		String memberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
 		System.out.println(memberId+" <- QnaboardController.qnabroadOne: memberId");
 		
-		Map<String, Object> map = qnaboardService.getQnaboardListOne(qnaboardNo, memberId);
-		System.out.println(map.get("nextQnaboardNo")+" <- 다음 게시글 번호");
-		System.out.println(map.get("previousQnaboardNo")+" <- 이전 게시글 번호");
-		model.addAttribute("qnaboard", map.get("qnaboardOne")); // 게시글 내용
-		model.addAttribute("lastQnaboardNo", map.get("lastQnaboardNo")); // 마지막 게시글 번호
-		model.addAttribute("startQnaboardNo", map.get("startQnaboardNo")); // 처음 게시글 번호
-		model.addAttribute("nextQnaboardNo", map.get("nextQnaboardNo")); // 다음 게시글 번호
-		model.addAttribute("previousQnaboardNo", map.get("previousQnaboardNo")); // 이전 게시글 번호
+		Map<String, Object> qnaboardMap = qnaboardService.getQnaboardListOne(qnaboardNo, memberId);
+		System.out.println(qnaboardMap.get("nextQnaboardNo")+" <- 다음 게시글 번호");
+		System.out.println(qnaboardMap.get("previousQnaboardNo")+" <- 이전 게시글 번호");
+		model.addAttribute("qnaboard", qnaboardMap.get("qnaboardOne")); // 게시글 내용
+		model.addAttribute("lastQnaboardNo", qnaboardMap.get("lastQnaboardNo")); // 마지막 게시글 번호
+		model.addAttribute("startQnaboardNo", qnaboardMap.get("startQnaboardNo")); // 처음 게시글 번호
+		model.addAttribute("nextQnaboardNo", qnaboardMap.get("nextQnaboardNo")); // 다음 게시글 번호
+		model.addAttribute("previousQnaboardNo", qnaboardMap.get("previousQnaboardNo")); // 이전 게시글 번호
+		
+		// 댓글 목록
+		System.out.println(commentCurrentPage+" <- 현재 댓글 페이지");
+		final int rowPerPage = 5;
+		Map<String, Object> map = new HashMap<>();
+		map = commentService.getCommentList(memberId, qnaboardNo, commentCurrentPage, rowPerPage);
+		System.out.println(map.get("commentList")+"<<<<<<<<<<<<<<<<");
+		System.out.println(map.get("lastPage")+" <- 마지막페이지");
+		System.out.println(map.get("totalCount")+" <- 댓글 총 개수");
+		model.addAttribute("totalCount", map.get("totalCount"));
+		model.addAttribute("commentList", map.get("commentList")); // 댓글목록
+		model.addAttribute("lastPage", map.get("lastPage")); // 마지막 페이지
+		model.addAttribute("commentCurrentPage", commentCurrentPage);
+
 		return "qnaboard/qnaboardOne";
 	}
 	// 게시글 삭제

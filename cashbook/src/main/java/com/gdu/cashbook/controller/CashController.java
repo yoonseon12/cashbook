@@ -37,7 +37,7 @@ public class CashController {
 	public String getCashListByDate(HttpSession session, Model model,
 			@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		if (session.getAttribute("loginMember") == null) { // 로그인 상태 X
-			return "redirect:/index";
+			return "redirect:/login";
 		}
 		if (date == null) {
 			date = LocalDate.now();
