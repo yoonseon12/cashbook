@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>게시글 작성</title>
+		<title>게시글 수정</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -110,7 +110,7 @@
 						alert("내용을 입력해주세요");
 						return;
 					}
-					$('#addQnaboardForm').submit();
+					$('#modifyQnaboardForm').submit();
 				});
 			});
 		</script>
@@ -125,28 +125,29 @@
 			<div id="section">
 				<!-- 제목 -->
 				<div id="title" class="text-center">
-					<span>게시글 작성</span>
+					<span>게시글  수정</span>
 				</div>
 				<hr>
 				<!-- 입력 창 -->
 				<div class="text-center">
-					<form id="addQnaboardForm" method="post" action="/addQnaboard">
+					<form id="modifyQnaboardForm" method="post" action="/modifyQnaboard">
+						<input type="hidden" name="qnaboardNo" th:value="${qnaboard.qnaboardNo}">
 						<div class="titleArea">
-							<input type="text" id="qnaboardTitle" name="qnaboardTitle" placeholder="제목을 입력하세요">
+							<input type="text" id="qnaboardTitle" name="qnaboardTitle" th:value="${qnaboard.qnaboardTitle}">
 						</div>
 						<div class="row idArea">
 							<div class="col-sm-6 padding0">
-								<input type="text" name="memberId" th:value="${memberId}" readonly="readonly">
+								<input type="text" name="memberId" th:value="${qnaboard.memberId}" readonly="readonly">
 							</div>
 							<div class="col-sm-6 padding0">
 								<input type="text" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}" readonly="readonly">
 							</div>
 						</div>
 						<div class="contentArea">
-							<textarea id="qnaboardContent" name="qnaboardContent" placeholder="내용을 입력하세요"></textarea>
+							<textarea id="qnaboardContent" name="qnaboardContent" th:text="${qnaboard.qnaboardContent}"></textarea>
 						</div>
 						<div>
-							<button id="btn" type="button">작성완료</button>
+							<button id="btn" type="button">수정완료</button>
 						</div>
 					</form>
 				</div>

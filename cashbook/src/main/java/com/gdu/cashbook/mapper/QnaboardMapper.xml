@@ -77,4 +77,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE qnaboard_no &lt; #{qnaboardNo}
 		AND   member_id = #{memberId}
 	</select>
+	<!-- 게시글 삭제 -->
+	<delete id="deleteQnaboard" parameterType="int">
+		DELETE 
+		FROM qnaboard
+		WHERE qnaboard_no = #{qnaboardNo}
+	</delete>
+	<!-- 게시글 수정 -->
+	<update id="updateQnaboard" parameterType="com.gdu.cashbook.vo.Qnaboard">
+		UPDATE qnaboard
+		SET qnaboard_title    = #{qnaboardTitle},
+			qnaboard_content  = #{qnaboardContent}
+		WHERE qnaboard_no = #{qnaboardNo}
+		AND member_id     = #{memberId}
+	</update>
 </mapper>

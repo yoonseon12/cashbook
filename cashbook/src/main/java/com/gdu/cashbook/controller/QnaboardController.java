@@ -23,7 +23,7 @@ import com.gdu.cashbook.vo.Qnaboard;
 public class QnaboardController {
 	@Autowired private QnaboardService qnaboardService;
 	// 게시글 목록
-	@GetMapping({"/qnaboard","/board"})
+	@GetMapping({"/qnaboard","/qnaboardList"})
 	public String qnaboardList(HttpSession session, Model model, Qnaboard qnaboard,
 								@RequestParam(value="currentPage", defaultValue = "1") int currentPage) {
 		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
@@ -43,7 +43,7 @@ public class QnaboardController {
 		}*/
 		model.addAttribute("qnaboardList", qnaboardList);
 		model.addAttribute("lastPage", map.get("lastPage"));
-		return "qnaboard/qnaboard";
+		return "qnaboard/qnaboardList";
 	}
 	// 게시글 추가
 	@GetMapping("/addQnaboard")
@@ -71,10 +71,10 @@ public class QnaboardController {
 		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
 			return "redirect:/login";
 		}
-		System.out.println(qnaboardNo+" <- Qnaboard.qnabroadOne: qnaboardNo");
+		System.out.println(qnaboardNo+" <- QnaboardController.qnabroadOne: qnaboardNo");
 		
 		String memberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
-		System.out.println(memberId+" <- Qnaboard.qnabroadOne: memberId");
+		System.out.println(memberId+" <- QnaboardController.qnabroadOne: memberId");
 		
 		Map<String, Object> map = qnaboardService.getQnaboardListOne(qnaboardNo, memberId);
 		System.out.println(map.get("nextQnaboardNo")+" <- 다음 게시글 번호");
@@ -85,5 +85,39 @@ public class QnaboardController {
 		model.addAttribute("nextQnaboardNo", map.get("nextQnaboardNo")); // 다음 게시글 번호
 		model.addAttribute("previousQnaboardNo", map.get("previousQnaboardNo")); // 이전 게시글 번호
 		return "qnaboard/qnaboardOne";
+	}
+	// 게시글 삭제
+	@GetMapping("/removeQnaboard")
+	public String removeQnaboard(HttpSession session, @RequestParam(value="qnaboardNo") int qnaboardNo){
+		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
+			return "redirect:/login";
+		}
+		System.out.println(qnaboardNo+" <-QnaboardController.removeQnaboard: qnaboardNo");
+		qnaboardService.removeQnaboard(qnaboardNo);
+		return "redirect:/qnaboard";
+	}
+	// 게시글 수정
+	@GetMapping("/modifyQnaboard")
+	public String modifyQnaboard(HttpSession session, Model model,
+									@RequestParam(value="qnaboardNo") int qnaboardNo){
+		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
+			return "redirect:/login";
+		}
+		System.out.println(qnaboardNo+" <-QnaboardController.modifyQnaboard: qnaboardNo");
+		String memberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
+		System.out.println(memberId+" <- QnaboardController.modifyQnaboard: memberId");
+		
+		Map<String, Object> map = qnaboardService.getQnaboardListOne(qnaboardNo, memberId);
+		model.addAttribute("qnaboard", map.get("qnaboardOne")); // 게시글 내용
+		return "qnaboard/modifyQnaboard";
+	}
+	@PostMapping("/modifyQnaboard")
+	public String modifyQnaboard(HttpSession session, Qnaboard qnaboard) {
+		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
+			return "redirect:/login";
+		}
+		System.out.println(qnaboard+" <- Qnaboard.modifyQnaboard: qnaboard");
+		qnaboardService.modifyQnaboard(qnaboard);
+		return "redirect:/qnaboardOne?qnaboardNo="+qnaboard.getQnaboardNo();
 	}
 }

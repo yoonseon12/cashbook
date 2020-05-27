@@ -52,6 +52,13 @@ public class QnaboardService {
 		outputMap.put("nextQnaboardNo", qnaboardMapper.selectQnaboardNoNext(inputMap)); // 다음 게시글 번호
 		outputMap.put("previousQnaboardNo", qnaboardMapper.selectQnaboardNoPrevious(inputMap)); // 이전 게시글 번호
 		return outputMap;
-		
+	}
+	// 게시글 삭제
+	public void removeQnaboard(int qnaboardNo) {
+		qnaboardMapper.deleteQnaboard(qnaboardNo);
+	}
+	// 게시글 수정
+	public void modifyQnaboard(Qnaboard qnaboard) {
+		qnaboardMapper.updateQnaboard(qnaboard);
 	}
 }

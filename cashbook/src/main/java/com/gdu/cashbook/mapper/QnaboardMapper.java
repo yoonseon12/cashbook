@@ -15,7 +15,7 @@ public interface QnaboardMapper {
 	public int selectQnaboardCount(String memberId);
 	// 게시글 추가
 	public void insestQnaboard(Qnaboard qnaboard);
-	// 게시글 상세보기
+	// 게시글 상세보기(게시글 하나 정보 가져오기)
 	public Qnaboard selectQnaboardListOne(Map<String, Object> map);
 	// 마지막 게시글 번호 조회
 	public int selectQnaboardNoMax(String memberId);
@@ -25,4 +25,8 @@ public interface QnaboardMapper {
 	public int selectQnaboardNoNext(Map<String, Object> map);
 	// 이전 게시글 번호 조회
 	public int selectQnaboardNoPrevious(Map<String, Object> map);
+	// 게시글 삭제
+	public void deleteQnaboard(int qnaboardNo);
+	// 게시글 수정
+	public void updateQnaboard(Qnaboard qnaboard);
 }
