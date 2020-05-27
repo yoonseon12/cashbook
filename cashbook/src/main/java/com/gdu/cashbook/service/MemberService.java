@@ -153,7 +153,7 @@ public class MemberService {
 		String memberPic = null;
 		if(originName.equals("")) {
 			System.out.println("파일첨부안함");
-			memberPic="default.jpg";
+			memberPic="default.png";
 		}else {
 			int lastIndex = originName.lastIndexOf(".");
 			String extension = originName.substring(lastIndex); // 확장자 확인을 위해 .부터 문자열 자름
