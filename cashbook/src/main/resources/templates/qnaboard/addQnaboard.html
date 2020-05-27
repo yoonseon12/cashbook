@@ -45,7 +45,7 @@
 				margin:0 auto;
 				width:1100px;
 				background: white;
-				padding-top:50px;
+				padding-top:100px;
 				padding-bottom:50px;
 				padding-left: 150px;
 			}
@@ -73,25 +73,46 @@
 				border-color: rgb(204, 204, 204);
 			}
 			.titleArea{
-				margin : 40px 30px 40px 30px;
+				margin : 40px 30px 20px 30px;
 			}
 			.contentArea{
 				margin : 0px 30px 20px 30px;
 			}
+			.idArea{
+				margin : 0px 30px 20px 30px;
+			}
+			.padding0{
+				padding : 0px;
+			}
 			#btn{
-				width:80px;
-				height: 38px;
+				width:100px;
+				height: 40px;
 				border-radius: 4px;
-				background-color: #ccc;
+				background-color: rgb(52, 152, 219);
 				border:none;
-				color:#4C4C4C;
+				color:white;
 				padding : 7px 5px;
 			}
-			.today{
-				padding-top : 30px;
-				padding-right: 30px;
-			}
 		</style>
+		<script>
+			$(document).ready(function(){
+				$('#btn').click(function(){
+					if($('#qnaboardTitle').val()==""){
+						alert("제목을 입력해주세요");
+						return;
+					}
+					if($('#qnaboardTitle').val().length<4){
+						alert("제목을 4자리 이상 입력해주세요");
+						return;
+					}
+					if($('#qnaboardContent').val()==""){
+						alert("내용을 입력해주세요");
+						return;
+					}
+					$('#addQnaboardForm').submit();
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<div>
@@ -102,26 +123,29 @@
 			<!-- 내용 -->
 			<div id="section">
 				<!-- 제목 -->
-				<div class=row>
-					<div id="title" class="col-sm-6 text-left">
-						<span>게시글 작성</span>
-					</div>
-					<div class="col-sm-6 text-right today">
-						<span th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"></span>
-					</div>
+				<div id="title" class="text-center">
+					<span>게시글 작성</span>
 				</div>
 				<hr>
 				<!-- 입력 창 -->
 				<div class="text-center">
-					<form method="post" action="/addQnaboard">
+					<form id="addQnaboardForm" method="post" action="/addQnaboard">
 						<div class="titleArea">
-							<input type="text" name="qnaboardTitle" placeholder="제목을 입력하세요">
+							<input type="text" id="qnaboardTitle" name="qnaboardTitle" placeholder="제목을 입력하세요">
+						</div>
+						<div class="row idArea">
+							<div class="col-sm-6 padding0">
+								<input type="text" name="memberId" th:value="${memberId}" readonly="readonly">
+							</div>
+							<div class="col-sm-6 padding0">
+								<input type="text" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}" readonly="readonly">
+							</div>
 						</div>
 						<div class="contentArea">
-							<textarea name="qnaboardContent" placeholder="내용을 입력하세요"></textarea>
+							<textarea id="qnaboardContent" name="qnaboardContent" placeholder="내용을 입력하세요"></textarea>
 						</div>
 						<div>
-							<button id="btn" type="submit">작성완료</button>
+							<button id="btn" type="button">작성완료</button>
 						</div>
 					</form>
 				</div>

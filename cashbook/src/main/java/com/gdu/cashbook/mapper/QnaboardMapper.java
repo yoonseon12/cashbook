@@ -15,4 +15,14 @@ public interface QnaboardMapper {
 	public int selectQnaboardCount(String memberId);
 	// 게시글 추가
 	public void insestQnaboard(Qnaboard qnaboard);
+	// 게시글 상세보기
+	public Qnaboard selectQnaboardListOne(Map<String, Object> map);
+	// 마지막 게시글 번호 조회
+	public int selectQnaboardNoMax(String memberId);
+	// 처음 게시글 번호 조회
+	public int selectQnaboardNoMin(String memberId);
+	// 다음 게시글 번호 조회
+	public int selectQnaboardNoNext(Map<String, Object> map);
+	// 이전 게시글 번호 조회
+	public int selectQnaboardNoPrevious(Map<String, Object> map);
 }

@@ -145,7 +145,7 @@
 						<tr th:each="qnaboard : ${qnaboardList}">
 							<td th:text="${qnaboard.qnaboardNo}"></td>
 							<td>
-								<a class="" href="" th:text="${qnaboard.qnaboardTitle}"></a>
+								<a class="" th:href="@{/qnaboardOne(qnaboardNo=${qnaboard.qnaboardNo})}" th:text="${#strings.abbreviate(qnaboard.qnaboardTitle,16)}"></a>
 							</td>
 							<td th:text="${qnaboard.memberId}"></td>
 							<td th:text="${qnaboard.qnaboardDate}"></td>

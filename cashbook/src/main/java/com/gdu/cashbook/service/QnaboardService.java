@@ -16,7 +16,7 @@ import com.gdu.cashbook.vo.Qnaboard;
 public class QnaboardService {
 	@Autowired private QnaboardMapper qnaboardMapper;
 	// 게시글 목록
-	public Map<String, Object> getQnaboardList(String memberId, int currentPage, int rowPerPage){
+	public Map<String, Object> getQnaboardListAll(String memberId, int currentPage, int rowPerPage){
 		int beginRow = (currentPage-1)*rowPerPage;
 		System.out.println(beginRow+" <- QnaboardService.getQnaboardList: beginRow");
 		int totalCount = qnaboardMapper.selectQnaboardCount(memberId);
@@ -39,5 +39,19 @@ public class QnaboardService {
 	// 게시글 추가
 	public void addQnaboardList(Qnaboard qnaboard) {
 		qnaboardMapper.insestQnaboard(qnaboard);
+	}
+	// 게시글 상세보기
+	public Map<String, Object> getQnaboardListOne(int qnaboardNo, String memberId){
+		Map<String, Object> inputMap = new HashMap<>();
+		inputMap.put("qnaboardNo", qnaboardNo);
+		inputMap.put("memberId", memberId);
+		Map<String, Object> outputMap = new HashMap<>();
+		outputMap.put("qnaboardOne", qnaboardMapper.selectQnaboardListOne(inputMap)); // 게시글 상세보기		
+		outputMap.put("lastQnaboardNo", qnaboardMapper.selectQnaboardNoMax(memberId)); // 마지막 게시글 번호
+		outputMap.put("startQnaboardNo", qnaboardMapper.selectQnaboardNoMin(memberId)); // 처음 게시글 번호
+		outputMap.put("nextQnaboardNo", qnaboardMapper.selectQnaboardNoNext(inputMap)); // 다음 게시글 번호
+		outputMap.put("previousQnaboardNo", qnaboardMapper.selectQnaboardNoPrevious(inputMap)); // 이전 게시글 번호
+		return outputMap;
+		
 	}
 }

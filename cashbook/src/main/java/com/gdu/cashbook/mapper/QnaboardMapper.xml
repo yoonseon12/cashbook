@@ -37,4 +37,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			NOW()
 		) 
 	</insert>
+	<!-- 게시물 상세보기 -->
+	<select id="selectQnaboardListOne" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.Qnaboard">
+		SELECT
+		  qnaboard_no AS qnaboardNo
+		, member_id AS memberId
+		, qnaboard_title AS qnaboardTitle
+		, qnaboard_content AS qnaboardContent
+		, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
+		FROM qnaboard 
+		WHERE qnaboard_no = #{qnaboardNo}
+		AND   member_id    = #{memberId}
+	</select>
+	<!-- 마지막 게시물 번호 조회 -->
+	<select id="selectQnaboardNoMax" parameterType="String" resultType="int">
+		SELECT
+			MAX(qnaboard_no)
+		FROM qnaboard
+		WHERE member_id = #{memberId}
+	</select>
+	<!-- 처음 게시물 번호 조회 -->
+	<select id="selectQnaboardNoMin" parameterType="String" resultType="int">
+		SELECT 
+			MIN(qnaboard_no)
+		FROM qnaboard
+		WHERE member_id = #{memberId}
+	</select>
+	<!-- 다음게시물 번호 조회 -->
+	<select id="selectQnaboardNoNext" parameterType="java.util.Map" resultType="int">
+		SELECT IFNULL(MIN(qnaboard_no),#{qnaboardNo})
+		FROM qnaboard
+		WHERE qnaboard_no &gt; #{qnaboardNo}
+		AND   member_id = #{memberId}
+	</select>
+	<!-- 이전게시물 번호 조회 -->
+	<select id="selectQnaboardNoPrevious" parameterType="java.util.Map" resultType="int">
+		SELECT IFNULL(MAX(qnaboard_no),#{qnaboardNo})
+		FROM qnaboard
+		WHERE qnaboard_no &lt; #{qnaboardNo}
+		AND   member_id = #{memberId}
+	</select>
 </mapper>
