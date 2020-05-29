@@ -35,7 +35,7 @@ public class MemberService {
 	@Autowired private QnaboardMapper qnaboardMapper;
 	@Autowired private CashMapper cashMapper;
 	@Autowired private CategoryMapper categoryMapper;
-	@Value("C:\\GIT_CASHBOOK\\cashbook\\src\\main\\resources\\static\\upload\\")
+	@Value("C:\\STS_WORK\\maven.1590738595631\\cashbook\\src\\main\\resources\\static\\upload\\")
 	private String path; // 회원가입시 프로필사진 저장 경로
 	// 아이디 중복확인
 	public String checkMemberId(String memberIdCheck) {
@@ -59,7 +59,7 @@ public class MemberService {
 		String memberPic = null;
 		if(originName.equals("")) {
 			System.out.println("파일첨부안함");
-			memberPic="default.jpg";
+			memberPic="default.png";
 		}else {
 			int lastIndex = originName.lastIndexOf(".");
 			String extension = originName.substring(lastIndex); // 확장자 확인을 위해 .부터 문자열 자름
@@ -73,15 +73,17 @@ public class MemberService {
 		System.out.println(member+" <- MemberService.addMember: member");
 		row = memberMapper.insertMember(member);
 		// 2. 파일저장
-		File file = new File(path+memberPic); 
-		try {
-			multipartFile.transferTo(file);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-			// Exception
-			// 1. 예외처리를 해야만 문법적으로 이상없는 예외
-			// 2. 예외처리를 코드에서 구현하지 않아도 아무문제 없는 예외 : RuntimeException
+		if(!memberPic.equals("default.png")) {
+			File file = new File(path+memberPic); 
+			try {
+				multipartFile.transferTo(file);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+				// Exception
+				// 1. 예외처리를 해야만 문법적으로 이상없는 예외
+				// 2. 예외처리를 코드에서 구현하지 않아도 아무문제 없는 예외 : RuntimeException
+			}
 		}
 		return row;
 	}
@@ -166,13 +168,16 @@ public class MemberService {
 		memberForm.memberSetBymemberForm(member, memberForm, memberPic);
 		System.out.println(member+" <- MemberService.addMember: member");
 		row = memberMapper.updateMember(member);
+		
 		// 2. 파일저장
-		File file = new File(path+memberPic); 
-		try {
-			multipartFile.transferTo(file);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException();
+		if(!memberPic.equals("default.png")) {
+			File file = new File(path+memberPic); 
+			try {
+				multipartFile.transferTo(file);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
 		}
 		System.out.println(row+"<- <<<<<<<<<<<<<<<");
 		return row;
