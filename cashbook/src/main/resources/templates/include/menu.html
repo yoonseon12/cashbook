@@ -6,22 +6,27 @@
 	<body>
 		<div th:fragment="sidemenu"> <!-- 외부에서 부를땐  /include/menu::sidemenu -->
 			<div class="menuTitleArea">
-				<span class="menuTitle" th:text="${session.loginMember.memberId}"></span><span class="menuTitle">님</span>
+				<span class="menuTitle" th:if="${session.loginAdmin !=null}" th:text="${session.loginAdmin.adminId}"></span>
+				<span class="menuTitle" th:if="${session.loginMember !=null}" th:text="${session.loginMember.memberId}">
+				</span><span class="menuTitle">님</span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" id="home"th:href="@{/home}">홈</a></span>
+				<span th:if="${session.loginAdmin !=null}"><a class="menuLink" id="adminHome" th:href="@{/adminHome}">홈</a></span>
+				<span th:if="${session.loginMember !=null}"><a class="menuLink" id="home" th:href="@{/home}">홈</a></span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" id="memberInfo" th:href="@{/memberInfo}">회원정보</a></span>
+				<span th:if="${session.loginMember !=null}"><a class="menuLink" id="memberInfo" th:href="@{/memberInfo}">회원 정보</a></span>
+				<span th:if="${session.loginAdmin !=null}"><a class="menuLink" id="memberList" th:href="@{/memberList}">회원 목록</a></span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" id="cashbookDay" th:href="@{/getCashListByDate}">일별 가계부관리</a></span>
+				<span th:if="${session.loginMember !=null}"><a class="menuLink" id="cashbookDay" th:href="@{/getCashListByDate}">일별 가계부관리</a></span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" id="cashbookMonth" th:href="@{/getCashListByMonth}">월별 가계부관리</a></span>
+				<span th:if="${session.loginMember !=null}"><a class="menuLink" id="cashbookMonth" th:href="@{/getCashListByMonth}">월별 가계부관리</a></span>
 			</div>
 			<div class="menuArea">
-				<span><a class="menuLink" id="qnaboard" th:href="@{/qnaboard}">게시판</a></span>
+				<span th:if="${session.loginMember !=null}"><a class="menuLink" id="qnaboard" th:href="@{/qnaboard}">게시판</a></span>
+				<span th:if="${session.loginAdmin !=null}"><a class="menuLink" id="qnaboard" th:href="@{/adminQnaboard}">게시판</a></span>
 			</div>
 			<div class="menuArea">
 				<span><a class="menuLink" th:href="@{/logout}">로그아웃</a></span>

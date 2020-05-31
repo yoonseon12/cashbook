@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdu.cashbook.mapper.AdminMapper">
+	<!-- 로그인 -->
+	<select id="selectLoginAdmin" parameterType="com.gdu.cashbook.vo.LoginAdmin" resultType="com.gdu.cashbook.vo.LoginAdmin">
+		SELECT
+			admin_id AS adminId
+		FROM admin
+		WHERE admin_id = #{adminId}
+		AND admin_pw = PASSWORD(#{adminPw})
+	</select>
+	<!-- 게시글 출력(모든회원 게시글 확인) -->
+	<select id="selectQnaboardListAll" parameterType="int" resultType="com.gdu.cashbook.vo.Qnaboard">
+		SELECT
+			  qnaboard_no AS qnaboardNo
+			, member_id AS memberId
+			, qnaboard_title AS qnaboardTitle
+			, qnaboard_content AS qnaboardContent
+			, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
+		FROM qnaboard 
+		ORDER BY qnaboard_no DESC
+		LIMIT #{beginRow},#{rowPerPage}
+	</select>
+	<!-- 작성된 게시물 총 개수 -->
+	<select id="selectQnaboardCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM qnaboard
+	</select>
+</mapper>

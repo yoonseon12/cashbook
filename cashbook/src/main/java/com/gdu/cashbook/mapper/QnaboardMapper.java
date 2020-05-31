@@ -31,4 +31,6 @@ public interface QnaboardMapper {
 	public void updateQnaboard(Qnaboard qnaboard);
 	// 회원탈퇴 시 게시글 삭제
 	public void memberMeleteQnaboard(String memberId);
+	// 게시글 번호로 회원 아이디 출력(관리자모드일 때 memberId 찾기위해서)
+	public String selectMemberId(int qnaboardNo);
 }

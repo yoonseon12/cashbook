@@ -20,11 +20,10 @@ public class CommentService {
 		commentMapper.insertComment(comment);
 	}
 	// 댓글 목록 출력
-	public Map<String, Object> getCommentList(String memberId, int qnaboardNo, int currentPage, int rowPerPage){
-		System.out.println(memberId+" "+qnaboardNo+" "+currentPage+" "+rowPerPage);
+	public Map<String, Object> getCommentList(int qnaboardNo, int currentPage, int rowPerPage){
+		System.out.println(qnaboardNo+" "+currentPage+" "+rowPerPage);
 		int beginRow = (currentPage-1)*rowPerPage;
 		Map<String, Object> inputMap = new HashMap<String, Object>();
-		inputMap.put("memberId", memberId);
 		inputMap.put("qnaboardNo", qnaboardNo);
 		inputMap.put("beginRow", beginRow);
 		inputMap.put("rowPerPage", rowPerPage);

@@ -26,8 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			comment_content AS commentContent,
 			comment_date    AS commentDate
 		FROM comment
-		WHERE member_id   = #{memberId}
-		AND   qnaboard_no = #{qnaboardNo}
+		WHERE qnaboard_no = #{qnaboardNo}
 		ORDER BY comment_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
@@ -36,8 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT
 			COUNT(*)
 		FROM comment
-		WHERE member_id  = #{memberId}
-		AND   qnaboard_no = #{qnaboardNo}
+		WHERE qnaboard_no = #{qnaboardNo}
 	</select>
 	<!-- 댓글 삭제 -->
 	<delete id="deleteComment" parameterType="int">

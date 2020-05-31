@@ -29,7 +29,7 @@ public class QnaboardController {
 	@GetMapping({"/qnaboard","/qnaboardList"})
 	public String qnaboardList(HttpSession session, Model model, Qnaboard qnaboard,
 								@RequestParam(value="currentPage", defaultValue = "1") int currentPage) {
-		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
+		if(session.getAttribute("loginMember")==null && session.getAttribute("loginAdmin")==null) { // 회원, 관리자 로그인상태  X
 			return "redirect:/login";
 		}
 		System.out.println(currentPage+" <- 현재페이지");
@@ -71,14 +71,17 @@ public class QnaboardController {
 	@GetMapping("/qnaboardOne")
 	public String qnabroadOne(HttpSession session, Model model, int qnaboardNo,
 							@RequestParam(value="commentCurrentPage", defaultValue = "1") int commentCurrentPage) {
-		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
+		if(session.getAttribute("loginMember")==null && session.getAttribute("loginAdmin")==null) { // 회원, 관리자 로그인상태  X
 			return "redirect:/login";
 		}
 		System.out.println(qnaboardNo+" <- QnaboardController.qnabroadOne: qnaboardNo");
-		
-		String memberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
+		String memberId = null;
+		if(session.getAttribute("loginAdmin")==null) { // 회원이 게시글 상세보기
+		memberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
 		System.out.println(memberId+" <- QnaboardController.qnabroadOne: memberId");
-		
+		}else { // 관리자가 게시글 상세보기
+			memberId = qnaboardService.getMemberId(qnaboardNo);
+		}
 		Map<String, Object> qnaboardMap = qnaboardService.getQnaboardListOne(qnaboardNo, memberId);
 		System.out.println(qnaboardMap.get("nextQnaboardNo")+" <- 다음 게시글 번호");
 		System.out.println(qnaboardMap.get("previousQnaboardNo")+" <- 이전 게시글 번호");
@@ -92,7 +95,7 @@ public class QnaboardController {
 		System.out.println(commentCurrentPage+" <- 현재 댓글 페이지");
 		final int rowPerPage = 5;
 		Map<String, Object> map = new HashMap<>();
-		map = commentService.getCommentList(memberId, qnaboardNo, commentCurrentPage, rowPerPage);
+		map = commentService.getCommentList(qnaboardNo, commentCurrentPage, rowPerPage);
 		System.out.println(map.get("commentList")+"<<<<<<<<<<<<<<<<");
 		System.out.println(map.get("lastPage")+" <- 마지막페이지");
 		System.out.println(map.get("totalCount")+" <- 댓글 총 개수");
@@ -106,7 +109,7 @@ public class QnaboardController {
 	// 게시글 삭제
 	@GetMapping("/removeQnaboard")
 	public String removeQnaboard(HttpSession session, @RequestParam(value="qnaboardNo") int qnaboardNo){
-		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
+		if(session.getAttribute("loginMember")==null && session.getAttribute("loginAdmin")==null) { // 회원, 관리자 로그인상태  X
 			return "redirect:/login";
 		}
 		System.out.println(qnaboardNo+" <-QnaboardController.removeQnaboard: qnaboardNo");

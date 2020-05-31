@@ -97,4 +97,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM qnaboard
 		WHERE member_id = #{memberId}
 	</delete>
+	<!-- 게시글 번호로 회원 아이디 출력(관리자모드일 때 memberId 찾기위해서) -->
+	<select id="selectMemberId" parameterType="int" resultType="String">
+		SELECT
+			member_id
+		FROM qnaboard
+		where qnaboard_no = #{qnaboardNo}
+	</select>
 </mapper>

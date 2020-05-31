@@ -36,6 +36,9 @@ public class CashController {
 	// 일별 가계부 관리
 	public String getCashListByDate(HttpSession session, Model model,
 			@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
+			return "redirect:/adminHome";
+		}
 		if (session.getAttribute("loginMember") == null) { // 로그인 상태 X
 			return "redirect:/login";
 		}
@@ -62,6 +65,9 @@ public class CashController {
 	@GetMapping("/removeCash")
 	public String removeCash(HttpSession session, @RequestParam(value = "cashNo") int cashNo,
 			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
+			return "redirect:/adminHome";
+		}
 		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
 			return "redirect:/login";
 		}
@@ -75,6 +81,9 @@ public class CashController {
 	@GetMapping("/getCashListByMonth")
 	public String getCashListByMonth(HttpSession session, Model model,
 			@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
+			return "redirect:/adminHome";
+		}
 		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
 			return "redirect:/login";
 		}
@@ -132,6 +141,9 @@ public class CashController {
 	public String addCash(HttpSession session, Model model,
 			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		System.out.println(date + " <- CashController.addCash: date");
+		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
+			return "redirect:/adminHome";
+		}
 		if (session.getAttribute("loginMember") == null) { // 로그인 X
 			return "redirect:/login";
 		}
@@ -148,6 +160,9 @@ public class CashController {
 	public String addCash(HttpSession session, Model model, Cash cash,
 			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
 			@RequestParam(value = "categoryNameDirect") String categoryNameDirect) {
+		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
+			return "redirect:/adminHome";
+		}
 		if (session.getAttribute("loginMember") == null) { // 로그인 X
 			return "redirect:/login";
 		}
@@ -196,6 +211,9 @@ public class CashController {
 	public String modifyCash(HttpSession session, Model model, 
 							@RequestParam(value = "cashNo") int cashNo,
 							@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
+			return "redirect:/adminHome";
+		}
 		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
 			return "redirect:/login";
 		}
@@ -217,6 +235,9 @@ public class CashController {
 	public String modifyCash(HttpSession session, Model model, Cash cash,
 			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
 			@RequestParam(value = "categoryNameDirect") String categoryNameDirect) {
+		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
+			return "redirect:/adminHome";
+		}
 		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
 			return "redirect:/login";
 		}
@@ -264,6 +285,9 @@ public class CashController {
 	@GetMapping("/compareCash")
 	public String compareCash(HttpSession session, Model model, Cash cash,
 			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
+			return "redirect:/adminHome";
+		}
 		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
 			return "redirect:/login";
 		}

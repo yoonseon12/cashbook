@@ -1,6 +1,6 @@
 package com.gdu.cashbook.controller;
 
-import java.util.HashMap;
+import java.util.HashMap;	
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.cashbook.service.CommentService;
 import com.gdu.cashbook.service.QnaboardService;
-import com.gdu.cashbook.vo.Comment;
-import com.gdu.cashbook.vo.LoginMember;
+import com.gdu.cashbook.vo.*;
 
 @Controller
 public class CommentController {
@@ -25,16 +24,21 @@ public class CommentController {
 	@PostMapping("/addComment")
 	public String addComment(HttpSession session, Comment comment) {
 		System.out.println(comment+" <- CommentController.addComment: comment");
-		if (session.getAttribute("loginMember") == null) { // 로그인 상태 X
+		if(session.getAttribute("loginMember")==null && session.getAttribute("loginAdmin")==null) { // 회원, 관리자 로그인상태  X
 			return "redirect:/login";
 		}
+		if(session.getAttribute("loginAdmin")!=null) {
+			System.out.println(((LoginAdmin)(session.getAttribute("loginAdmin"))).getAdminId() + " <-- 관리자 아이디");
+			comment.setMemberId(((LoginAdmin)(session.getAttribute("loginAdmin"))).getAdminId());
+		}
+		System.out.println(comment.getMemberId()+"<<<?????!!!");
 		commentService.addComment(comment);
 		return "redirect:/qnaboardOne?qnaboardNo="+comment.getQnaboardNo();
 	}
 	// 댓글 삭제
 	@GetMapping("/removeComment")
 	public String removeComment(HttpSession session, int qnaboardNo, int commentNo) {
-		if (session.getAttribute("loginMember") == null) { // 로그인 상태 X
+		if(session.getAttribute("loginMember")==null && session.getAttribute("loginAdmin")==null) { // 회원, 관리자 로그인상태  X
 			return "redirect:/login";
 		}
 		commentService.removeComment(qnaboardNo, commentNo);

@@ -20,14 +20,14 @@ public class QnaboardService {
 	// 게시글 목록
 	public Map<String, Object> getQnaboardListAll(String memberId, int currentPage, int rowPerPage){
 		int beginRow = (currentPage-1)*rowPerPage;
-		System.out.println(beginRow+" <- QnaboardService.getQnaboardList: beginRow");
+		System.out.println(beginRow+" <- QnaboardService.getQnaboardListAll: beginRow");
 		int totalCount = qnaboardMapper.selectQnaboardCount(memberId);
-		System.out.println(totalCount+" <- QnaboardService.getQnaboardList: totalCount");
+		System.out.println(totalCount+" <- QnaboardService.getQnaboardListAll: totalCount");
 		int lastPage = totalCount/rowPerPage;
 		if(totalCount%rowPerPage!=0) {
 			lastPage += 1;
 		}
-		System.out.println(lastPage+"<- QnaboardService.getQnaboardList: lastPage");
+		System.out.println(lastPage+"<- QnaboardService.getQnaboardListAll: lastPage");
 		Map<String, Object> inputMap = new HashMap<String, Object>();
 		inputMap.put("memberId", memberId);
 		inputMap.put("beginRow", beginRow);
@@ -65,5 +65,9 @@ public class QnaboardService {
 	// 게시글 수정
 	public void modifyQnaboard(Qnaboard qnaboard) {
 		qnaboardMapper.updateQnaboard(qnaboard);
+	}
+	// 게시글 번호로 회원 아이디 출력(관리자모드일 때 memberId 찾기위해서)
+	public String getMemberId(int qnaboardNo) {
+		return qnaboardMapper.selectMemberId(qnaboardNo);
 	}
 }

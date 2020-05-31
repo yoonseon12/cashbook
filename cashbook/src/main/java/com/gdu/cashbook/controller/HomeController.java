@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 	@GetMapping("/home")
 	public String home(HttpSession session) {
-		if(session.getAttribute("loginMember")==null) {
+		if(session.getAttribute("loginMember")==null && session.getAttribute("loginAdmin")==null) {
 			return "redirect:/login";
 		}
+		System.out.println(session.getAttribute("loginMember")+" 로그인 회원");
+		System.out.println(session.getAttribute("loginAdmin")+" 로그인 관리자");
 		return "home";
 	}
 }
