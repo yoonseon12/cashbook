@@ -37,23 +37,29 @@
 			.menuArea{
 				margin: 50px 0px;
 			}
-			#home{
+			#adminHome{
 				color:white;
+			}
+			.areaBorder{
+				width:900px;
+				height:800px;
+				border: 1px solid rgb(52, 152, 219);
+				padding: 15px;
 			}
 			/* 출력화면 style */
 			#section {
 				margin:0 auto;
 				width:1000px;
 				background: white;
-				padding-top:100px;
-				padding-bottom:100px;
+				padding-top:50px;
+				padding-bottom:50px;
 				padding-left: 100px;
 			}
-			.area{
-				margin-top: 280px;
-			}
-			#text{
+			.title{
 				font-size: 40px;
+			}
+			.subTitle{
+				font-size: 25px;
 			}
 		</style>
 	</head>
@@ -65,9 +71,48 @@
 			</div>
 			<!-- 내용 -->
 			<div id="section">
-				<div class="area text-center">
-					<span id="text">가계부를 이용해 손쉽게 돈을 관리해보세요.</span>
-				</div>
+				<div class="areaBorder">
+					<!-- 제목 -->
+					<div class="text-center">
+						<span class="title">회원 기능 및 권한 소개</span>
+					</div>
+					<br>
+					<br>
+					<div class="text-center">
+					<p>
+						<span class="subTitle">「 회원 정보 」</span><br>
+						<span>회원 정보 확인</span><br>
+						<span>회원 비밀번호 변경</span><br>
+						<span>회원 정보 수정</span><br>
+						<span>회원 탈퇴</span>
+					</p>
+					<br>
+					<p>
+						<span class="subTitle">「 일별 가계부관리 」</span><br>
+						<span>일별 가계부 작성</span><br>
+						<span>일별 가계부 지출 수입 합계 확인</span>
+					</p>
+					<br>
+					<p>
+						<span class="subTitle">「 월별 가계부관리 」</span><br>
+						<span>월별로 일별 가계부 내역 확인</span><br>
+						<span>월별 가계부 지출 수입 합계 확인</span><br>
+						<span>년도 월별 가계부 비교</span>
+					</p>
+					<br>
+					<p>
+						<span class="subTitle">「 1:1 질문게시판 」</span><br>
+						<span>회원의 게시글 목록 확인</span><br>
+						<span>회원의 게시글 답변</span><br>
+						<span>회원의 게시글 삭제 및 수정</span><br>
+						<span>회원의 게시글 답변 삭제 및 수정</span><br>
+						<span>관리자의 게시글 답변 삭제</span>
+					</p>
+					<p>
+						<strong class="subTitle">:: 권한밖의 기능 감지시 홈으로 강제 이동 ::</strong>
+					</p>
+					</div>
+				</div>	
 			</div>
 		</div>
 	</body>

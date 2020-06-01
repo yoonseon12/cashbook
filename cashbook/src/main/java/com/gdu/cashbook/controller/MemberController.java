@@ -83,6 +83,9 @@ public class MemberController {
 	// 로그인
 	@GetMapping("/login")
 	public String login(HttpSession session) {
+		System.out.println("");
+		System.out.println("로그인 컨트롤러 접근");
+		System.out.println("");
 		System.out.println(session.getAttribute("loginMember")+" <- 회원 로그인상태 확인 디버깅");
 		System.out.println(session.getAttribute("loginAdmin")+" <-  관리자 로그인상태 확인 디버깅");
 		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O

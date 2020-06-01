@@ -45,6 +45,7 @@ public class adminController {
 		List<Qnaboard> qnaboardList = (List<Qnaboard>) map.get("qnaboardList");
 		model.addAttribute("qnaboardList", qnaboardList); // 작성된 모든 게시글 목록
 		model.addAttribute("lastPage", map.get("lastPage")); // 마지막페이지
+		model.addAttribute("totalCount", map.get("totalCount")); // 전체 게시글 수
 		for(Qnaboard q : qnaboardList) {
 			System.out.println(q+" <<");
 		}

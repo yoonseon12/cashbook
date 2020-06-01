@@ -32,14 +32,17 @@ public class QnaboardController {
 		if(session.getAttribute("loginMember")==null && session.getAttribute("loginAdmin")==null) { // 회원, 관리자 로그인상태  X
 			return "redirect:/login";
 		}
+		if(session.getAttribute("loginAdmin") != null) { // 관리자 모드일 시
+			return "redirect:/adminQnaboard";
+		}
 		System.out.println(currentPage+" <- 현재페이지");
 		model.addAttribute("currentPage", currentPage);
 		final int rowPerPage = 10;
 		
 		String memberId = null;
 		if(session.getAttribute("loginMember") != null) {
-		memberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
-		System.out.println(memberId+" <- memberId");
+			memberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
+			System.out.println(memberId+" <- memberId");
 		}
 		Map<String, Object> map = new HashMap<>();
 		map = qnaboardService.getQnaboardListAll(memberId, currentPage, rowPerPage);
@@ -49,10 +52,6 @@ public class QnaboardController {
 		}*/
 		model.addAttribute("qnaboardList", qnaboardList); // 게시글 목록
 		model.addAttribute("lastPage", map.get("lastPage")); // 마지막페이지
-		
-		if(session.getAttribute("loginAdmin") != null) { // 관리자 모드일 시
-			return "redirect:/adminQnaboard";
-		}
 		return "qnaboard/qnaboardList";
 	}
 	// 게시글 추가
@@ -91,22 +90,22 @@ public class QnaboardController {
 			System.out.println(qnaboardMap.get("nextQnaboardNo")+" <- 다음 게시글 번호");
 			System.out.println(qnaboardMap.get("previousQnaboardNo")+" <- 이전 게시글 번호");
 			model.addAttribute("qnaboard", qnaboardMap.get("qnaboardOne")); // 게시글 내용
-			model.addAttribute("lastQnaboardNo", qnaboardMap.get("lastQnaboardNo")); // 마지막 게시글 번호
-			model.addAttribute("startQnaboardNo", qnaboardMap.get("startQnaboardNo")); // 처음 게시글 번호
-			model.addAttribute("nextQnaboardNo", qnaboardMap.get("nextQnaboardNo")); // 다음 게시글 번호
-			model.addAttribute("previousQnaboardNo", qnaboardMap.get("previousQnaboardNo")); // 이전 게시글 번호
+			model.addAttribute("lastQnaboardNo", qnaboardMap.get("lastQnaboardNo")); // 마지막 게시글 번호(회원용)
+			model.addAttribute("startQnaboardNo", qnaboardMap.get("startQnaboardNo")); // 처음 게시글 번호(회원용)
+			model.addAttribute("nextQnaboardNo", qnaboardMap.get("nextQnaboardNo")); // 다음 게시글 번호(회원용)
+			model.addAttribute("previousQnaboardNo", qnaboardMap.get("previousQnaboardNo")); // 이전 게시글 번호(회원용)
 		}
 		if(session.getAttribute("loginMember")==null){ // 관리자가 게시글 상세보기
 			memberId = qnaboardService.getMemberId(qnaboardNo);
-			System.out.println(memberId+" <- 관리자가 게시글 상세보기할때 맴버아이디");
+			System.out.println(memberId+" <- 관리자가 게시글 상세보기할때 멤버아이디");
 			Map<String, Object> qnaboardMap = qnaboardService.getAdminQnaboardListOne(qnaboardNo, memberId);
 			System.out.println(qnaboardMap.get("nextQnaboardNo")+" <- 다음 게시글 번호");
 			System.out.println(qnaboardMap.get("previousQnaboardNo")+" <- 이전 게시글 번호");
 			model.addAttribute("qnaboard", qnaboardMap.get("qnaboardOne")); // 게시글 내용
-			model.addAttribute("lastQnaboardNo", qnaboardMap.get("lastQnaboardNo")); // 마지막 게시글 번호
-			model.addAttribute("startQnaboardNo", qnaboardMap.get("startQnaboardNo")); // 처음 게시글 번호
-			model.addAttribute("nextQnaboardNo", qnaboardMap.get("nextQnaboardNo")); // 다음 게시글 번호
-			model.addAttribute("previousQnaboardNo", qnaboardMap.get("previousQnaboardNo")); // 이전 게시글 번호
+			model.addAttribute("lastQnaboardNo", qnaboardMap.get("lastQnaboardNo")); // 마지막 게시글 번호(관리자용)
+			model.addAttribute("startQnaboardNo", qnaboardMap.get("startQnaboardNo")); // 처음 게시글 번호(관리자용)
+			model.addAttribute("nextQnaboardNo", qnaboardMap.get("nextQnaboardNo")); // 다음 게시글 번호(관리자용)
+			model.addAttribute("previousQnaboardNo", qnaboardMap.get("previousQnaboardNo")); // 이전 게시글 번호(관리자용)
 		}
 		
 		// 댓글 목록
@@ -140,11 +139,12 @@ public class QnaboardController {
 	// 게시글 수정
 	@GetMapping("/modifyQnaboard")
 	public String modifyQnaboard(HttpSession session, Model model,
-									@RequestParam(value="qnaboardNo") int qnaboardNo){
+									@RequestParam(value="qnaboardNo") int qnaboardNo){ 
 		if(session.getAttribute("loginMember")==null) { // 로그인상태  X
 			return "redirect:/login";
 		}
 		System.out.println(qnaboardNo+" <-QnaboardController.modifyQnaboard: qnaboardNo");
+		
 		String memberId = ((LoginMember)(session.getAttribute("loginMember"))).getMemberId();
 		System.out.println(memberId+" <- QnaboardController.modifyQnaboard: memberId");
 		

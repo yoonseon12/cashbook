@@ -31,6 +31,7 @@ public class AdminService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("qnaboardList", adminMapper.selectQnaboardListAll(beginRow, rowPerPage));
 		map.put("lastPage", lastPage);
+		map.put("totalCount", totalCount);
 		return map;
 	}
 	// 회원 목록 확인

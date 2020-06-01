@@ -25,4 +25,6 @@ public interface CommentMapper {
 	public void memberDeleteComment(String memberId);
 	// 게시글삭제시 댓글 삭제
 	public void qnaboardDeleteComment(int qnaboardNo);
+	// 댓글 수정 시 댓글 작성자 확인
+	public String selectMemberId(int commentNo);
 }

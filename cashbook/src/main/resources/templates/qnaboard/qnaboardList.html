@@ -106,6 +106,12 @@
 			#addQnaboard:hover {
 				color:black;
 			}
+			.paddingTop11{
+				padding-top: 11px;
+			}
+			.qnaboardTotalCount{
+				font-size: 18px;
+			}
 		</style>
 	</head>
 	<body>
@@ -124,7 +130,10 @@
 				<div id="area" class="row">
 					<!-- 검색 링크 -->
 					<div class="col-sm-6 text-left">
-						<a id="addQnaboard" class="btn" th:href="@{/addQnaboard}">문의하기</a>
+						<a id="addQnaboard" class="btn" th:if="${session.loginMember != null}" th:href="@{/addQnaboard}">문의하기</a>
+						<div class="paddingTop11" th:if="${session.loginAdmin != null}">
+						<span class="qnaboardTotalCount">전체 문의글 수 : </span><strong class="qnaboardTotalCount" th:text="${totalCount}"></strong>
+						</div>
 					</div>
 					<div class="col-sm-6 text-right">
 						<form method="post" action="/qnaboard">

@@ -56,4 +56,8 @@ public class CommentService {
 	public void modifyComment(Comment comment) {
 		commentMapper.updateComment(comment);
 	}
+	// 댓글 수정 시 댓글 작성자 확인
+	public String getMemberId(int commentNo) {
+		return commentMapper.selectMemberId(commentNo);
+	}
 }

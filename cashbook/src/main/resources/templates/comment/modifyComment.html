@@ -216,7 +216,8 @@
 						<form method="post" action="/modifyComment">
 							<input type="hidden" name="commentNo" th:value="${modifyCommentNo}">
 							<input type="hidden" name="qnaboardNo" th:value="${qnaboard.qnaboardNo}">
-							<input type="hidden" name="memberId" th:value="${qnaboard.memberId}">
+							<input type="hidden" name="memberId" th:if="${session.loginAdmin != null}" th:value="${session.loginAdmin.adminId}">
+							<input type="hidden" name="memberId" th:if="${session.loginMember != null}" th:value="${session.loginMember.memberId}">
 							<div class="row commentInputArea">
 								<div class="col-sm-10 padding0">
 									<input type="text" id="commentContent" class="inputBox" name="commentContent" th:value="${comment.commentContent}">

@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			NOW()
 		) 
 	</insert>
-	<!-- 게시물 상세보기 (회원용) -->
+	<!-- 게시물 상세보기 -->
 	<select id="selectQnaboardListOne" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.Qnaboard">
 		SELECT
 		  qnaboard_no AS qnaboardNo
