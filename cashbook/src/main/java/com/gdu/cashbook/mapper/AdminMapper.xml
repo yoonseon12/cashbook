@@ -21,12 +21,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
 		FROM qnaboard 
 		ORDER BY qnaboard_no DESC
-		LIMIT #{beginRow},#{rowPerPage}
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 작성된 게시물 총 개수 -->
 	<select id="selectQnaboardCount" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM qnaboard
+	</select>
+	<!-- 회원 목록(모든회원 조회) -->
+	<select id="selectMemberListAll" parameterType="int" resultType="com.gdu.cashbook.vo.Member">
+		SELECT
+			member_id    AS memberId,
+			member_name  AS memberName
+		FROM member
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 전체 회원 수 -->
+	<select id="selectMemberCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM member
+	</select>
+	<!-- 회원 정보 확인 -->
+	<select id="selectMemberOne" parameterType="String" resultType="com.gdu.cashbook.vo.Member">
+		SELECT
+			member_id    AS memberId,
+			member_name  AS memberName,
+			member_addr  AS memberAddr,
+			member_phone AS memberPhone,
+			member_email AS memberEmail,
+			member_pic AS memberPic
+		FROM member
+		WHERE member_id = #{memberId}
 	</select>
 </mapper>

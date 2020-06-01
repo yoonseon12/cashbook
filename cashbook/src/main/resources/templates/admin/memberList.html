@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>게시판</title>
+		<title>회원 목록</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -38,7 +38,7 @@
 			.menuArea{
 				margin: 50px 0px;
 			}
-			#qnaboard{
+			#memberList{
 				color:white;
 			}
 			/* 출력화면 style */
@@ -64,15 +64,22 @@
 				background-color: #ccc;
 				color:#4C4C4C;
 			}
+			.memberTotalCount{
+				font-size: 18px;
+			}
 			a:hover{
 				text-decoration: none;
 				color:black;
+			}
+			.paddingTop11{
+				padding-top: 11px;
 			}
 			/* 테이블 관련 */
 			table{
 				border:2px solid #ccc;
 				margin-top:10px;
 				width: 100%;
+				table-layout: fixed;
 			}
 			th{
 				background: #eaeaea;
@@ -118,13 +125,13 @@
 			<div id="section">
 				<!-- 제목 -->
 				<div id="title">
-					<span>QnA 게시판</span>
+					<span>회원 목록</span>
 				</div>
 				<!-- 검색 링크 -->
 				<div id="area" class="row">
 					<!-- 검색 링크 -->
-					<div class="col-sm-6 text-left">
-						<a id="addQnaboard" class="btn" th:href="@{/addQnaboard}">문의하기</a>
+					<div class="col-sm-6 text-left paddingTop11">
+						<span class="memberTotalCount">전체 회원 수 : </span><strong class="memberTotalCount" th:text="${memberTotalCount}"></strong>
 					</div>
 					<div class="col-sm-6 text-right">
 						<form method="post" action="/qnaboard">
@@ -137,43 +144,43 @@
 				<div>
 					<table class="table text-center">
 						<tr>
-							<th width="15%">No</th>
-							<th width="300">제목</th>
-							<th width="20%">작성자</th>
-							<th width="25%">작성일</th>
+							<th>회원 아이디</th>
+							<th>이름</th>
 						</tr>
-						<tr th:each="qnaboard : ${qnaboardList}">
-							<td th:text="${qnaboard.qnaboardNo}"></td>
+						<tr th:each="member : ${memberList}">
 							<td>
-								<a class="" th:href="@{/qnaboardOne(qnaboardNo=${qnaboard.qnaboardNo})}" th:text="${#strings.abbreviate(qnaboard.qnaboardTitle,16)}"></a>
+								<a th:href="@{/memberOne(memberId=${member.memberId})}" th:text="${member.memberId}"></a>
 							</td>
-							<td th:text="${qnaboard.memberId}"></td>
-							<td th:text="${qnaboard.qnaboardDate}"></td>
+							<td>
+								<span th:text="${member.memberName}"></span>
+							</td>
 						</tr>
 					</table>
 				</div>
 				<!-- 페이징 -->
+				
 				<div class="pageLink text-center">
 					<span>
-						<a class="btn-sm" th:href="@{/qnaboard(currentPage=1)}"><<</a>
+						<a class="btn-sm" th:href="@{/memberList(currentPage=1)}"><<</a>
 					</span>
 					<span th:if="${currentPage}==1">
-						<a class="btn-sm" th:href="@{/qnaboard(currentPage=1)}">이전</a>
+						<a class="btn-sm" th:href="@{/memberList(currentPage=1)}">이전</a>
 					</span>
 					<span th:if="${currentPage}>1">
-						<a class="btn-sm" th:href="@{/qnaboard(currentPage=${currentPage-1})}">이전</a>
+						<a class="btn-sm" th:href="@{/memberList(currentPage=${currentPage-1})}">이전</a>
 					</span>
 					<span th:text="'-'+${currentPage}+'-'"></span>
 					<span  th:if="${currentPage}<${lastPage}">
-						<a class="btn-sm" th:href="@{/qnaboard(currentPage=${currentPage+1})}">다음</a>
+						<a class="btn-sm" th:href="@{/memberList(currentPage=${currentPage+1})}">다음</a>
 					</span>
 					<span th:if="${currentPage}==${lastPage}">
-						<a class="btn-sm" th:href="@{/qnaboard(currentPage=${lastPage})}">다음</a>
+						<a class="btn-sm" th:href="@{/memberList(currentPage=${lastPage})}">다음</a>
 					</span>
 					<span>
-						<a class="btn-sm" th:href="@{/qnaboard(currentPage=${lastPage})}">>></a>
+						<a class="btn-sm" th:href="@{/memberList(currentPage=${lastPage})}">>></a>
 					</span>
 				</div>
+				
 			</div>
 		</div>
 	</body>

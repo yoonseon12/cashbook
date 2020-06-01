@@ -42,17 +42,31 @@ public class QnaboardService {
 	public void addQnaboardList(Qnaboard qnaboard) {
 		qnaboardMapper.insestQnaboard(qnaboard);
 	}
-	// 게시글 상세보기
+	// 게시글 상세보기(회원용)
 	public Map<String, Object> getQnaboardListOne(int qnaboardNo, String memberId){
 		Map<String, Object> inputMap = new HashMap<>();
 		inputMap.put("qnaboardNo", qnaboardNo);
 		inputMap.put("memberId", memberId);
 		Map<String, Object> outputMap = new HashMap<>();
 		outputMap.put("qnaboardOne", qnaboardMapper.selectQnaboardListOne(inputMap)); // 게시글 상세보기		
-		outputMap.put("lastQnaboardNo", qnaboardMapper.selectQnaboardNoMax(memberId)); // 마지막 게시글 번호
-		outputMap.put("startQnaboardNo", qnaboardMapper.selectQnaboardNoMin(memberId)); // 처음 게시글 번호
-		outputMap.put("nextQnaboardNo", qnaboardMapper.selectQnaboardNoNext(inputMap)); // 다음 게시글 번호
-		outputMap.put("previousQnaboardNo", qnaboardMapper.selectQnaboardNoPrevious(inputMap)); // 이전 게시글 번호
+		outputMap.put("lastQnaboardNo", qnaboardMapper.selectQnaboardNoMax(memberId)); // 마지막 게시글 번호(회원용)
+		outputMap.put("startQnaboardNo", qnaboardMapper.selectQnaboardNoMin(memberId)); // 처음 게시글 번호(회원용)
+		outputMap.put("nextQnaboardNo", qnaboardMapper.selectQnaboardNoNext(inputMap)); // 다음 게시글 번호(회원용)
+		outputMap.put("previousQnaboardNo", qnaboardMapper.selectQnaboardNoPrevious(inputMap)); // 이전 게시글 번호(회원용)
+		return outputMap;
+	}
+	// 게시글 상세보기(관리자용)
+	public Map<String, Object> getAdminQnaboardListOne(int qnaboardNo, String memberId){
+		Map<String, Object> inputMap = new HashMap<>();
+		inputMap.put("qnaboardNo", qnaboardNo);
+		inputMap.put("memberId", memberId);
+		
+		Map<String, Object> outputMap = new HashMap<>();
+		outputMap.put("qnaboardOne", qnaboardMapper.selectQnaboardListOne(inputMap)); // 게시글 상세보기
+		outputMap.put("lastQnaboardNo", qnaboardMapper.selectAdminQnaboardNoMax()); // 마지막 게시글 번호(관리자용)
+		outputMap.put("startQnaboardNo", qnaboardMapper.selectAdminQnaboardNoMin()); // 처음 게시글 번호(관리자용)
+		outputMap.put("nextQnaboardNo", qnaboardMapper.selectAdminQnaboardNoNext(qnaboardNo)); // 다음 게시글 번호(관리자용)
+		outputMap.put("previousQnaboardNo", qnaboardMapper.selectAdminQnaboardNoPrevious(qnaboardNo)); // 이전 게시글 번호(관리자용)
 		return outputMap;
 	}
 	// 게시글 삭제

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;	
 import com.gdu.cashbook.vo.LoginAdmin;
+import com.gdu.cashbook.vo.Member;
 import com.gdu.cashbook.vo.Qnaboard;
 
 @Mapper
@@ -14,4 +15,10 @@ public interface AdminMapper {
 	public List<Qnaboard> selectQnaboardListAll(int beginRow, int rowPerPage);
 	// 작성된 게시글 총 개수
 	public int selectQnaboardCount();
+	// 회원 목록(모든회원 조회)
+	public List<Member> selectMemberListAll(int beginRow, int rowPerPage);
+	// 전체 회원 수
+	public int selectMemberCount();
+	// 회원정보 확인
+	public Member selectMemberOne(String memberId);
 }

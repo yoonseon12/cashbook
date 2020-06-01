@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>회원 정보</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	</head>
+	<style>
+		/* 메뉴바 style */
+		#sidemenu {
+			width: 200px;
+			height: 100%;
+			position: fixed;
+			background: rgb(52, 152, 219);
+			overflow: hidden;
+		}
+		.menuLink{
+			font-size: 20px;
+			color:black;
+			font-size: 23px;
+			font-weight:700;
+			text-decoration: none;
+		}
+		.menuLink:hover{
+			color:white;
+			text-decoration: none;
+		}
+		.menuTitle{
+			font-size: 20px;
+			color:white;
+		}
+		.menuTitleArea{
+			margin: 40px 0px;
+		}
+		.menuArea{
+			margin: 50px 0px;
+		}
+		#memberList{
+			color:white;
+		}
+		/* 출력화면 style */
+		.section {
+			margin:0 auto;
+			width:600px;
+			background: white;
+			padding-top:50px;
+			padding-bottom:50px;
+		}
+		.title{
+			font-weight: bold;
+		    font-size: 36px;
+		    text-align: center;
+		}
+		.marginBottom5{
+			margin-bottom: 5px;
+		}
+		.linkArea{
+			margin-top: 30px;
+		}
+		#listBtn{
+			width:80px;
+			height: 38px;
+			border-radius: 4px;
+			background-color: #ccc;
+			border:none;
+			color:#4C4C4C;
+			padding : 7px 5px;
+		}
+		/* 테이블 관련 */
+		table{
+			margin:10px auto;
+			border: 2px solid #ccc;
+			width: 600px;
+			height: 355px;
+		}
+		th{
+			width: 200px;
+			height : 60px;
+			background: #eaeaea;
+			font-size: large;
+			text-align: center;
+			border: 1px solid #ccc;
+		}
+		td{
+			padding:10px;
+			border: 1px solid #ccc;
+			text-align: center;
+		}
+		input{
+			width: 250px;
+			height: 40px;
+			padding : 6px 12px;
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 4px;
+			border-color: rgb(204, 204, 204);
+		}
+	</style>
+	<body>
+		<!-- Side Menu -->
+		<div id="sidemenu">
+			<div class="text-center" th:include="/include/menu::sidemenu"></div>
+		</div>
+		<!-- 내용 -->
+		<div class="section">
+			<div>
+				<!-- 제목 -->
+				<div class="text-center title">
+					<span th:text="${memberOne.memberId}"></span>
+					<span>님 회원정보</span>
+				</div>
+				<!-- 링크 -->
+				<div class="linkArea">
+					<a id="listBtn" class="btn" th:href="@{/memberList}">목록으로</a>
+				</div>
+				<!-- 정보 확인 테이블 -->
+				<div>
+					<table>
+						<tr>
+							<th>사진</th>
+							<td>
+								<img th:src="@{${'/upload/'+memberOne.memberPic}}" width="200" height="200">
+							</td>
+						</tr>
+						<tr>
+							<th>아이디</th>
+							<td th:text="${memberOne.memberId}"></td>
+						</tr>
+						<tr>
+							<th>이름</th>
+							<td th:text="${memberOne.memberName}"></td>
+						</tr>
+						<tr>
+							<th>주소</th>
+							<td th:text="${memberOne.memberAddr}"></td>
+						</tr>
+						<tr>
+							<th>전화번호</th>
+							<td th:text="${memberOne.memberPhone}"></td>
+						</tr>
+						<tr>
+							<th>이메일</th>
+							<td th:text="${memberOne.memberEmail}"></td>
+						</tr> 
+					</table>
+				</div>	
+			</div>
+		</div>
+	</body>
+</html>

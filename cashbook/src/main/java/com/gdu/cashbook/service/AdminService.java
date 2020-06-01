@@ -33,4 +33,24 @@ public class AdminService {
 		map.put("lastPage", lastPage);
 		return map;
 	}
+	// 회원 목록 확인
+	public Map<String, Object> getMemberListAll(int currentPage, int rowPerPage){
+		int beginRow = (currentPage-1)*rowPerPage;
+		int totalCount = adminMapper.selectMemberCount();
+		System.out.println(totalCount+" <- AdminService.getMemberListAll: totalCount");
+		int lastPage = totalCount/rowPerPage;
+		if(totalCount%rowPerPage!=0) {
+			lastPage += 1;
+		}
+		System.out.println(lastPage+"<- AdminService.getMemberListAll: lastPage");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberList", adminMapper.selectMemberListAll(beginRow, rowPerPage)); // 회원 목록
+		map.put("totalCount", totalCount); // 전체 회원 수
+		map.put("lastPage", lastPage); // 마지막 페이지
+		return map;
+	}
+	// 회원 정보 확인
+	public Member getMemberOne(String memberId) {
+		return adminMapper.selectMemberOne(memberId);
+	}
 }

@@ -35,7 +35,7 @@ public class MemberService {
 	@Autowired private QnaboardMapper qnaboardMapper;
 	@Autowired private CashMapper cashMapper;
 	@Autowired private CategoryMapper categoryMapper;
-	@Value("C:\\STS_WORK\\maven.1590738595631\\cashbook\\src\\main\\resources\\static\\upload\\")
+	@Value("C:\\STS_WORK\\maven.1590970622321\\cashbook\\src\\main\\resources\\static\\upload")
 	private String path; // 회원가입시 프로필사진 저장 경로
 	// 아이디 중복확인
 	public String checkMemberId(String memberIdCheck) {
