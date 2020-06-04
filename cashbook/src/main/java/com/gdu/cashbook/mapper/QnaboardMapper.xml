@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
 		FROM qnaboard 
 		WHERE member_id = #{memberId}
+		AND qnaboard_title LIKE CONCAT('%',#{searchWord},'%')
 		ORDER BY qnaboard_no DESC
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>

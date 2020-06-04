@@ -1,6 +1,8 @@
 package com.gdu.cashbook.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,16 @@ public class CategoryService {
 	// 직접 입력한 카테고리 추가
 	public void addCategory(Category category) {
 	categoryMapper.addCategory(category);
+	}
+	// 카테고리 목록
+	public List<Category> getCategoryList(String memberId){
+		return categoryMapper.selectCategoryList(memberId);
+	}
+	// 카테고리 삭제
+	public void removeCategory(String categoryName, String memberId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("categoryName", categoryName);
+		map.put("memberId", memberId);
+		categoryMapper.deleteCategory(map);
 	}
 }

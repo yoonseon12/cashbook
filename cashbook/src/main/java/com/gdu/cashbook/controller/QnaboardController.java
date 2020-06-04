@@ -28,7 +28,8 @@ public class QnaboardController {
 	// 게시글 목록
 	@GetMapping({"/qnaboard","/qnaboardList"})
 	public String qnaboardList(HttpSession session, Model model, Qnaboard qnaboard,
-								@RequestParam(value="currentPage", defaultValue = "1") int currentPage) {
+								@RequestParam(value="currentPage", defaultValue = "1") int currentPage,
+								@RequestParam(value="searchWord", defaultValue = "") String searchWord) {
 		if(session.getAttribute("loginMember")==null && session.getAttribute("loginAdmin")==null) { // 회원, 관리자 로그인상태  X
 			return "redirect:/login";
 		}
@@ -45,7 +46,7 @@ public class QnaboardController {
 			System.out.println(memberId+" <- memberId");
 		}
 		Map<String, Object> map = new HashMap<>();
-		map = qnaboardService.getQnaboardListAll(memberId, currentPage, rowPerPage);
+		map = qnaboardService.getQnaboardListAll(memberId, searchWord, currentPage, rowPerPage);
 		List<Qnaboard> qnaboardList = (List<Qnaboard>) map.get("qnaboardList");
 		/*for(Qnaboard q : qnaboardList) {
 			System.out.println(q);

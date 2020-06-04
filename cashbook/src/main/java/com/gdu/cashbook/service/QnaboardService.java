@@ -18,7 +18,7 @@ public class QnaboardService {
 	@Autowired private QnaboardMapper qnaboardMapper;
 	@Autowired private CommentMapper commentMapper;
 	// 게시글 목록
-	public Map<String, Object> getQnaboardListAll(String memberId, int currentPage, int rowPerPage){
+	public Map<String, Object> getQnaboardListAll(String memberId, String searchWord, int currentPage, int rowPerPage){
 		int beginRow = (currentPage-1)*rowPerPage;
 		System.out.println(beginRow+" <- QnaboardService.getQnaboardListAll: beginRow");
 		int totalCount = qnaboardMapper.selectQnaboardCount(memberId);
@@ -32,7 +32,7 @@ public class QnaboardService {
 		inputMap.put("memberId", memberId);
 		inputMap.put("beginRow", beginRow);
 		inputMap.put("rowPerPage", rowPerPage);
-		
+		inputMap.put("searchWord", searchWord);
 		Map<String, Object> outputMap = new HashMap<String, Object>();
 		outputMap.put("qnaboardList", qnaboardMapper.selectQnaboardListAll(inputMap));
 		outputMap.put("lastPage", lastPage);

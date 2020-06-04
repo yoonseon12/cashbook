@@ -181,7 +181,7 @@
 				<div class="row dateLinkAreaMargin">
 					<div class="col-sm-4" style="text-align:lift;">
 						<span>
-							<a class="btn dateLink" th:href="@{/getCashListByMonth(date=${date.plusMonths(-1)})}">이전</a>
+							<a class="btn dateLink" th:href="@{/cashListByMonth(date=${date.plusMonths(-1)})}">이전</a>
 						</span>
 					</div>
 					<div class="col-sm-4" style="text-align:center;">
@@ -189,7 +189,7 @@
 					</div>
 					<div class="col-sm-4" style="text-align:right;">
 						<span>
-							<a class="btn dateLink" th:href="@{/getCashListByMonth(date=${date.plusMonths(1)})}">다음</a>
+							<a class="btn dateLink" th:href="@{/cashListByMonth(date=${date.plusMonths(1)})}">다음</a>
 						</span>
 					</div>
 				</div>
@@ -208,7 +208,7 @@
 						 <!-- 월별 일 채우기 -->
 						<div th:if="${i-(firstDayOfWeek-1)>0 && i-(firstDayOfWeek-1)<=lastDay}">
 								<a th:class="${index.index%7}==6 ? 'SAT' : (${index.index%7}==0 ? 'SUN' : WEEKDAY)"
-								   th:href="@{/getCashListByDate(date=${#temporals.format(date, 'yyyy-MM')}+(${i-(firstDayOfWeek-1)}<10 ? '-0' : '-')+${i-(firstDayOfWeek-1)})}"
+								   th:href="@{/cashListByDay(date=${#temporals.format(date, 'yyyy-MM')}+(${i-(firstDayOfWeek-1)}<10 ? '-0' : '-')+${i-(firstDayOfWeek-1)})}"
 								   th:text="${i-(firstDayOfWeek-1)}"></a>
 						</div>
 						<!-- 금액 채우기 -->
@@ -222,7 +222,7 @@
 				
 				<div class="row">
 					<div class="col-sm-6">
-						<a th:href="@{/compareCash(date=${date})}" id="compareCashBtn" class="btn">월별 비교</a>
+						<a th:href="@{/compareCashByMonth(date=${date})}" id="compareCashBtn" class="btn">월별 비교</a>
 					</div>
 					<div id="hap" class="col-sm-6">
 						<span>합계 :&nbsp;</span>

@@ -127,7 +127,7 @@
 				<div class="row dateLinkAreaMargin">
 					<div class="col-sm-4 text-left">
 						<span>
-							<a class="btn dateLink" th:href="@{/getCashListByDate(date=${date.plusDays(-1)})}">이전</a>
+							<a class="btn dateLink" th:href="@{/cashListByDay(date=${date.plusDays(-1)})}">이전</a>
 						</span>
 					</div>
 					<div class="col-sm-4" style="text-align:center;">
@@ -135,7 +135,7 @@
 					</div>
 					<div class="col-sm-4 text-right">
 						<span>
-							<a class="btn dateLink" th:href="@{/getCashListByDate(date=${date.plusDays(1)})}">다음</a>
+							<a class="btn dateLink" th:href="@{/cashListByDay(date=${date.plusDays(1)})}">다음</a>
 						</span>
 					</div>
 				</div>

@@ -1,6 +1,6 @@
 package com.gdu.cashbook.controller;
 
-import java.text.DecimalFormat;
+import java.text.DecimalFormat;	
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -32,9 +32,9 @@ public class CashController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@GetMapping("/getCashListByDate")
+	@GetMapping("/cashListByDay")
 	// 일별 가계부 관리
-	public String getCashListByDate(HttpSession session, Model model,
+	public String cashListByDay(HttpSession session, Model model,
 			@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
 			return "redirect:/adminHome";
@@ -45,12 +45,12 @@ public class CashController {
 		if (date == null) {
 			date = LocalDate.now();
 		}
-		System.out.println(date + " <- CashController.getCashListByDate: date");
+		System.out.println(date + " <- CashController.cashListByDay: date");
 		model.addAttribute("date", date);
 
 		// 로그인 아이디
 		String loginMemberId = ((LoginMember) (session.getAttribute("loginMember"))).getMemberId();
-		System.out.println(loginMemberId + " <- CashController.getCashListByDate: loginMemberId");
+		System.out.println(loginMemberId + " <- CashController.cashListByDay: loginMemberId");
 		// 오늘 날짜를 구해서 원하는 문자열 형태로 변경
 		Cash cash = new Cash(); // + id, + date(yyyy-mm-dd)
 		cash.setMemberId(loginMemberId);
@@ -58,7 +58,7 @@ public class CashController {
 		Map<String, Object> map = cashService.getCashListByDay(cash);
 		model.addAttribute("cashKindSum", map.get("cashKindSum"));
 		model.addAttribute("cashList", map.get("cashList"));
-		return "getCashListByDate";
+		return "cash/cashListByDay";
 	}
 
 	// 가계부 삭제
@@ -74,12 +74,12 @@ public class CashController {
 		System.out.println(cashNo + " <- CashController.removeCash: cashNo");
 		System.out.println(date + " <- CashController.removeCash: day");
 		cashService.removeCash(cashNo);
-		return "redirect:/getCashListByDate?day=" + date;
+		return "redirect:/cashListByDay?day=" + date;
 	}
 
 	// 다이어리 (월별 가계부 관리)
-	@GetMapping("/getCashListByMonth")
-	public String getCashListByMonth(HttpSession session, Model model,
+	@GetMapping("/cashListByMonth")
+	public String cashListByMonth(HttpSession session, Model model,
 			@RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
 			return "redirect:/adminHome";
@@ -87,7 +87,7 @@ public class CashController {
 		if (session.getAttribute("loginMember") == null) { // 로그인상태 X
 			return "redirect:/login";
 		}
-		System.out.println(date + " <- CashController.getCashListByMonth: date");
+		System.out.println(date + " <- CashController.cashListByMonth: date");
 		Calendar cDate = Calendar.getInstance(); // 오늘날짜
 		if (date == null) {
 			date = LocalDate.now();
@@ -133,7 +133,7 @@ public class CashController {
 		lastDay.set(cDate.get(Calendar.YEAR), cDate.get(Calendar.MONTH), cDate.getActualMaximum(Calendar.DAY_OF_MONTH));
 		model.addAttribute("lastDayOfWeek", lastDay.get(Calendar.DAY_OF_WEEK));
 		
-		return "getCashListByMonth";
+		return "cash/cashListByMonth";
 	}
 
 	// 가계부 추가
@@ -153,7 +153,7 @@ public class CashController {
 		System.out.println(memberId + " <- CashController.addCash: memberId");
 		List<String> categoryList = categoryService.getMyCategoryList(memberId);
 		model.addAttribute("categoryList", categoryList);
-		return "addCash";
+		return "cash/addCash";
 	}
 
 	@PostMapping("/addCash")
@@ -194,7 +194,7 @@ public class CashController {
 				List<String> categoryList = categoryService.getMyCategoryList(memberId);
 				model.addAttribute("categoryList", categoryList);
 				 
-				return "addCash";
+				return "cash/addCash";
 			}
 			System.out.println("사용가능한 카테고리 이름");
 			cash.setCategoryName(categoryNameDirect); // 직접입력한 categoryName 주입
@@ -203,7 +203,7 @@ public class CashController {
 		cash.setMemberId(memberId);
 		System.out.println(cash + " <- CashController.addCash: cash (memberId 주입후)");
 		cashService.addCash(cash);
-		return "redirect:/getCashListByDate";
+		return "redirect:/cashListByDay";
 	}
 
 	// 가계부 수정
@@ -228,7 +228,7 @@ public class CashController {
 		model.addAttribute("categoryList", categoryList);
 		// 회원 가계부내용 받아오기
 		model.addAttribute("cash", cashService.getSelectCashOne(cashNo));
-		return "modifyCash";
+		return "cash/modifyCash";
 	}
 
 	@PostMapping("/modifyCash")
@@ -270,7 +270,7 @@ public class CashController {
 				List<String> categoryList = categoryService.getMyCategoryList(memberId);
 				model.addAttribute("categoryList", categoryList);
 				 
-				return "modifyCash";
+				return "cash/modifyCash";
 			}
 			System.out.println("사용가능한 카테고리 이름");
 			cash.setCategoryName(categoryNameDirect); // 직접입력한 categoryName 주입
@@ -279,11 +279,11 @@ public class CashController {
 		cash.setMemberId(memberId);
 		System.out.println(cash + " <- CashController.modifyCash: cash (memberId 주입후)");
 		cashService.modifyCash(cash);
-		return "redirect:/getCashListByDate";
+		return "redirect:/cashListByDay";
 	}
 	// 월별 비교
-	@GetMapping("/compareCash")
-	public String compareCash(HttpSession session, Model model, Cash cash,
+	@GetMapping("/compareCashByMonth")
+	public String compareCashByMonth(HttpSession session, Model model, Cash cash,
 			@RequestParam(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 		if(session.getAttribute("loginAdmin")!=null) { // 관리자 로그인 O
 			return "redirect:/adminHome";
@@ -306,6 +306,6 @@ public class CashController {
 		//int yearPriceTotal = (int) cashbookByYear.get+" <- CashController.compareCash: yearPriceTotal");
 		//System.out.println(yearPriceTotal+" <- CashController.compareCash: yearPriceTotal");
 		//model.addAttribute("yearPriceTotal", yearPriceTotal);
-		return "compareCash";
+		return "cash/compareCashByMonth";
 	}
 }

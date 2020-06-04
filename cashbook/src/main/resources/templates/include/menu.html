@@ -25,10 +25,10 @@
 				<span th:if="${session.loginAdmin != null}"><a class="menuLink" id="memberList" th:href="@{/memberList}">회원 목록</a></span>
 			</div>
 			<div class="menuArea">
-				<span th:if="${session.loginMember != null}"><a class="menuLink" id="cashbookDay" th:href="@{/getCashListByDate}">일별 가계부관리</a></span>
+				<span th:if="${session.loginMember != null}"><a class="menuLink" id="cashbookDay" th:href="@{/cashListByDay}">일별 가계부관리</a></span>
 			</div>
 			<div class="menuArea">
-				<span th:if="${session.loginMember != null}"><a class="menuLink" id="cashbookMonth" th:href="@{/getCashListByMonth}">월별 가계부관리</a></span>
+				<span th:if="${session.loginMember != null}"><a class="menuLink" id="cashbookMonth" th:href="@{/cashListByMonth}">월별 가계부관리</a></span>
 			</div>
 			<div class="menuArea">
 				<span th:if="${session.loginMember != null}"><a class="menuLink" id="qnaboard" th:href="@{/qnaboard}">1:1 질문게시판</a></span>

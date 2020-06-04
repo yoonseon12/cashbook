@@ -33,4 +33,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM category
 		WHERE member_id = #{memberId}
 	</delete>
+	<!-- 카테고리 목록 -->
+	<select id="selectCategoryList" parameterType="String" resultType="com.gdu.cashbook.vo.Category">
+		SELECT 
+			category_no AS categoryNo,
+			category_name AS categoryName,
+			member_id AS memberId
+		FROM category
+		WHERE member_id = #{memberId}
+		GROUP BY category_name
+	</select>
+	<!-- 카테고리 삭제 -->
+	<delete id="deleteCategory" parameterType="java.util.Map">
+		DELETE
+		FROM category
+		WHERE category_name = #{categoryName}
+		AND member_id = #{memberId}
+	</delete>
 </mapper>

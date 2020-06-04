@@ -1,6 +1,6 @@
 package com.gdu.cashbook.controller;
 
-import javax.servlet.http.HttpSession;		
+import javax.servlet.http.HttpSession;			
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +38,7 @@ public class MemberController {
 			String msg = "사용할 수 없는 아이디 입니다.";
 			model.addAttribute("memberIdCheckMsg", msg);
 		}
-		return"addmember";
+		return "member/addmember";
 	}
 	// 회원가입
 	@GetMapping("/addMember")
@@ -49,7 +49,7 @@ public class MemberController {
 		if(session.getAttribute("loginMember")!=null){ // 로그인 O
 			return "redirect:/index";
 		}
-		return "addMember";
+		return "member/addMember";
 	}
 	@PostMapping("/addMember")
 	public String addMember(HttpSession session, Model model, MemberForm memberForm) { // 폼에서 받을 이름이랑 VO 데이터 이름이랑 같으니 매개변수 member 사용
@@ -68,13 +68,13 @@ public class MemberController {
 			System.out.println("회원가입 실패");
 			String addMemberMsg = "회원가입에 실패했습니다.";
 			model.addAttribute("addMemberMsg", addMemberMsg);
-			return "addMember";
+			return "member/addMember";
 		}
 		if(row==2) { // 사진이 아닌파일 첨부
 			System.out.println("첨부한파일이 사진파일이 아님");
 			String memberPicMsg = "png, jpg, gif 파일만 첨부할 수 있습니다.";
 			model.addAttribute("memberPicMsg", memberPicMsg);
-			return "addMember";
+			return "member/addMember";
 		}
 		System.out.println("회원가입 성공");
 		return "redirect:/index";
@@ -162,7 +162,7 @@ public class MemberController {
 		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
 		Member memberOne = memberService.getMemberOne(loginMember); 
 		model.addAttribute("memberOne", memberOne);
-		return "memberInfo";
+		return "member/memberInfo";
 	}
 	// 회원 탈퇴
 	@PostMapping("/removeMember")
@@ -184,7 +184,7 @@ public class MemberController {
 			model.addAttribute("removeMsg", removeMsg);
 			Member memberOne = memberService.getMemberOne(loginMember); 
 			model.addAttribute("memberOne", memberOne);
-			return "memberInfo";
+			return "index";
 		}
 		memberService.removeMember(loginMember);
 		return "redirect:/logout";
@@ -201,7 +201,7 @@ public class MemberController {
 		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
 		Member memberOne = memberService.getMemberOne(loginMember); 
 		model.addAttribute("memberOne", memberOne);
-		return"modifyMember";
+		return "member/modifyMember";
 	}
 	@PostMapping("/modifyMember")
 	public String modifyMember(HttpSession session, Model model, MemberForm memberForm) {
@@ -237,7 +237,7 @@ public class MemberController {
 		if(session.getAttribute("loginMember")!=null) { // 회원 로그인상태 O
 			return "redirect:/index";
 		}
-		return "findMemberId";
+		return "member/findMemberId";
 	}
 	@PostMapping("/findMemberId")
 	public String findMemberId(HttpSession session, Model model, Member member) {
@@ -252,10 +252,10 @@ public class MemberController {
 		if(memberIdPart==null) {
 			String msg = "입력한 정보로 아이디를 찾을 수 없습니다.";
 			model.addAttribute("msg", msg);
-			return "findMemberId";
+			return "member/findMemberId";
 		}
 		model.addAttribute("memberIdPart", memberIdPart);
-		return "memberIdView";
+		return "member/memberIdView";
 	}
 	// 비밀번호 찾기
 	@GetMapping("/findMemberPw")
@@ -266,7 +266,7 @@ public class MemberController {
 		if(session.getAttribute("loginMember")!=null) { // 회원 로그인상태 O
 			return "redirect:/login";
 		}
-		return "findMemberPw";
+		return "member/findMemberPw";
 	}
 	@PostMapping("/findMemberPw")
 	public String findMemberPw(HttpSession session, Model model, Member member) {
@@ -280,9 +280,9 @@ public class MemberController {
 		if(row==0) { 
 			String msg = "가입되지 않은 정보입니다.";
 			model.addAttribute("msg", msg);
-			return"findMemberPw";
+			return"member/findMemberPw";
 		}
-		return "memberPwView";
+		return "member/memberPwView";
 	}
 	// 비밀번호 변경
 	@PostMapping("/modifyMemberPw")
@@ -310,7 +310,7 @@ public class MemberController {
 			model.addAttribute("modifyMsg", modifyMsg);
 			Member memberOne = memberService.getMemberOne(loginMember); 
 			model.addAttribute("memberOne", memberOne);
-			return "memberInfo";
+			return "member/memberInfo";
 		}
 		member.setMemberPw(modifyMemberPw); // 입력한 변경비밀번호 주입(덮어쓰기)
 		System.out.println(member+" <- 덮어쓰기확인");

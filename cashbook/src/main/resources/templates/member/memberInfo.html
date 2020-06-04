@@ -157,13 +157,13 @@
 								<form id="modifyMemberPwForm" method="post" action="/modifyMemberPw">
 									<div>
 										<div class="marginBottom5">
-											<input type="text" id="originMemberPw" name="originMemberPw" placeholder="현재 비밀번호">
+											<input type="password" id="originMemberPw" name="originMemberPw" placeholder="현재 비밀번호">
 										</div>
 										<div class="marginBottom5">
-											<input type="text" id="modifyMemberPw" name="modifyMemberPw" placeholder="변경  비밀번호">
+											<input type="password" id="modifyMemberPw" name="modifyMemberPw" placeholder="변경  비밀번호">
 										</div>
 										<div class="marginBottom5">
-											<input type="text" id="modifyMemberPw2" placeholder="변경 비밀번호 확인">
+											<input type="password" id="modifyMemberPw2" placeholder="변경 비밀번호 확인">
 										</div>
 										<div>
 											<button id="modifyMemberPwBtn" type="button">비밀번호 변경</button>
@@ -195,11 +195,16 @@
 				</div>	
 				<div class="row">
 					<!-- 회원 수정 -->
-					<div class="col-sm-4 text-left">
-						<a id="modifyMember" th:href="@{/modifyMember}">회원정보수정</a>
+					<div class="col-sm-5 text-left">
+						<div class="text-left">
+							<a id="modifyMember" th:href="@{/modifyMember}">회원정보수정</a>
+						</div>
+						<div class="text-right">
+							<a id="categoryList" th:href="@{/categoryList}">카테고리관리</a>
+						</div>
 					</div>
 					<!-- 회원 탈퇴 -->
-					<div id="removeMember" class="col-sm-8 text-right">
+					<div id="removeMember" class="col-sm-7 text-right">
 						<div>
 							<a class="removeMember" data-toggle="collapse" href="#remove">회원탈퇴</a>
 						</div>
@@ -211,7 +216,7 @@
 									<button id="removeMemberBtn" type="button">탈퇴</button>
 								</div>
 								<div class="text-right">
-									<p>탈퇴하면 동일한 아이디로 재가입 할 수 없습니다.</p>
+									<p>[ 탈퇴 시 동일한 아이디로 재가입 불가 ]</p>
 								</div>
 							</form>
 						</div>

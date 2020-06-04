@@ -210,5 +210,5 @@ public class MemberService {
 	// 비밀번호 변경
 	public void modifyMemberInfoMemberPw(Member member) {
 		memberMapper.updateMemberInfoMemberPw(member);
-	}  
+	}
 }

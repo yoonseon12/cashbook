@@ -32,7 +32,8 @@ public class adminController {
 	@GetMapping("/adminQnaboard")
 	//관리자 게시판(모든 회원 게시글 확인)
 	public String adminQnaboard(HttpSession session, Model model,
-								@RequestParam(value="currentPage", defaultValue = "1") int currentPage) {
+								@RequestParam(value="currentPage", defaultValue = "1") int currentPage,
+								@RequestParam(value = "searchWord" , defaultValue = "") String searchWord){
 		if(session.getAttribute("loginAdmin")==null) { // 관리자 로그인상태 X
 			return "redirect:/home";
 		}
@@ -41,7 +42,7 @@ public class adminController {
 		final int rowPerPage = 10;
 		
 		Map<String, Object> map = new HashMap<>();
-		map = adminService.getQnaboardListAll(currentPage, rowPerPage);
+		map = adminService.getQnaboardListAll(currentPage, rowPerPage, searchWord);
 		List<Qnaboard> qnaboardList = (List<Qnaboard>) map.get("qnaboardList");
 		model.addAttribute("qnaboardList", qnaboardList); // 작성된 모든 게시글 목록
 		model.addAttribute("lastPage", map.get("lastPage")); // 마지막페이지
@@ -55,13 +56,14 @@ public class adminController {
 	// 회원목록
 	@GetMapping("/memberList")
 	public String memberList(HttpSession session, Model model, 
-							@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+							@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+							@RequestParam(value = "searchWord" , defaultValue = "") String searchWord){
 		if(session.getAttribute("loginAdmin")==null) { // 관리자 로그인상태 X
 			return "redirect:/home";
 		}
 		final int rowPerPage = 10;
 		Map<String, Object> map = new HashMap<>();
-		map = adminService.getMemberListAll(currentPage, rowPerPage);
+		map = adminService.getMemberListAll(currentPage, rowPerPage, searchWord);
 		System.out.println(map.get("memberList")+" <- adminController.memberList: map");
 		model.addAttribute("memberList", map.get("memberList")); // 회원 목록
 		model.addAttribute("memberTotalCount", map.get("totalCount")); //전체 회원 수

@@ -113,6 +113,13 @@
 				font-size: 18px;
 			}
 		</style>
+		<script>
+			$(document).ready(function(){
+				$('#searchBtn').click(function(){
+					$('#searchForm').submit();
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<div>
@@ -136,9 +143,9 @@
 						</div>
 					</div>
 					<div class="col-sm-6 text-right">
-						<form method="post" action="/qnaboard">
+						<form id="searchForm" method="get" th:action="@{${session.loginMember == null}? '/adminQnaboard' : '/qnaboard'} "><!-- 관리자일때 adminQnaboard 일반회원일때 qnaboard로 이동-->
 							<input id="searchWord" type="text" name="searchWord">		
-							<button id="searchBtn" type="button"><i class="fa fa-search"></i></button>
+							<button id="searchBtn" type="submit"><i class="fa fa-search"></i></button>
 						</form>
 					</div>
 				</div>

@@ -1,8 +1,15 @@
 package com.gdu.cashbook.vo;
 
 public class Category {
+	public String categoryNo;
 	public String categoryName;
 	public String memberId;
+	public String getCategoryNo() {
+		return categoryNo;
+	}
+	public void setCategoryNo(String categoryNo) {
+		this.categoryNo = categoryNo;
+	}
 	public String getCategoryName() {
 		return categoryName;
 	}
@@ -17,6 +24,7 @@ public class Category {
 	}
 	@Override
 	public String toString() {
-		return "Category [categoryName=" + categoryName + ", memberId=" + memberId + "]";
+		return "Category [categoryNo=" + categoryNo + ", categoryName=" + categoryName + ", memberId=" + memberId + "]";
 	}
+	
 }

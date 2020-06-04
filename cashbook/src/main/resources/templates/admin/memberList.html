@@ -114,6 +114,14 @@
 				color:black;
 			}
 		</style>
+		<script>
+			$(document).ready(function(){
+				$('#searchBtn').click(function(){
+					console.log("버튼클릭");
+					$('#searchForm').submit();
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<div>
@@ -134,7 +142,7 @@
 						<span class="memberTotalCount">전체 회원 수 : </span><strong class="memberTotalCount" th:text="${memberTotalCount}"></strong>
 					</div>
 					<div class="col-sm-6 text-right">
-						<form method="post" action="/qnaboard">
+						<form id="searchForm" method="get" action="/memberList">
 							<input id="searchWord" type="text" name="searchWord">		
 							<button id="searchBtn" type="button"><i class="fa fa-search"></i></button>
 						</form>
