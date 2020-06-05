@@ -144,7 +144,7 @@
 					</div>
 					<div class="col-sm-6 text-right">
 						<form id="searchForm" method="get" th:action="@{${session.loginMember == null}? '/adminQnaboard' : '/qnaboard'} "><!-- 관리자일때 adminQnaboard 일반회원일때 qnaboard로 이동-->
-							<input id="searchWord" type="text" name="searchWord">		
+							<input id="searchWord" type="text" name="searchWord" placeholder="게시글 제목 검색">		
 							<button id="searchBtn" type="submit"><i class="fa fa-search"></i></button>
 						</form>
 					</div>
