@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.gdu.cashbook.mapper.CommentMapper">
 	<!-- 댓글 추가 -->
 	<insert id="insertComment" parameterType="com.gdu.cashbook.vo.Comment">
-		INSERT INTO comment(
+		INSERT INTO cashbook_comment(
 			qnaboard_no,
 			member_id,
 			comment_content,
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			member_id       AS memberId,
 			comment_content AS commentContent,
 			comment_date    AS commentDate
-		FROM comment
+		FROM cashbook_comment
 		WHERE qnaboard_no = #{qnaboardNo}
 		ORDER BY comment_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
@@ -34,13 +34,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectCommentCount" parameterType="java.util.Map" resultType="int">
 		SELECT
 			COUNT(*)
-		FROM comment
+		FROM cashbook_comment
 		WHERE qnaboard_no = #{qnaboardNo}
 	</select>
 	<!-- 댓글 삭제 -->
 	<delete id="deleteComment" parameterType="int">
 		DELETE 
-		FROM comment
+		FROM cashbook_comment
 		WHERE qnaboard_no = #{qnaboardNo}
 		AND   comment_no  = #{commentNo}
 	</delete>
@@ -52,14 +52,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			member_id       AS memberId,
 			comment_content AS commentContent,
 			comment_date    AS commentDate
-		FROM comment
+		FROM cashbook_comment
 		WHERE member_id   = #{memberId}
 		AND   qnaboard_no = #{qnaboardNo}
 		AND   comment_no  = #{commentNo}
 	</select>
 	<!-- 댓글 수정 -->
 	<update id="updateComment" parameterType="com.gdu.cashbook.vo.Comment">
-		UPDATE comment
+		UPDATE cashbook_comment
 		SET comment_content =  #{commentContent}
 		WHERE comment_no = #{commentNo}
 		AND	qnaboard_no  = #{qnaboardNo}
@@ -68,20 +68,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 회원탈퇴시 댓글 삭제 -->
 	<delete id="memberDeleteComment" parameterType="String">
 		DELETE 
-		FROM comment
+		FROM cashbook_comment
 		WHERE member_id = #{memberId}
 	</delete>
 	<!-- 게시글삭제시 댓글 삭제 -->
 	<delete id="qnaboardDeleteComment" parameterType="int">
 		DELETE 
-		FROM comment
+		FROM cashbook_comment
 		WHERE qnaboard_no = #{qnaboardNo}
 	</delete>
 	<!-- 댓글 수정 시 댓글 작성자 확인 -->
 	<select id="selectMemberId" parameterType="int" resultType="String">
 		SELECT
 			member_id
-		FROM comment
+		FROM cashbook_comment
 		WHERE comment_no = #{commentNo}
 	</select>
 </mapper>

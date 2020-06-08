@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.gdu.cashbook.mapper.CashMapper">
 	<!-- 가계부 추가 -->
 	<insert id="addCash" parameterType="com.gdu.cashbook.vo.Cash">
-		INSERT INTO cash(
+		INSERT INTO cashbook_cash(
 			member_id,
 			cash_date,
 			cash_kind,
@@ -26,12 +26,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 가계부 삭제 -->
 	<delete id="removeCash" parameterType="int">
 		DELETE
-		FROM cash 
+		FROM cashbook_cash 
 		WHERE cash_no = #{cashNo}
 	</delete>
 	<!-- 가계부 수정 -->
 	<update id="modifyCash" parameterType="com.gdu.cashbook.vo.Cash">
-		UPDATE cash
+		UPDATE cashbook_cash
 		SET cash_kind  = #{cashKind},
 			category_name  = #{categoryName},
 			cash_price = #{cashPrice},
@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			cash_price    AS cashPrice,
 			cash_place    AS cashPlace,
 			cash_memo     AS cashMemo
-		FROM cash
+		FROM cashbook_cash
 		WHERE cash_no = #{cashNo}
 	</select>
 	<!-- 오늘날짜의 가계부 관리 -->
@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			cash_price    AS cashPrice,
 			cash_place    AS cashPlace,
 			cash_memo     AS cashMemo
-		FROM cash
+		FROM cashbook_cash
 		WHERE member_id = #{memberId}
 		AND   cash_date = #{cashDate}
 		ORDER BY cash_no ASC
@@ -69,13 +69,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTotPriceOfDay" parameterType="com.gdu.cashbook.vo.Cash" resultType="int">
 		SELECT
 			(SELECT IFNULL(SUM(cash_price) ,'0')
-			 FROM cash
+			 FROM cashbook_cash
 			 WHERE member_id = #{memberId} 
 			 AND   cash_kind = '수입'
 			 AND   cash_date = #{cashDate})
 			-
 			(SELECT IFNULL(SUM(cash_price) ,'0') 
-			 FROM cash
+			 FROM cashbook_cash
 			 WHERE member_id = #{memberId}
 			 AND   cash_kind = '지출'
 			 AND   cash_date = #{cashDate})
@@ -86,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT DAY(cash_date) AS day,
 			   SUM(CASE WHEN cash_kind='수입' THEN cash_price
 						WHEN cash_kind='지출' THEN -cash_price END) AS price
-		FROM cash
+		FROM cashbook_cash
 		WHERE member_id = #{memberId}
 		AND  YEAR(cash_date) = #{year}
 		AND MONTH(cash_date) = #{month}
@@ -96,14 +96,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTotPriceOfMonth" parameterType="java.util.Map" resultType="int">
 		SELECT
 			(SELECT IFNULL(SUM(cash_price) ,'0')
-			 FROM cash
+			 FROM cashbook_cash
 			 WHERE member_id = #{memberId} 
 			 AND   cash_kind = '수입'
 			 AND  YEAR(cash_date) = #{year}
 		     AND MONTH(cash_date) = #{month})
 			-
 			(SELECT IFNULL(SUM(cash_price) ,'0') 
-			 FROM cash
+			 FROM cashbook_cash
 			 WHERE member_id = #{memberId}
 			 AND   cash_kind = '지출'
 			 AND  YEAR(cash_date) = #{year}
@@ -116,7 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			MONTH(cash_date) as day,
 			SUM(CASE WHEN cash_kind='수입' THEN cash_price
 				WHEN cash_kind='지출' THEN -cash_price END) AS price
-		FROM cash
+		FROM cashbook_cash
 		WHERE      member_id = #{memberId}
 		AND  YEAR(cash_date) = #{year}
 		GROUP BY MONTH(cash_date)
@@ -125,13 +125,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTotPriceOfYear" parameterType="java.util.Map" resultType="int">
 		SELECT
 			(SELECT IFNULL(SUM(cash_price) ,'0')
-			 FROM cash
+			 FROM cashbook_cash
 			 WHERE member_id = #{memberId} 
 			 AND   cash_kind = '수입'
 			 AND  YEAR(cash_date) = #{year})
 			-
 			(SELECT IFNULL(SUM(cash_price) ,'0') 
-			 FROM cash
+			 FROM cashbook_cash
 			 WHERE member_id = #{memberId}
 			 AND   cash_kind = '지출'
 			 AND  YEAR(cash_date) = #{year})
@@ -140,7 +140,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 회원탈퇴시 게시글 삭제 -->
 	<delete id="memberDeleteCash" parameterType="String">
 		DELETE
-		FROM cash 
+		FROM cashbook_cash 
 		WHERE member_id = #{memberId}
 	</delete>
 </mapper>

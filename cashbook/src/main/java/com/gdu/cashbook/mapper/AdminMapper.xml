@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectLoginAdmin" parameterType="com.gdu.cashbook.vo.LoginAdmin" resultType="com.gdu.cashbook.vo.LoginAdmin">
 		SELECT
 			admin_id AS adminId
-		FROM admin
+		FROM cashbook_admin
 		WHERE admin_id = #{adminId}
 		AND admin_pw = PASSWORD(#{adminPw})
 	</select>
@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, qnaboard_title AS qnaboardTitle
 			, qnaboard_content AS qnaboardContent
 			, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
-		FROM qnaboard 
+		FROM cashbook_qnaboard 
 		WHERE qnaboard_title LIKE CONCAT('%',#{searchWord},'%')
 		ORDER BY qnaboard_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
@@ -28,14 +28,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectQnaboardCount" resultType="int">
 		SELECT
 			COUNT(*)
-		FROM qnaboard
+		FROM cashbook_qnaboard
 	</select>
 	<!-- 회원 목록(모든회원 조회) -->
 	<select id="selectMemberListAll" parameterType="java.util.Map" resultType="com.gdu.cashbook.vo.Member">
 		SELECT
 			member_id    AS memberId,
 			member_name  AS memberName
-		FROM member
+		FROM cashbook_member
 		WHERE member_id LIKE CONCAT('%',#{searchWord},'%')
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectMemberCount" resultType="int">
 		SELECT 
 			COUNT(*)
-		FROM member
+		FROM cashbook_member
 	</select>
 	<!-- 회원 정보 확인 -->
 	<select id="selectMemberOne" parameterType="String" resultType="com.gdu.cashbook.vo.Member">
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			member_phone AS memberPhone,
 			member_email AS memberEmail,
 			member_pic AS memberPic
-		FROM member
+		FROM cashbook_member
 		WHERE member_id = #{memberId}
 	</select>
 </mapper>

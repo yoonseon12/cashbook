@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.gdu.cashbook.mapper.MemberIdMapper">
 	<!-- 탈퇴한 회원 아이디 추가 -->
 	<insert id="insertMemberId" parameterType="com.gdu.cashbook.vo.MemberId">
-		INSERT INTO memberid(
+		INSERT INTO cashbook_memberid(
 			memberId
 		)VALUES(
 			#{memberId}

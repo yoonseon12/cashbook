@@ -8,15 +8,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT
 			mi
 		FROM ( SELECT member_id AS mi 
-			   FROM member 
+			   FROM cashbook_member 
 			   UNION
 			   SELECT memberid as mi 
-			   FROM memberid ) t
+			   FROM cashbook_memberid ) t
 		WHERE mi = #{memberIdCheck}
 	</select>
 	<!-- 회원 가입 -->
 	<insert id="insertMember" parameterType="com.gdu.cashbook.vo.Member">
-		INSERT INTO member(
+		INSERT INTO cashbook_member(
 				member_id, 
 				member_pw, 
 				member_name, 
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectLoginMember" parameterType="com.gdu.cashbook.vo.LoginMember" resultType="com.gdu.cashbook.vo.LoginMember">
 		SELECT
 			member_id AS memberId
-		FROM member
+		FROM cashbook_member
 		WHERE member_id = #{memberId}
 		AND member_pw = PASSWORD(#{memberPw})
 	</select>
@@ -53,31 +53,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			member_phone AS memberPhone,
 			member_email AS memberEmail,
 			member_pic AS memberPic
-		FROM member
+		FROM cashbook_member
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 회원 탈퇴 -->
 	<delete id="deleteMember" parameterType="com.gdu.cashbook.vo.LoginMember">
 		DELETE
-		FROM member
+		FROM cashbook_member
 		WHERE member_id = #{memberId}
 	</delete>
 	<!-- 회원 탈퇴시 폴더에 저장된 프로필사진 조회  -->
 	<select id="selectMemberPic" parameterType="String" resultType="String">
 		SELECT member_pic
-		FROM member
+			FROM cashbook_member
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 회원탈퇴 시 비밀번호 확인 -->
 	<select id="deleteMemberPwChack" parameterType="com.gdu.cashbook.vo.Member" resultType="int">
 		SELECT COUNT(*)
-			FROM member
+			FROM cashbook_member
 		WHERE member_id = #{memberId} 
 		AND   member_pw = PASSWORD(#{memberPw})
 	</select>
 	<!-- 회원정보 수정 -->
 	<update id="updateMember" parameterType="com.gdu.cashbook.vo.Member">
-		UPDATE member
+		UPDATE cashbook_member
 		SET member_name  = #{memberName},
 			member_addr  = #{memberAddr},
 			member_phone = #{memberPhone},
@@ -89,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectMemberIdByMember" parameterType="com.gdu.cashbook.vo.Member" resultType="String">
 		 SELECT
 		 	CONCAT(SUBSTRING(member_id, 1, 3), '***')
-		 FROM member
+		 FROM cashbook_member
 		 WHERE member_name  = #{memberName}
 		 AND   member_phone = #{memberPhone}
 		 AND   member_email = #{memberEmail}
@@ -101,14 +101,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	3. 2번에서 입력한 pw 메일로 전송
 	-->
 	<update id="updateMemberPw" parameterType="com.gdu.cashbook.vo.Member">
-	UPDATE member
+	UPDATE cashbook_member
 	SET member_pw = PASSWORD(#{memberPw})
 	WHERE member_id    = #{memberId}
 	AND   member_email = #{memberEmail}
    </update>
 	<!-- 비밀번호 변경 -->
 	<update id="updateMemberInfoMemberPw" parameterType="com.gdu.cashbook.vo.Member">
-		UPDATE member
+		UPDATE cashbook_member
 		SET member_pw    = PASSWORD(#{memberPw})
 		WHERE member_id  = #{memberId}
 	</update>

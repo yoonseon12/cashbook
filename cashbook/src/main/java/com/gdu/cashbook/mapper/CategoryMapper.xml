@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.gdu.cashbook.mapper.CategoryMapper">
 	<!-- 카테고리 추가 -->
 	<insert id="addCategory" parameterType="com.gdu.cashbook.vo.Category">
-		INSERT INTO category(
+		INSERT INTO cashbook_category(
 			category_name,
 			member_id
 		) VALUES(
@@ -17,20 +17,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="myCategoryList" parameterType="String" resultType="String">
 		SELECT DISTINCT 
 			category_name AS categoryName
-		FROM category
+		FROM cashbook_category
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 카테고리 중복 확인 -->
 	<select id="myCategoryCheck" parameterType="com.gdu.cashbook.vo.Category" resultType="int">
 		SELECT COUNT(category_name)
-		FROM category
+		FROM cashbook_category
 		WHERE member_id   = #{memberId} 
 		AND category_name = #{categoryName}
 	</select>
 	<!-- 회원탈퇴시 카테고리 삭제 -->
 	<delete id="memberDeleteCategory" parameterType="String">
 		DELETE
-		FROM category
+		FROM cashbook_category
 		WHERE member_id = #{memberId}
 	</delete>
 	<!-- 카테고리 목록 -->
@@ -39,14 +39,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			category_no AS categoryNo,
 			category_name AS categoryName,
 			member_id AS memberId
-		FROM category
+		FROM cashbook_category
 		WHERE member_id = #{memberId}
 		GROUP BY category_name
 	</select>
 	<!-- 카테고리 삭제 -->
 	<delete id="deleteCategory" parameterType="java.util.Map">
 		DELETE
-		FROM category
+		FROM cashbook_category
 		WHERE category_name = #{categoryName}
 		AND member_id = #{memberId}
 	</delete>

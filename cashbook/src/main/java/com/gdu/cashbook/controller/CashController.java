@@ -203,7 +203,7 @@ public class CashController {
 		cash.setMemberId(memberId);
 		System.out.println(cash + " <- CashController.addCash: cash (memberId 주입후)");
 		cashService.addCash(cash);
-		return "redirect:/cashListByDay";
+		return "redirect:/cashListByDay?date="+date;
 	}
 
 	// 가계부 수정

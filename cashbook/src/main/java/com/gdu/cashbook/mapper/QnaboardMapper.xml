@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, qnaboard_title AS qnaboardTitle
 			, qnaboard_content AS qnaboardContent
 			, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
-		FROM qnaboard 
+		FROM cashbook_qnaboard 
 		WHERE member_id = #{memberId}
 		AND qnaboard_title LIKE CONCAT('%',#{searchWord},'%')
 		ORDER BY qnaboard_no DESC
@@ -21,12 +21,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectQnaboardCount" parameterType="String" resultType="int">
 		SELECT
 			COUNT(*)
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 게시물 입력 -->
 	<insert id="insestQnaboard" parameterType="com.gdu.cashbook.vo.Qnaboard">
-		INSERT INTO qnaboard(
+		INSERT INTO cashbook_qnaboard(
 			member_id,
 			qnaboard_title,
 			qnaboard_content,
@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		, qnaboard_title AS qnaboardTitle
 		, qnaboard_content AS qnaboardContent
 		, DATE_FORMAT(qnaboard_date, '%Y-%m-%d') AS qnaboardDate
-		FROM qnaboard 
+		FROM cashbook_qnaboard 
 		WHERE qnaboard_no = #{qnaboardNo}
 		AND   member_id    = #{memberId}
 	</select>
@@ -54,39 +54,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectQnaboardNoMax" parameterType="String" resultType="int">
 		SELECT
 			MAX(qnaboard_no)
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 처음 게시물 번호 조회 (회원용)-->
 	<select id="selectQnaboardNoMin" parameterType="String" resultType="int">
 		SELECT 
 			MIN(qnaboard_no)
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 다음 게시물 번호 조회 (회원용)-->
 	<select id="selectQnaboardNoNext" parameterType="java.util.Map" resultType="int">
 		SELECT IFNULL(MIN(qnaboard_no),#{qnaboardNo})
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE qnaboard_no &gt; #{qnaboardNo}
 		AND   member_id = #{memberId}
 	</select>
 	<!-- 이전 게시물 번호 조회 (회원용)-->
 	<select id="selectQnaboardNoPrevious" parameterType="java.util.Map" resultType="int">
 		SELECT IFNULL(MAX(qnaboard_no),#{qnaboardNo})
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE qnaboard_no &lt; #{qnaboardNo}
 		AND   member_id = #{memberId}
 	</select>
 	<!-- 게시글 삭제 -->
 	<delete id="deleteQnaboard" parameterType="int">
 		DELETE 
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE qnaboard_no = #{qnaboardNo}
 	</delete>
 	<!-- 게시글 수정 -->
 	<update id="updateQnaboard" parameterType="com.gdu.cashbook.vo.Qnaboard">
-		UPDATE qnaboard
+		UPDATE cashbook_qnaboard
 		SET qnaboard_title    = #{qnaboardTitle},
 			qnaboard_content  = #{qnaboardContent}
 		WHERE qnaboard_no = #{qnaboardNo}
@@ -95,38 +95,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 회원탈퇴시 게시글 삭제 -->
 	<delete id="memberMeleteQnaboard" parameterType="String">
 		DELETE 
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE member_id = #{memberId}
 	</delete>
 	<!-- 게시글 번호로 회원 아이디 출력(관리자모드일 때 memberId 찾기위해서) -->
 	<select id="selectMemberId" parameterType="int" resultType="String">
 		SELECT
 			member_id
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		where qnaboard_no = #{qnaboardNo}
 	</select>
 	<!-- 마지막 게시물 번호 조회 (관리자용) -->
 	<select id="selectAdminQnaboardNoMax" resultType="int">
 		SELECT
 			MAX(qnaboard_no)
-		FROM qnaboard
+		FROM cashbook_qnaboard
 	</select>
 	<!-- 처음 게시물 번호 조회 (관리자용)-->
 	<select id="selectAdminQnaboardNoMin" resultType="int">
 		SELECT 
 			MIN(qnaboard_no)
-		FROM qnaboard
+		FROM cashbook_qnaboard
 	</select>
 	<!-- 다음 게시물 번호 조회 (관리자용)-->
 	<select id="selectAdminQnaboardNoNext" parameterType="int" resultType="int">
 		SELECT IFNULL(MIN(qnaboard_no),#{qnaboardNo})
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE qnaboard_no &gt; #{qnaboardNo}
 	</select>
 	<!-- 이전 게시물 번호 조회 (관리자용)-->
 	<select id="selectAdminQnaboardNoPrevious" parameterType="int" resultType="int">
 		SELECT IFNULL(MAX(qnaboard_no),#{qnaboardNo})
-		FROM qnaboard
+		FROM cashbook_qnaboard
 		WHERE qnaboard_no &lt; #{qnaboardNo}
 	</select>
 </mapper>
