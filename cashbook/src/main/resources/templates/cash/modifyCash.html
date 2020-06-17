@@ -157,7 +157,7 @@
 			</div>
 			<!-- 테이블 -->
 			<div>
-				<form id="addCashForm" method="post" action="/modifyCash">
+				<form id="addCashForm" method="post" th:action="@{/modifyCash}">
 					<input type="hidden" name="cashNo" th:value="${cashNo}"> <!-- date값 넘기기 위해 히든 -->
 					<input type="hidden" name="date" th:value="${date}"> <!-- date값 넘기기 위해 히든 -->
 					<div>

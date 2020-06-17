@@ -31,14 +31,16 @@ public class MemberController {
 									 		// memberIdCheck : 내가 입력한 아이디	 // null 아님 : 사용중인 아이디(이미 사용한 아이디)
 		System.out.println(confirmMemberId+" <- checkMemberId.memberId");
 		if(confirmMemberId == null) { // 아이디 사용 가능
+			System.out.println("사용할 수 있는 아이디");
 			model.addAttribute("availableMemberId", memberIdCheck);
 			String msg = "사용할 수 있는 아이디 입니다.";
 			model.addAttribute("memberIdCheckMsg", msg);
 		}else { // 아이디 사용 불가
+			System.out.println("사용할 수 없는 아이디");
 			String msg = "사용할 수 없는 아이디 입니다.";
 			model.addAttribute("memberIdCheckMsg", msg);
 		}
-		return "member/addmember";
+		return "member/addMember";
 	}
 	// 회원가입
 	@GetMapping("/addMember")
@@ -161,6 +163,7 @@ public class MemberController {
 		}
 		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
 		Member memberOne = memberService.getMemberOne(loginMember); 
+		System.out.println(memberOne.getMemberPic()+" <- memberPic");
 		model.addAttribute("memberOne", memberOne);
 		return "member/memberInfo";
 	}

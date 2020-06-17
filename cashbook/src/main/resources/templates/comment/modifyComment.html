@@ -198,7 +198,7 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-6 text-left">
-							<a class="btn requestBtn" href="/qnaboard">목록</a>
+							<a class="btn requestBtn" th:href="@{/qnaboard}">목록</a>
 						</div>
 						<div class="col-sm-6 text-right">
 							<a class="btn requestBtn" th:href="@{/modifyQnaboard(qnaboardNo=${qnaboard.qnaboardNo})}">수정</a>
@@ -213,7 +213,7 @@
 				<div>
 					<!-- 댓글 수정 창 -->
 					<div>
-						<form method="post" action="/modifyComment">
+						<form method="post" th:action="@{/modifyComment}">
 							<input type="hidden" name="commentNo" th:value="${modifyCommentNo}">
 							<input type="hidden" name="qnaboardNo" th:value="${qnaboard.qnaboardNo}">
 							<input type="hidden" name="memberId" th:if="${session.loginAdmin != null}" th:value="${session.loginAdmin.adminId}">

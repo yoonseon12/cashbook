@@ -142,7 +142,7 @@
 						<span class="memberTotalCount">전체 회원 수 : </span><strong class="memberTotalCount" th:text="${memberTotalCount}"></strong>
 					</div>
 					<div class="col-sm-6 text-right">
-						<form id="searchForm" method="get" action="/memberList">
+						<form id="searchForm" method="get" th:action="@{/memberList}">
 							<input id="searchWord" type="text" name="searchWord" placeholder="회원 아이디 검색">		
 							<button id="searchBtn" type="button"><i class="fa fa-search"></i></button>
 						</form>

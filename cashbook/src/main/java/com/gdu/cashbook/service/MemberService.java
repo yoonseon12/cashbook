@@ -35,7 +35,7 @@ public class MemberService {
 	@Autowired private QnaboardMapper qnaboardMapper;
 	@Autowired private CashMapper cashMapper;
 	@Autowired private CategoryMapper categoryMapper;
-	@Value("C:\\STS_WORK\\maven.1590970622321\\cashbook\\src\\main\\resources\\static\\upload")
+	@Value("/yoonseon12/tomcat/webapps/cashbook/WEB-INF/classes/static/upload/")
 	private String path; // 회원가입시 프로필사진 저장 경로
 	// 아이디 중복확인
 	public String checkMemberId(String memberIdCheck) {
@@ -195,15 +195,18 @@ public class MemberService {
 		int row = memberMapper.updateMemberPw(member);
 		System.out.println(row+" <- 업데이트 유무");
 		if(row==1) {
-			System.out.println("업데이트 성공"); // JavaMailSender 메일객체
+			System.out.println("업데이트 성공"); 
 			System.out.println(memberPw+" <- 변경된 비밀번호");
 			//메일보내기
 			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+			System.out.println("1");
 			simpleMailMessage.setTo(member.getMemberEmail()); // 받는사람주소
 			simpleMailMessage.setFrom("a0105457331@gmail.com"); // 보내는사람주소
 			simpleMailMessage.setSubject("[cashbook]비밀번호찾기"); // 제목
 			simpleMailMessage.setText("변경된 비밀번호는[ "+memberPw+" ]입니다."); // 내용
-			javaMailSender.send(simpleMailMessage);
+			System.out.println("2");
+			javaMailSender.send(simpleMailMessage); // JavaMailSender 메일객체
+			System.out.println("3");
 		}
 		return row;
 	}

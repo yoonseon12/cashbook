@@ -63,15 +63,15 @@
 			<div id="linkArea">
 					<div th:if="${session.loginMember == null}">
 						<div class="linkMargin text-center">
-							<a href="/login" class="btn btn-primary">로그인</a>
+							<a th:href="@{/login}" class="btn btn-primary">로그인</a>
 						</div>
 						<div class="linkMargin text-center">
-							<a href="/addMember" class="btn btn-primary">회원가입</a>
+							<a th:href="@{/addMember}" class="btn btn-primary">회원가입</a>
 						</div>
 					</div>
 					<div th:if="${session.loginMember != null}">
 						<div class="linkMargin text-center">
-							<a href="/logout" class="btn btn-primary">로그아웃</a>
+							<a th:href="@{/logout}" class="btn btn-primary">로그아웃</a>
 						</div>
 					</div>
 			</div>

@@ -130,7 +130,7 @@
 				<hr>
 				<!-- 입력 창 -->
 				<div class="text-center">
-					<form id="addQnaboardForm" method="post" action="/addQnaboard">
+					<form id="addQnaboardForm" method="post" th:action="@{/addQnaboard}">
 						<div class="titleArea">
 							<input type="text" id="qnaboardTitle" name="qnaboardTitle" placeholder="제목을 입력하세요">
 						</div>

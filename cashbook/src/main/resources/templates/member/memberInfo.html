@@ -144,7 +144,7 @@
 						<tr>
 							<th>사진</th>
 							<td>
-								<img th:src="@{${'/upload/'+memberOne.memberPic}}" width="200" height="200">
+								 <img th:src="@{'/upload/'+${memberOne.memberPic}}" width="200" height="200">
 							</td>
 						</tr>
 						<tr>
@@ -154,7 +154,7 @@
 						<tr>
 							<th>비밀번호</th>
 							<td>
-								<form id="modifyMemberPwForm" method="post" action="/modifyMemberPw">
+								<form id="modifyMemberPwForm" method="post" th:action="@{/modifyMemberPw}">
 									<div>
 										<div class="marginBottom5">
 											<input type="password" id="originMemberPw" name="originMemberPw" placeholder="현재 비밀번호">
@@ -209,7 +209,7 @@
 							<a class="removeMember" data-toggle="collapse" href="#remove">회원탈퇴</a>
 						</div>
 						<div id="remove" class="collapse">
-							<form id="removeMemberForm" method="post" action="/removeMember">
+							<form id="removeMemberForm" method="post" th:action="@{/removeMember}">
 								<div>
 									<br>
 									<input type="password" name="inputMemberPw" placeholder="비밀번호를 입력하세요.">

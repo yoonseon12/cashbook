@@ -32,9 +32,9 @@ public class CashbookApplication {
 		javaMailSender.setPassword(password);
 		
 		Properties prop = new Properties(); // Properties == HashMap<String, String>
-		javaMailSender.setJavaMailProperties(prop);
 		prop.setProperty("mail.smtp.auth", "true");
 		prop.setProperty("mail.smtp.starttls.enable", "true");
+		javaMailSender.setJavaMailProperties(prop);
 		return javaMailSender;
 	}
 }

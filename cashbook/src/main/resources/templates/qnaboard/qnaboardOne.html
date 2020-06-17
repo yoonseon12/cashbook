@@ -226,7 +226,7 @@
 				<div>
 					<!-- 댓글 입력창 -->
 					<div>
-						<form id="addCommentForm" method="post" action="/addComment">
+						<form id="addCommentForm" method="post" th:action="@{/addComment}">
 							<input type="hidden" name="qnaboardNo" th:value="${qnaboard.qnaboardNo}">
 							<input type="hidden" name="memberId" th:value="${qnaboard.memberId}">
 							<div class="row commentInputArea">

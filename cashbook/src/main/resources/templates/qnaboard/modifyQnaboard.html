@@ -130,7 +130,7 @@
 				<hr>
 				<!-- 입력 창 -->
 				<div class="text-center">
-					<form id="modifyQnaboardForm" method="post" action="/modifyQnaboard">
+					<form id="modifyQnaboardForm" method="post" th:action="@{/modifyQnaboard}">
 						<input type="hidden" name="qnaboardNo" th:value="${qnaboard.qnaboardNo}">
 						<div class="titleArea">
 							<input type="text" id="qnaboardTitle" name="qnaboardTitle" th:value="${qnaboard.qnaboardTitle}">
